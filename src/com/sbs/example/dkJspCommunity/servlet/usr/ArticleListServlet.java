@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Article;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
+import com.sbs.example.dkJspCommunity.service.ArticleService;
 
 @WebServlet("/user/article/list")
 public class ArticleListServlet extends HttpServlet {

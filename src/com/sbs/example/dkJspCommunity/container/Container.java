@@ -1,7 +1,7 @@
 package com.sbs.example.dkJspCommunity.container;
 
 import com.sbs.example.dkJspCommunity.dao.ArticleDao;
-import com.sbs.example.dkJspCommunity.servlet.usr.ArticleService;
+import com.sbs.example.dkJspCommunity.service.ArticleService;
 
 public class Container {
 
