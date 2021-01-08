@@ -2,8 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.sbs.example.dkJspCommunity.dto.Member" %>
 <%
-List<Map<String, Object>> memberMapList = (List<Map<String, Object>>)request.getAttribute("memberMapList");
+List<Member> members = (List<Member>)request.getAttribute("members");
 %>
 <!doctype html>
 <html lang="ko">
@@ -16,14 +17,17 @@ List<Map<String, Object>> memberMapList = (List<Map<String, Object>>)request.get
 		회원 리스트
 	</h1>
 	<%
-	for (Map<String, Object> memberMap : memberMapList) {
+	for (Member member : members) {
 	%>
 	<div>
 		번호: 
-		<%=memberMap.get("id") %>
+		<%=member.id %>
 		<br />
 		이름: 
-		<%=memberMap.get("name") %>
+		<%=member.name %>
+		<br />
+		닉네이: 
+		<%=member.nickname %>
 		<hr />
 	</div>
 	<%
