@@ -1,4 +1,4 @@
-package com.sbs.example.dkJspCommunity.servlet.usr;
+package com.sbs.example.dkJspCommunity.service;
 
 import java.util.List;
 
