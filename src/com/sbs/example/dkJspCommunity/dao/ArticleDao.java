@@ -39,4 +39,20 @@ public class ArticleDao {
 		return articles;
 	}
 
+	public Article getArticle(int id) {
+
+		SecSql sql = new SecSql();
+		sql.append("SELECT *");
+		sql.append("FROM article");
+		sql.append("WHERE id = ?", id);
+		
+		System.out.println(sql.getRawSql());
+		
+		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
+		if (articleMap.isEmpty()) {
+			return null;
+		}
+		return new Article(articleMap);
+	}
+
 }

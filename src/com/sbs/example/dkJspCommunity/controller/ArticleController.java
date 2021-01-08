@@ -26,5 +26,14 @@ public class ArticleController {
 		
 		return "usr/article/list";
 	}
+	public String showDatail(HttpServletRequest req, HttpServletResponse resp) {
+		int id = Integer.parseInt(req.getParameter("id"));
+		
+		Article article = articleService.getArticle(id);
+		
+		req.setAttribute("article", article);
+		
+		return "usr/article/detail";
+	}
 
 }

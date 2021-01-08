@@ -19,4 +19,8 @@ public class ArticleService {
 		return articleDao.getForPrintArticles(boardId);
 	}
 
+	public Article getArticle(int id) {
+		return articleDao.getArticle(id);
+	}
+
 }
