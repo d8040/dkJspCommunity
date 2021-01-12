@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.dkJspCommunity.container.Container;
-import com.sbs.example.dkJspCommunity.controller.ArticleController;
+import com.sbs.example.dkJspCommunity.controller.usr.ArticleController;
 import com.sbs.example.dkJspCommunity.controller.usr.MemberController;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
 
@@ -49,8 +49,11 @@ public class DispatcherServlet extends HttpServlet {
 			if(actionMethodName.equals("list")) {
 				jspPath = articleController.showList(req, resp);
 			}
-			if(actionMethodName.equals("detail")) {
+			else if(actionMethodName.equals("detail")) {
 				jspPath = articleController.showDatail(req, resp);
+			}
+			else if (actionMethodName.equals("write")) {
+				jspPath = articleController.showWrite(req, resp);
 			}
 		}
 		

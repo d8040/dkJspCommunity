@@ -1,6 +1,6 @@
 package com.sbs.example.dkJspCommunity.container;
 
-import com.sbs.example.dkJspCommunity.controller.ArticleController;
+import com.sbs.example.dkJspCommunity.controller.usr.ArticleController;
 import com.sbs.example.dkJspCommunity.controller.usr.MemberController;
 import com.sbs.example.dkJspCommunity.dao.ArticleDao;
 import com.sbs.example.dkJspCommunity.dao.MemberDao;

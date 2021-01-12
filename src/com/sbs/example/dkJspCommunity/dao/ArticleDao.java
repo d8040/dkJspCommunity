@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.sbs.example.dkJspCommunity.dto.Article;
+import com.sbs.example.dkJspCommunity.dto.Board;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
 import com.sbs.example.dkJspCommunity.mysqlutil.SecSql;
 
@@ -27,7 +28,7 @@ public class ArticleDao {
 			sql.append("WHERE boardId = ?", boardId);
 		}
 		sql.append("ORDER BY A.id DESC");
-		
+
 		System.out.println(sql.getRawSql());
 
 		List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
@@ -45,9 +46,9 @@ public class ArticleDao {
 		sql.append("SELECT *");
 		sql.append("FROM article");
 		sql.append("WHERE id = ?", id);
-		
+
 		System.out.println(sql.getRawSql());
-		
+
 		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
 		if (articleMap.isEmpty()) {
 			return null;
@@ -55,4 +56,18 @@ public class ArticleDao {
 		return new Article(articleMap);
 	}
 
+	public Board getBoardById(int id) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT B.*");
+		sql.append("FROM board AS B");
+		sql.append("WHERE B.id = ?", id);
+
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+
+		if (map.isEmpty()) {
+			return null;
+		}
+
+		return new Board(map);
+	}
 }

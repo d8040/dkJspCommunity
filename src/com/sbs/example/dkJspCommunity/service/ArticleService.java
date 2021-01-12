@@ -5,6 +5,7 @@ import java.util.List;
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dao.ArticleDao;
 import com.sbs.example.dkJspCommunity.dto.Article;
+import com.sbs.example.dkJspCommunity.dto.Board;
 
 public class ArticleService {
 	
@@ -21,6 +22,10 @@ public class ArticleService {
 
 	public Article getArticle(int id) {
 		return articleDao.getArticle(id);
+	}
+
+	public Board getBoardById(int id) {
+		return articleDao.getBoardById(id);
 	}
 
 }
