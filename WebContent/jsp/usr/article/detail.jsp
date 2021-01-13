@@ -36,6 +36,9 @@ Article article = (Article)request.getAttribute("article");
 		<%=article.body%>
 		<hr />
 	</div>
+	<div><a href="list?boardId=<%=article.boardId%>">리스트로 이동</a> <a href="modify?memberId=<%=article.memberId %>&id=<%=article.id%>">게시물 수정</a></div>
+	<div><a onclick="return confirm('정말로 삭제하시겠습니까?')" href="doDelete?memberId=<%=article.memberId %>&id=<%=article.id%>">게시물 삭제</a></div>
+	
 	<%
 	%>
 </body>

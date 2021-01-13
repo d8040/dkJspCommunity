@@ -1,25 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.sbs.example.dkJspCommunity.dto.Board"%>
+<%@ page import="com.sbs.example.dkJspCommunity.dto.Article"%>
 <%
-Board board = (Board) request.getAttribute("board");
+Article article = (Article) request.getAttribute("article");
 %>
 <!doctype html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title><%=board.name%> 게시물 작성
-</title>
+<title><%=article.id%>번 게시물 수정</title>
 </head>
 <body>
 	<h1>
-		<%=board.name%>
-		게시물 작성
+		<%=article.id%>번 게시물 수정
 	</h1>
 	<div>
-		<form action="doWrite" method="POST">
-			<input type="hidden" name="boardId" value="<%=board.id%>" />
-			<input type="hidden" name="memberId" value="1" />
+		<form action="doModify" method="POST">
+			<input type="text" name="id" value="<%=article.id%>" />
+			<input type="hidden" name="boardId" value="<%=article.boardId%>" />
+			<input type="hidden" name="memberId" value="<%=article.memberId%>" />
 
 			<hr />
 				<div>제목</div>

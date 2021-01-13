@@ -40,20 +40,26 @@ public class ArticleDao {
 		return articles;
 	}
 
-	public Article getArticle(int id) {
-
+	public Article getForPrintArticleById(int id) {
 		SecSql sql = new SecSql();
-		sql.append("SELECT *");
-		sql.append("FROM article");
-		sql.append("WHERE id = ?", id);
-
-		System.out.println(sql.getRawSql());
-
-		Map<String, Object> articleMap = MysqlUtil.selectRow(sql);
-		if (articleMap.isEmpty()) {
+		sql.append("SELECT A.*");
+		sql.append(", M.name AS extra_writer");
+		sql.append(", B.name AS extra_boardName");
+		sql.append(", B.code AS extra_boardCode");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId = M.id");
+		sql.append("INNER JOIN `board` AS B");
+		sql.append("ON A.boardId = B.id");
+		sql.append("WHERE A.id = ?", id);
+		
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+		
+		if ( map.isEmpty() ) {
 			return null;
 		}
-		return new Article(articleMap);
+
+		return new Article(map);
 	}
 
 	public Board getBoardById(int id) {
@@ -69,5 +75,64 @@ public class ArticleDao {
 		}
 
 		return new Board(map);
+	}
+
+	public int write(Map<String, Object> args) {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO article");
+		sql.append("SET regDate = NOW()");
+		sql.append(", updateDate = NOW()");
+		sql.append(", boardId = ?", args.get("boardId"));
+		sql.append(", memberId = ?", args.get("memberId"));
+		sql.append(", title = ?", args.get("title"));
+		sql.append(", body = ?", args.get("body"));
+
+		return MysqlUtil.insert(sql);
+	}
+
+	public int modify(Map<String, Object> modifyArgs) {
+		SecSql sql = new SecSql();
+		sql.append("UPDATE article");
+		sql.append("SET updateDate = NOW()");
+		sql.append(", boardId = ?", modifyArgs.get("boardId"));
+		sql.append(", body = ?", modifyArgs.get("body"));
+		sql.append(", title = ?", modifyArgs.get("title"));
+		sql.append("where id = ?", modifyArgs.get("id"));
+		sql.append("and memberId = ?", modifyArgs.get("memberId"));
+
+		return MysqlUtil.update(sql);
+	}
+
+	public Article getForPrintArticleByMemberIdAndId(int memberId, int id) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT A.*");
+		sql.append(", M.name AS extra_writer");
+		sql.append(", B.name AS extra_boardName");
+		sql.append(", B.code AS extra_boardCode");
+		sql.append("FROM article AS A");
+		sql.append("INNER JOIN `member` AS M");
+		sql.append("ON A.memberId = M.id");
+		sql.append("INNER JOIN `board` AS B");
+		sql.append("ON A.boardId = B.id");
+		sql.append("WHERE A.id = ?", id);
+		sql.append("AND memberId = ?", memberId);
+		
+		Map<String, Object> map = MysqlUtil.selectRow(sql);
+		
+		if ( map.isEmpty() ) {
+			return null;
+		}
+
+		return new Article(map);
+	}
+
+	public int delete(Map<String, Object> delArgs) {
+		SecSql sql = new SecSql();
+		
+		sql.append("DELETE FROM article");
+		sql.append("WHERE id = ?", delArgs.get("id"));
+		sql.append("AND memberId = ?", delArgs.get("memberId"));
+		
+		return MysqlUtil.delete(sql);
 	}
 }
