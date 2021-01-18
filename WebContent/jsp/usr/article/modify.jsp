@@ -1,25 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.sbs.example.dkJspCommunity.dto.Board"%>
-<%@ page import="com.sbs.example.dkJspCommunity.dto.Article"%>
-<%
-Article article = (Article) request.getAttribute("article");
-%>
+	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!doctype html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<title><%=article.id%>번 게시물 수정</title>
+<title>${article.id}번 게시물 수정</title>
 </head>
 <body>
 	<h1>
-		<%=article.id%>번 게시물 수정
+		${article.id}번 게시물 수정
 	</h1>
 	<div>
 		<form action="doModify" method="POST">
-			<input type="text" name="id" value="<%=article.id%>" />
-			<input type="hidden" name="boardId" value="<%=article.boardId%>" />
-			<input type="hidden" name="memberId" value="<%=article.memberId%>" />
+			<input type="text" name="id" value="${article.id}" />
+			<input type="hidden" name="boardId" value="${article.boardId}" />
+			<input type="hidden" name="memberId" value="${article.memberId}" />
 
 			<hr />
 				<div>제목</div>

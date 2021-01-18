@@ -115,6 +115,13 @@ public class ArticleController {
 	public String doDelete(HttpServletRequest req, HttpServletResponse resp) {
 		int id = Integer.parseInt(req.getParameter("id"));
 		int memberId = Integer.parseInt(req.getParameter("memberId"));
+		Article article = articleService.getForPrintArticleById(id);
+		
+		if (article == null) {
+			req.setAttribute("alterMsg", id + "번 게시물은 존재하지 않습니다.");
+			req.setAttribute("historyBack", true);
+			return "common/redirect";
+		}
 		
 		Map<String, Object> delArgs = new HashMap<>();
 		delArgs.put("memberId", memberId);
@@ -123,9 +130,9 @@ public class ArticleController {
 		int newArticleId = articleService.delete(delArgs);
 		
 		req.setAttribute("alertMsg", id + "번 게시물이 삭제되었습니다");
-		req.setAttribute("replaceUrl", String.format("detail?id=%d", id-1));
+		req.setAttribute("replaceUrl", String.format("list?boardId=%d", article.boardId));
 		
-		return "usr/article/doDelete";
+		return "common/redirect";
 	}
 
 }

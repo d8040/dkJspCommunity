@@ -2,7 +2,10 @@ package com.sbs.example.dkJspCommunity.dto;
 
 import java.util.Map;
 
-public class Member {	
+import lombok.Data;
+
+@Data
+public class Member {
 	public int id;
 	public String regDate;
 	public String updateDate;
@@ -13,7 +16,7 @@ public class Member {
 	public String email;
 	public String cellphoneNo;
 	public int authLevel;
-	
+
 	public Member(Map<String, Object> map) {
 		this.id = (int) map.get("id");
 		this.regDate = (String) map.get("regDate");
@@ -27,9 +30,4 @@ public class Member {
 		this.authLevel = (int) map.get("authLevel");
 	}
 
-
-	@Override
-	public String toString() {
-		return "Member [id=" + id + ", regDate=" + regDate + ", updateDate=" + updateDate + ", loginId=" + loginId + ", loginPw=" + loginPw + ", name=" + name + ", nickname=" + nickname + ", email=" + email + ", cellphoneNo=" + cellphoneNo + ", authLevel=" + authLevel + "]";
-	}
 }

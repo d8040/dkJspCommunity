@@ -2,6 +2,9 @@ package com.sbs.example.dkJspCommunity.dto;
 
 import java.util.Map;
 
+import lombok.Data;
+
+@Data
 public class Board {
 	public Board(Map<String, Object> articleMap) {
 		this.name = (String) articleMap.get("name");
@@ -17,8 +20,4 @@ public class Board {
 	public String code;
 	
 
-	@Override
-	public String toString() {
-		return "Board [name=" + name + ", regDate=" + regDate + ", updateDate=" + updateDate + ", id=" + id + ", code=" + code + "]";
-	}
 }
