@@ -1,6 +1,7 @@
 package com.sbs.example.dkJspCommunity.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dao.MemberDao;
@@ -16,6 +17,10 @@ public class MemberService {
 
 	public List<Member> getForPrintMembers() {
 		return memberDao.getForPrintMembers();
+	}
+
+	public int join(Map<String, Object> joinArgs) {
+		return memberDao.join(joinArgs);
 	}
 
 }

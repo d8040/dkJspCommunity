@@ -15,7 +15,7 @@ public class Member {
 	public String nickname;
 	public String email;
 	public String cellphoneNo;
-	public int authLevel;
+	public int adminLevel;
 
 	public Member(Map<String, Object> map) {
 		this.id = (int) map.get("id");
@@ -27,7 +27,7 @@ public class Member {
 		this.nickname = (String) map.get("nickname");
 		this.email = (String) map.get("email");
 		this.cellphoneNo = (String) map.get("cellphoneNo");
-		this.authLevel = (int) map.get("authLevel");
+		this.adminLevel = (int) map.get("adminLevel");
 	}
 
 }

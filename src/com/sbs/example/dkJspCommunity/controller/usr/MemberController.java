@@ -1,6 +1,8 @@
 package com.sbs.example.dkJspCommunity.controller.usr;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +24,37 @@ public class MemberController {
 		
 		req.setAttribute("members", members);
 		
-		return "/usr/member/list";
+		return "/adm/member/list";
+	}
+
+	public String join(HttpServletRequest req, HttpServletResponse resp) {
+		
+		return "usr/member/join";
+	}
+
+	public String doJoin(HttpServletRequest req, HttpServletResponse resp) {
+		
+		String loginId = req.getParameter("loginId");
+		String loginPw = req.getParameter("loginPw");
+		String name = req.getParameter("name");
+		String nickname = req.getParameter("nickname");
+		String email = req.getParameter("email");
+		String cellphoneNo = req.getParameter("cellphoneNo");
+		
+		
+		Map<String, Object> joinArgs = new HashMap<>();
+		joinArgs.put("loginId", loginId);
+		joinArgs.put("loginPw", loginPw);
+		joinArgs.put("name", name);
+		joinArgs.put("nickname", nickname);
+		joinArgs.put("email", email);
+		joinArgs.put("cellphoneNo", cellphoneNo);
+				
+		int newMemberId = memberService.join(joinArgs);
+		
+		req.setAttribute("alertMsg", name + "님 회원가입이 완료되었습니다.");
+		req.setAttribute("replaceUrl", String.format("list?boardId=1"));
+		return "common/redirect";
 	}
 
 }
