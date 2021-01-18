@@ -10,6 +10,7 @@ CREATE TABLE `member` (
     `name` CHAR(50) NOT NULL,
     `nickname` CHAR(50) NOT NULL,
     `email` VARCHAR(100) NOT NULL,
+    `cellphoneNo` VARCHAR(100) NOT NULL,
     loginId CHAR(50) NOT NULL UNIQUE,
     loginPw VARCHAR(200) NOT NULL,
     adminLevel TINYINT(1) UNSIGNED NOT NULL DEFAULT 2 COMMENT '0=탈퇴/1=로그인정지/2=일반/3=인증된,4=관리자'
@@ -22,6 +23,7 @@ updateDate = NOW(),
 `name` = "김민수",
 `nickname` = "강바람",
 `email` = "jangka512@gmail.com",
+`cellphoneNo` = "010-1234-1234",
 loginId = "user1",
 loginPw = "user1";
 
@@ -32,6 +34,7 @@ updateDate = NOW(),
 `name` = "김미소",
 `nickname` = "이또한지나가리라",
 `email` = "jangka512@gmail.com",
+`cellphoneNo` = "010-1234-1234",
 loginId = "user2",
 loginPw = "user2";
 
