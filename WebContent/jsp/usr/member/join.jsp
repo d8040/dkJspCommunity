@@ -1,12 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="pageTitle" value= "회원가입"/> 
+<c:set var="pageTitle" value="회원가입" />
 <%@ include file="../../part/head.jspf"%>
-	<h1>회원가입작성</h1>
-	<div>
-		<script type="text/javascript">
+<h1>회원가입작성</h1>
+<div>
+	<script type="text/javascript">
 		let DoJoinForm__submited = false;
 		function DoJoinForm__submit(form){
 			if (DoJoinForm__submited){
@@ -87,77 +86,70 @@
 			form.submit();			
 		}
 		</script>
-		<form action="doJoin" method="POST" onsubmit="DoJoinForm__submit(this); return false;">
-			<hr />
-			<div>아이디</div>
+	<form action="doJoin" method="POST" onsubmit="DoJoinForm__submit(this); return false;">
+		<hr />
+		<div>아이디</div>
+		<div>
 			<div>
-				<div>
-					<input name="loginId" type="text" maxlength="50"
-						placeholder="사용할 아이디를 입력해주세요."> 
-				</div>
+				<input name="loginId" type="text" maxlength="50" placeholder="사용할 아이디를 입력해주세요.">
 			</div>
+		</div>
 
-			<hr />
-			<div>비밀번호</div>
+		<hr />
+		<div>비밀번호</div>
+		<div>
 			<div>
-				<div>
-					<input name="loginPw" type="password" maxlength="50"
-						placeholder="사용할 비밀번호 입력해주세요." />
-				</div>
+				<input name="loginPw" type="password" maxlength="50" placeholder="사용할 비밀번호 입력해주세요." />
 			</div>
-			
-			<hr />
-			<div>비밀번호확인</div>
-			<div>
-				<div>
-					<input name="loginPwCheck" type="password" maxlength="50"
-						placeholder="사용할 비밀번호 입력해주세요." />
-				</div>
-			</div>
+		</div>
 
-			<hr />
-			<div>이름</div>
+		<hr />
+		<div>비밀번호확인</div>
+		<div>
 			<div>
-				<div>
-					<input name="name" type="text" maxlength="50"
-						placeholder="본인 이름을 입력해주세요." />
-				</div>
+				<input name="loginPwCheck" type="password" maxlength="50" placeholder="사용할 비밀번호 입력해주세요." />
 			</div>
+		</div>
 
-			<hr />
-			<div>닉네임</div>
+		<hr />
+		<div>이름</div>
+		<div>
 			<div>
-				<div>
-					<input name="nickname" type="text" maxlength="50"
-						placeholder="닉네임을 입력해주세요." />
-				</div>
+				<input name="name" type="text" maxlength="50" placeholder="본인 이름을 입력해주세요." />
 			</div>
+		</div>
 
-			<hr />
-			<div>이메일</div>
+		<hr />
+		<div>닉네임</div>
+		<div>
 			<div>
-				<div>
-					<input name="email" type="email" maxlength="100"
-						placeholder="이메일 주소를 입력해주세요." />
-				</div>
+				<input name="nickname" type="text" maxlength="50" placeholder="닉네임을 입력해주세요." />
 			</div>
+		</div>
 
-			<hr />
-			<div>전화번호</div>
+		<hr />
+		<div>이메일</div>
+		<div>
 			<div>
-				<div>
-					<input name="cellphoneNo" type="number" maxlength="100"
-						placeholder="전화번호를 입력해 주세요." />
-				</div>
+				<input name="email" type="email" maxlength="100" placeholder="이메일 주소를 입력해주세요." />
 			</div>
-			<hr />
+		</div>
+
+		<hr />
+		<div>전화번호</div>
+		<div>
 			<div>
-				<div>작성</div>
-				<div>
-					<input type="submit" value="가입신청" />
-					<button type="button" onclick="history.back();">취소</button>
-				</div>
+				<input name="cellphoneNo" type="number" maxlength="100" placeholder="전화번호를 입력해 주세요." />
 			</div>
-		</form>
-	</div>
-<%@ include file="../../part/head.jspf"%>
+		</div>
+		<hr />
+		<div>
+			<div>작성</div>
+			<div>
+				<input type="submit" value="가입신청" />
+				<button type="button" onclick="history.back();">취소</button>
+			</div>
+		</div>
+	</form>
+</div>
+<%@ include file="../../part/foot.jspf"%>

@@ -6,15 +6,23 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.controller.UsrArticleController;
+import com.sbs.example.dkJspCommunity.controller.UsrHomeController;
 import com.sbs.example.dkJspCommunity.controller.UsrMemberController;
 
 @WebServlet("/usr/*")
 public class UsrDispatcherServlet extends DispatcherServlet {
 	@Override
-	protected String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName, String actionMethodName) {
+	protected String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName,
+		String actionMethodName) {
 		String jspPath = null;
 
-		if (controllerName.equals("member")) {
+		if (controllerName.equals("home")) {
+			UsrHomeController usrHomeController = Container.usrHomeController;
+
+			if (actionMethodName.equals("main")) {
+				jspPath = usrHomeController.showMain(req, resp);
+			}
+		} else if (controllerName.equals("member")) {
 			UsrMemberController usrMemberController = Container.usrMemberController;
 
 			if (actionMethodName.equals("join")) {
@@ -25,7 +33,9 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 				jspPath = usrMemberController.showLogin(req, resp);
 			} else if (actionMethodName.equals("doLogin")) {
 				jspPath = usrMemberController.doLogin(req, resp);
-			} 
+			} else if (actionMethodName.equals("doLogout")) {
+				jspPath = usrMemberController.doLogout(req, resp);
+			}
 		} else if (controllerName.equals("article")) {
 			UsrArticleController articleController = Container.articleController;
 

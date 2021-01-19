@@ -63,4 +63,4 @@
 			</div>
 		</form>
 	</div>
-<%@ include file="../../part/head.jspf"%>
+<%@ include file="../../part/foot.jspf"%>
