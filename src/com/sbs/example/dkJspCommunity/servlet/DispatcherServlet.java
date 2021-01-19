@@ -1,85 +1,76 @@
 package com.sbs.example.dkJspCommunity.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.sbs.example.dkJspCommunity.container.Container;
-import com.sbs.example.dkJspCommunity.controller.usr.ArticleController;
-import com.sbs.example.dkJspCommunity.controller.usr.MemberController;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
 
-@WebServlet("/usr/*")
-public class DispatcherServlet extends HttpServlet {
+public abstract class DispatcherServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		run(req, resp);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+	}
+
+	public void run(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Map<String, Object> doBeforeActions = doBeforeAction(req, resp);
+
+		if (doBeforeActions == null) {
+			return;
+		}
+
+		String jspPath = doAction(req, resp, (String) doBeforeActions.get("controllerName"), (String) doBeforeActions.get("actionMethodName"));
+		
+		if (jspPath == null) {
+			resp.getWriter().append("올바른 요청이 아닙니다.");
+			return;
+		}
+		
+		doAfterAction(req, resp, jspPath);
+	}
+
+	private Map<String, Object> doBeforeAction(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html; charset=UTF-8");
 
 		String requestUri = req.getRequestURI();
 		String[] requestUriBits = requestUri.split("/");
-		
-		if(requestUriBits.length < 5) {
+
+		if (requestUriBits.length < 5) {
 			resp.getWriter().append("올바른 요청이 아닙니다.");
-			return;
+			return null;
 		}
-				
+
+		MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "dkJspCommunity");
+
 		String controllerName = requestUriBits[3];
 		String actionMethodName = requestUriBits[4];
 
-		MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "dkJspCommunity");
-		
-		String jspPath = null;
-		
-		if (controllerName.equals("member")) {
-			MemberController memberController = Container.memberController;
-			
-			if(actionMethodName.equals("join")) {
-				jspPath = memberController.join(req,resp);
-			}
-			else if(actionMethodName.equals("doJoin")) {
-				jspPath = memberController.doJoin(req,resp);
-			}
-		}
-		else if (controllerName.equals("article")) {
-			ArticleController articleController = Container.articleController;
-			
-			if(actionMethodName.equals("list")) {
-				jspPath = articleController.showList(req, resp);
-			}
-			else if(actionMethodName.equals("detail")) {
-				jspPath = articleController.showDatail(req, resp);
-			}
-			else if (actionMethodName.equals("write")) {
-				jspPath = articleController.showWrite(req, resp);
-			}
-			else if (actionMethodName.equals("doWrite")) {
-				jspPath = articleController.doWrite(req, resp);
-			}
-			else if (actionMethodName.equals("modify")) {
-				jspPath = articleController.showModify(req, resp);
-			}
-			else if (actionMethodName.equals("doModify")) {
-				jspPath = articleController.doModify(req, resp);
-			}
-			else if (actionMethodName.equals("doDelete")) {
-				jspPath = articleController.doDelete(req, resp);
-			}
-		}
-		
-		MysqlUtil.closeConnection();
-		
-		RequestDispatcher rd = req.getRequestDispatcher("/jsp/"+jspPath+".jsp");
-		rd.forward(req, resp);
+		Map<String, Object> rs = new HashMap<>();
+		rs.put("controllerName", controllerName);
+		rs.put("actionMethodName", actionMethodName);
+
+		return rs;
 	}
-	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doGet(req, resp);
+
+	protected abstract String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName, String actionMethodName);
+
+	private void doAfterAction(HttpServletRequest req, HttpServletResponse resp, String jspPath) throws ServletException, IOException {
+		MysqlUtil.closeConnection();
+
+		RequestDispatcher rd = req.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
+		rd.forward(req, resp);
 	}
 }

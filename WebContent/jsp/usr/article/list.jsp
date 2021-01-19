@@ -2,21 +2,11 @@
 	pageEncoding="UTF-8"%>
 	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8" />
-<title>${board.name} 게시물 리스트
-</title>
-</head>
-<body>
-	<h1>${board.name}
-		게시물 리스트
-	</h1>
+<c:set var="pageTitle" value= "${board.name}게시물 리스트"/> 
+<%@ include file="../../part/head.jspf"%>
+	<h1>${pageTitle}</h1>
 	<div>
-		<a href="write?boardId=${param.boardId}">게시물
-			작성</a>
+		<a href="write?boardId=${param.boardId}">게시물 작성</a>
 	</div>
 	<c:forEach items="${articles}" var="article">
 	번호 :
@@ -35,5 +25,4 @@
 		<a href="detail?id=${article.id}">${article.title}</a>
 		<hr />
 	</c:forEach>
-</body>
-</html>
+<%@ include file="../../part/foot.jspf"%>

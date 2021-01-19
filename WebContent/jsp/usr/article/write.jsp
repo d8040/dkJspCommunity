@@ -2,14 +2,9 @@
 	pageEncoding="UTF-8"%>
 	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8" />
-<title>${board.name} 게시물 작성</title>
-</head>
-<body>
-	<h1>${board.name} 게시물 작성</h1>
+<c:set var="pageTitle" value= "${board.name} 게시물 작성"/> 
+<%@ include file="../../part/head.jspf"%>
+	<h1>${pageTitle}</h1>
 	<div>
 		<form action="doWrite" method="POST">
 			<input type="hidden" name="boardId" value="${board.id}" /> <input
@@ -42,5 +37,4 @@
 			</div>
 		</form>
 	</div>
-</body>
-</html>
+<%@ include file="../../part/foot.jspf"%>

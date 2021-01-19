@@ -1,15 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8" />
-<title>회원 리스트</title>
-</head>
-<body>
-	<h1>회원 리스트</h1>
+<c:set var="pageTitle" value= "회원 리스트"/> 
+<%@ include file="../../part/head.jspf"%>
+	<h1>${pageTitle}</h1>
 	<c:forEach items="${members}" var="member">
 	번호: 
 		${member.id}
@@ -21,5 +15,4 @@
 		${member.nickname}
 		<hr />
 	</c:forEach>
-</body>
-</html>
+<%@ include file="../../part/foot.jspf"%>

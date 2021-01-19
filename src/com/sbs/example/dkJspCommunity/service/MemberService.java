@@ -22,5 +22,9 @@ public class MemberService {
 	public int join(Map<String, Object> joinArgs) {
 		return memberDao.join(joinArgs);
 	}
+	
+	public Member getMemberByLoginId(String loginId) {
+		return memberDao.getMemberByLoginId(loginId);
+	}
 
 }
