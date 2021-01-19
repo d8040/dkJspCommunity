@@ -9,7 +9,6 @@
 	<form action="doModify" method="POST">
 		<input type="text" name="id" value="${article.id}" /> 
 		<input type="hidden" name="boardId" value="${article.boardId}" /> 
-			<input type="hidden" name="memberId" value="${article.memberId}" />
 
 		<hr />
 		<div>제목</div>

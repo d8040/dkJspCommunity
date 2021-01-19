@@ -76,7 +76,7 @@ public class UsrArticleController {
 		}
 
 		int boardId = Integer.parseInt(req.getParameter("boardId"));
-		int memberId = Integer.parseInt(req.getParameter("memberId"));
+		int memberId = (int)session.getAttribute("loginedMemberId");
 		String title = req.getParameter("title");
 		String body = req.getParameter("body");
 		
@@ -102,14 +102,21 @@ public class UsrArticleController {
 		    return "common/redirect";
 		}
 
-		int memberId = Integer.parseInt(req.getParameter("memberId"));
-		int articleId = Integer.parseInt(req.getParameter("id"));
+		int memberId = (int)session.getAttribute("loginedMemberId");
+		int id = Integer.parseInt(req.getParameter("id"));		
+		
 
-		Article article = articleService.getForPrintArticleByMemberIdAndId(memberId, articleId);
+		Article article = articleService.getForPrintArticleById(id);
 		if (article == null) {
-			req.setAttribute("alertMsg", articleId + " 게시물이 존재하지 않습니다.");
+			req.setAttribute("alertMsg", id + "번 게시물이 존재하지 않습니다.");
 			req.setAttribute("historyBack", true);
 			return "common/redirect";
+		}
+		
+		if(memberId != article.getMemberId()) {
+		    req.setAttribute("alertMsg", "게시물에 대한 권한이 없습니다.");
+		    req.setAttribute("historyBack", true);
+		    return "common/redirect";
 		}
 
 		req.setAttribute("article", article);
@@ -126,18 +133,26 @@ public class UsrArticleController {
 		}
 
 		int boardId = Integer.parseInt(req.getParameter("boardId"));
-		int memberId = Integer.parseInt(req.getParameter("memberId"));
+		int memberId = (int)session.getAttribute("loginedMemberId");
 		int id = Integer.parseInt(req.getParameter("id"));
 		String title = req.getParameter("title");
 		String body = req.getParameter("body");
 		
+
+		Article article = articleService.getForPrintArticleById(id);
+		
+		if(memberId != article.getMemberId()) {
+		    req.setAttribute("alertMsg", "게시물에 대한 권한이 없습니다.");
+		    req.setAttribute("historyBack", true);
+		    return "common/redirect";
+		}
 		Map<String, Object> modifyArgs = new HashMap<>();
 		modifyArgs.put("boardId", boardId);
 		modifyArgs.put("memberId", memberId);
 		modifyArgs.put("id", id);
 		modifyArgs.put("title", title);
 		modifyArgs.put("body", body);
-				
+		
 		int newArticleId = articleService.modify(modifyArgs);
 		
 		req.setAttribute("alertMsg", id + "번 게시물이 수정되었습니다.");
@@ -155,13 +170,19 @@ public class UsrArticleController {
 		}
 
 		int id = Integer.parseInt(req.getParameter("id"));
-		int memberId = Integer.parseInt(req.getParameter("memberId"));
+		int memberId = (int)session.getAttribute("loginedMemberId");
 		Article article = articleService.getForPrintArticleById(id);
 		
 		if (article == null) {
 			req.setAttribute("alterMsg", id + "번 게시물은 존재하지 않습니다.");
 			req.setAttribute("historyBack", true);
 			return "common/redirect";
+		}
+		
+		if(memberId != article.getMemberId()) {
+		    req.setAttribute("alertMsg", "게시물에 대한 권한이 없습니다.");
+		    req.setAttribute("historyBack", true);
+		    return "common/redirect";
 		}
 		
 		Map<String, Object> delArgs = new HashMap<>();
