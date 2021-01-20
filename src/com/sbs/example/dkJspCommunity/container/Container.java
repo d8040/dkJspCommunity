@@ -19,9 +19,9 @@ public class Container {
 	public static AdmMemberController admMemberController;
 	public static UsrMemberController usrMemberController;
 	public static UsrArticleController articleController;
-	
+
 	static {
-	    	usrHomeController = new UsrHomeController();
+		usrHomeController = new UsrHomeController();
 		memberDao = new MemberDao();
 		articleDao = new ArticleDao();
 		articleService = new ArticleService();
