@@ -68,7 +68,7 @@ public class UsrMemberController {
 	int newMemberId = memberService.join(joinArgs);
 
 	req.setAttribute("alertMsg", nickname + "님 회원가입이 완료되었습니다.");
-	req.setAttribute("replaceUrl", String.format("list?boardId=1"));
+	req.setAttribute("replaceUrl", String.format("../home/main"));
 	return "common/redirect";
     }
 

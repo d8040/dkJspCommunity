@@ -1,0 +1,162 @@
+/* 폰트 적용 시작*/
+@font-face {
+    font-family: 'BMEULJIRO';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/BMEULJIRO.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html * {
+	font-family: 'BMEULJIRO', sans-serif;
+}
+/* 폰트 적용 끝 */
+
+/* 노말라이즈 */
+body, ul, li, h1, h2, h3 {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+/* 노말라이즈 끝 */
+
+/* 라이브러리 */
+.none {
+	display: none;
+}
+
+.flex {
+	display: flex;
+}
+
+.flex-jc-c {
+	justify-content: center
+}
+
+.flex-ai-c {
+	align-items: center;
+}
+
+.flex-ai-end {
+	align-items: flex-end;
+}
+
+.flex-jc-end {
+	justify-content: flex-end;
+}
+
+.flex-dr-r {
+	flex-direction: row;
+}
+
+.flex-dr-c {
+	flex-direction: column;
+}
+
+.flex-g-1 {
+	flex-grow: 1;
+}
+
+.flex-jc-start {
+	justify-content: flex-start;
+}
+
+.flex-ai-start {
+	align-items: flex-start;
+}
+
+.flex-inline {
+	display: inline-flex
+}
+
+.hover-underline:hover {
+	text-decoration: underline;
+}
+
+.width-100p {
+	width: 100%;
+}
+
+.min-height-100vh {
+	min-height: 100vh;
+}
+
+.con {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.bg-black {
+	background-color: black;
+}
+
+.bg-pink {
+	background-color: pink;
+}
+
+.bl-r {
+	border: 2px solid red;
+}
+
+.bl-b {
+	border: 2px solid blue;
+}
+
+.bl-g {
+	border: 2px solid green;
+}
+
+.bl-y {
+	border: 2px solid yellow;
+}
+
+.color-white {
+	color: white;
+}
+
+.bg-red {
+	background-color: red;
+}
+
+.bg-blue {
+	background-color: blue;
+}
+
+.width-100p-except-100px {
+	width: calc(100% - 100px);
+}
+
+.width-100p-except-150px {
+	width: calc(100% - 150px);
+}
+
+.width-100p-except-200px {
+	width: calc(100% - 200px);
+}
+
+.width-100p-except-250px {
+	width: calc(100% - 250px);
+}
+
+.width-100p-except-300px {
+	width: calc(100% - 300px);
+}
+
+.width-auto {
+	width: auto;
+}
+
+/* 커스텀 시작 */
+.con-min-width {
+	min-width: 900px;
+}
+
+.con-max-width {
+	max-width: 900px;
+}
+
+/* 커스텀 끝 */
