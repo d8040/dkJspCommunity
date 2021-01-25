@@ -1,5 +1,7 @@
 package com.sbs.example.dkJspCommunity.service;
 
+import com.sbs.example.dkJspCommunity.util.Util;
+
 public class EmailService {
     private String gmailId;
     private String gmailPw;
@@ -11,9 +13,10 @@ public class EmailService {
 	this.gmailPw = gmailPw;
 	this.from = from;
 	this.fromName = fromName;
-	
-	System.out.println("메일 서비스 실행");
-	System.out.println(gmailId);
+    }
+
+    public int sendMail(String to, String title, String body) {
+	return Util.sendMail(gmailId, gmailPw, from, fromName, to, title, body);
     }
     
 }
