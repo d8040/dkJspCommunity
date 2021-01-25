@@ -2,3 +2,6 @@
 .project
 .settings/
 build/
+bin/
+.factorypath
+WebContent/META-INF/config.json
