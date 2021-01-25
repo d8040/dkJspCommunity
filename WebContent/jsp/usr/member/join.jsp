@@ -7,6 +7,30 @@
 <div>
 	<script type="text/javascript">
 		let DoJoinForm__submited = false;
+		let DoJoinForm__checkedLoginId = "";
+		
+		function DoJoinForm__checkLoginIdDup(el) {
+			const from = $(el).closest('form').get(0);
+			const loginId = from.loginId.value;
+			
+			$.get(
+				"getLoginIdDup",
+				{
+					loginId
+				},
+				function(data){
+					if (data.msg){
+						alert(data.msg);
+					}
+					if (data.resultCode.substr(0,2) == "S-"){
+						alert(data.msg);
+						DoJoinForm__checkedLoginId = data.loginId;
+					}
+				},
+				"json"
+			);
+		}
+		
 		function DoJoinForm__submit(form){
 			if (DoJoinForm__submited){
 				alert('처리 중 입니다.');
@@ -20,6 +44,12 @@
 				form.loginId.focus();
 				
 				return;
+			}
+			
+			if(form.loginId.value != DoJoinForm__checkedLoginId){
+				alert('로그인 아이디 중복검사를 해주세요'); 
+				form.btnLoginIdDupCheck.focus();
+				return false;
 			}
 			
 			form.loginPw.value = form.loginPw.value.trim();
@@ -92,6 +122,7 @@
 		<div>
 			<div>
 				<input name="loginId" type="text" maxlength="50" placeholder="사용할 아이디를 입력해주세요.">
+				<button onclick="DoJoinForm__checkLoginIdDup(this);" name="btnLoginIdDupCheck" type="button">중복확인</button>
 			</div>
 		</div>
 

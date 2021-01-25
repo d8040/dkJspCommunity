@@ -5,8 +5,14 @@
 <meta charset="UTF-8" />
 <title>${pageTitle}</title>
 
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- 폰트어썸 불러오기 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/common.css" />
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/common.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/common.js" defer></script>
 </head>
 <body>
 

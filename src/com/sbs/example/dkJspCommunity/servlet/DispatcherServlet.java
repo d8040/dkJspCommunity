@@ -1,7 +1,9 @@
 package com.sbs.example.dkJspCommunity.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -16,80 +18,131 @@ import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
 
 public abstract class DispatcherServlet extends HttpServlet {
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		run(req, resp);
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	run(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	doGet(req, resp);
+    }
+
+    public void run(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	Map<String, Object> doBeforeActions = doBeforeAction(req, resp);
+
+	if (doBeforeActions == null) {
+	    return;
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doGet(req, resp);
+	String jspPath = doAction(req, resp, (String) doBeforeActions.get("controllerName"),
+		(String) doBeforeActions.get("actionMethodName"));
+
+	if (jspPath == null) {
+	    resp.getWriter().append("올바른 요청이 아닙니다.");
+	    return;
 	}
 
-	public void run(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Map<String, Object> doBeforeActions = doBeforeAction(req, resp);
+	doAfterAction(req, resp, jspPath);
+    }
 
-		if (doBeforeActions == null) {
-			return;
-		}
+    private Map<String, Object> doBeforeAction(HttpServletRequest req, HttpServletResponse resp)
+	    throws ServletException, IOException {
+	req.setCharacterEncoding("UTF-8");
+	resp.setContentType("text/html; charset=UTF-8");
 
-		String jspPath = doAction(req, resp, (String) doBeforeActions.get("controllerName"), (String) doBeforeActions.get("actionMethodName"));
-		
-		if (jspPath == null) {
-			resp.getWriter().append("올바른 요청이 아닙니다.");
-			return;
-		}
-		
-		doAfterAction(req, resp, jspPath);
+	String requestUri = req.getRequestURI();
+	String[] requestUriBits = requestUri.split("/");
+
+	if (requestUriBits.length < 5) {
+	    resp.getWriter().append("올바른 요청이 아닙니다.");
+	    return null;
 	}
 
-	private Map<String, Object> doBeforeAction(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		resp.setContentType("text/html; charset=UTF-8");
+	MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "dkJspCommunity");
 
-		String requestUri = req.getRequestURI();
-		String[] requestUriBits = requestUri.split("/");
+	String controllerTypeName = requestUriBits[2]; // usr
+	String controllerName = requestUriBits[3]; // article
+	String actionMethodName = requestUriBits[4]; // list
 
-		if (requestUriBits.length < 5) {
-			resp.getWriter().append("올바른 요청이 아닙니다.");
-			return null;
-		}
+	String actionUrl = "/" + controllerTypeName + "/" + controllerName + "/" + actionMethodName;
 
-		MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "dkJspCommunity");
+	// 데이터 추가 인터셉터 시작
+	boolean isLogined = false;
+	int loginedMemberId = 0;
+	Member loginedMember = null;
 
-		String controllerName = requestUriBits[3];
-		String actionMethodName = requestUriBits[4];
-		
-		boolean isLogined = false;
-		int loginedMemberId = 0;
-		Member loginedMember = null;
-		
-		HttpSession session = req.getSession();
-		
-		if (session.getAttribute("loginedMemberId") != null) {
-			isLogined = true;
-			loginedMemberId = (int)session.getAttribute("loginedMemberId");
-			loginedMember = Container.memberService.getMemberById(loginedMemberId);
-		}
-		
-		req.setAttribute("isLogined", isLogined);
-		req.setAttribute("loginedMemberId", loginedMemberId);
-		req.setAttribute("lgoinedMember", loginedMember);
+	HttpSession session = req.getSession();
 
-		Map<String, Object> rs = new HashMap<>();
-		rs.put("controllerName", controllerName);
-		rs.put("actionMethodName", actionMethodName);
-
-		return rs;
+	if (session.getAttribute("loginedMemberId") != null) {
+	    isLogined = true;
+	    loginedMemberId = (int) session.getAttribute("loginedMemberId");
+	    loginedMember = Container.memberService.getMemberById(loginedMemberId);
 	}
 
-	protected abstract String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName, String actionMethodName);
+	req.setAttribute("isLogined", isLogined);
+	req.setAttribute("loginedMemberId", loginedMemberId);
+	req.setAttribute("lgoinedMember", loginedMember);
 
-	private void doAfterAction(HttpServletRequest req, HttpServletResponse resp, String jspPath) throws ServletException, IOException {
-		MysqlUtil.closeConnection();
+	// 데이터 추가 인터셉터 끝
 
-		RequestDispatcher rd = req.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
+	// 로그인 필요 필터링 인터셉터 시작
+
+	List<String> needToLoginActionUrls = new ArrayList<>();
+
+	needToLoginActionUrls.add("/usr/member/doLogout");
+	needToLoginActionUrls.add("/usr/article/write");
+	needToLoginActionUrls.add("/usr/article/doWrite");
+	needToLoginActionUrls.add("/usr/article/modify");
+	needToLoginActionUrls.add("/usr/article/doModify");
+	needToLoginActionUrls.add("/usr/article/doDelete");
+
+	if (needToLoginActionUrls.contains(actionUrl)) {
+	    if ((boolean) req.getAttribute("isLogined") == false) {
+		req.setAttribute("alertMsg", "로그인 후 이용해 주세요.");
+		req.setAttribute("replace", "../member/login");
+
+		RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
 		rd.forward(req, resp);
+	    }
 	}
+
+	// 로그인 필요 필터링 인터셉터 끝
+
+	// 로그인 불필요 필터링 인터셉터 시작
+	List<String> disableToLoginActionUrls = new ArrayList<>();
+
+	disableToLoginActionUrls.add("/usr/member/login");
+	disableToLoginActionUrls.add("/usr/member/doLogin");
+	disableToLoginActionUrls.add("/usr/member/join");
+	disableToLoginActionUrls.add("/usr/member/doJoin");
+
+	if (disableToLoginActionUrls.contains(actionUrl)) {
+	    if ((boolean) req.getAttribute("isLogined") != false) {
+		req.setAttribute("alertMsg", "로그아웃 후 이용해주세요.");
+		req.setAttribute("historyBack", true);
+
+		RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
+		rd.forward(req, resp);
+	    }
+	}
+	// 로그인 필요 필터링 인터셉터 시작
+
+	Map<String, Object> rs = new HashMap<>();
+	rs.put("controllerName", controllerName);
+	rs.put("actionMethodName", actionMethodName);
+
+	return rs;
+    }
+
+    protected abstract String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName,
+	    String actionMethodName);
+
+    private void doAfterAction(HttpServletRequest req, HttpServletResponse resp, String jspPath)
+	    throws ServletException, IOException {
+	MysqlUtil.closeConnection();
+
+	RequestDispatcher rd = req.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
+	rd.forward(req, resp);
+    }
 }
