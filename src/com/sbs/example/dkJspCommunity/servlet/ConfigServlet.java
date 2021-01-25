@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.service.EmailService;
-import com.sbs.example.dkJspCommunity.util.Util;
+import com.sbs.example.util.Util;
 
 @WebServlet(name = "loadAppConfig", urlPatterns = { "/loadConfig" }, loadOnStartup = 1)
 public class ConfigServlet extends HttpServlet {

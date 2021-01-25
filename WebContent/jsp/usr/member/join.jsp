@@ -26,9 +26,8 @@
 					if (data.msg){
 						alert(data.msg);
 					}
-					if (data.resultCode.substr(0,2) == "S-"){
-						alert(data.msg);
-						DoJoinForm__checkedLoginId = data.loginId;
+					if (data.success){
+						DoJoinForm__checkedLoginId = data.body.loginId;
 					}
 				},
 				"json"

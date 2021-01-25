@@ -1,6 +1,6 @@
 package com.sbs.example.dkJspCommunity.service;
 
-import com.sbs.example.dkJspCommunity.util.Util;
+import com.sbs.example.util.Util;
 
 public class EmailService {
     private String gmailId;

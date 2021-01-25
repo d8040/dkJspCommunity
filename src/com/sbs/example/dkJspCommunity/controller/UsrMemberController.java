@@ -9,8 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Member;
+import com.sbs.example.dkJspCommunity.dto.ResultData;
 import com.sbs.example.dkJspCommunity.service.MemberService;
-import com.sbs.example.dkJspCommunity.util.Util;
 
 public class UsrMemberController {
 
@@ -104,9 +104,7 @@ public class UsrMemberController {
 	String loginId = req.getParameter("loginId");
 
 	Member member = memberService.getMemberByLoginId(loginId);
-	
-	Map<String, Object> rs = new HashMap<>();
-	
+		
 	String resultCode = null;
 	String msg = null;
 	
@@ -118,13 +116,8 @@ public class UsrMemberController {
 	    msg = String.format("사용 가능한 아이디 입니다.");
 	}
 	
-	rs.put("resultCode", resultCode);
-	rs.put("msg", msg);
-	rs.put("loginId", loginId);
-
-	req.setAttribute("data", Util.getJsonText(rs));
-
-	return "common/pure";
+	req.setAttribute("data", new ResultData(resultCode, msg,"loginId", loginId));
+	return "common/json";
     }
 
     public String showFindLoginId(HttpServletRequest req, HttpServletResponse resp) {
@@ -170,19 +163,16 @@ public class UsrMemberController {
 	    return "common/redirect";
 	}
 	
-	Map<String, Object> sendTempLoginPwToEmailRs = memberService.sendTempLoginPwToEmail(member);
-
-	String resultCode = (String)sendTempLoginPwToEmailRs.get("resultCode");
-	String resultMsg = (String)sendTempLoginPwToEmailRs.get("msg");
-
-	if ( resultCode.startsWith("F-") ) {
-		req.setAttribute("alertMsg", resultMsg);
+	ResultData sendTempLoginPwToEmailRs = memberService.sendTempLoginPwToEmail(member);
+		
+	if ( sendTempLoginPwToEmailRs.isFail() ) {
+		req.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
 		req.setAttribute("historyBack", true);
 		return "common/redirect";
 	}
 
 
-	req.setAttribute("alertMsg", resultMsg);
+	req.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
 	req.setAttribute("replaceUrl", "../member/login");
 	return "common/redirect";
     }

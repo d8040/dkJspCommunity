@@ -1,4 +1,4 @@
-package com.sbs.example.dkJspCommunity.util;
+package com.sbs.example.util;
 
 import java.io.IOException;
 import java.io.InputStream;
