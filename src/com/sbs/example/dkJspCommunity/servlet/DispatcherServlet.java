@@ -40,7 +40,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	if (jspPath == null) {
 	    resp.getWriter().append("올바른 요청이 아닙니다.");
-	    return; 
+	    return;
 	}
 
 	doAfterAction(req, resp, jspPath);
@@ -116,6 +116,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 	disableToLoginActionUrls.add("/usr/member/doLogin");
 	disableToLoginActionUrls.add("/usr/member/join");
 	disableToLoginActionUrls.add("/usr/member/doJoin");
+	disableToLoginActionUrls.add("/usr/member/findLoginId");
+	disableToLoginActionUrls.add("/usr/member/doFindLoginId");
 
 	if (disableToLoginActionUrls.contains(actionUrl)) {
 	    if ((boolean) req.getAttribute("isLogined") != false) {
