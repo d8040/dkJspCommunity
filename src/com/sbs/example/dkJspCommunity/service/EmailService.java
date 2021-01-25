@@ -14,9 +14,8 @@ public class EmailService {
 	this.from = from;
 	this.fromName = fromName;
     }
-
-    public int sendMail(String to, String title, String body) {
-	return Util.sendMail(gmailId, gmailPw, from, fromName, to, title, body);
+    public int send(String email, String title, String body) {
+	return Util.sendMail(gmailId, gmailPw, from, fromName, email, title, body);
     }
     
 }

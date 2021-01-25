@@ -122,3 +122,6 @@ title = '제목5',
 `body` = '내용5'; 
 
 SELECT * FROM MEMBER ORDER BY id DESC;
+
+# 비밀번호 암호화 
+UPDATE `member` SET loginPw = SHA2(loginPw, 256) WHERE id <12;
