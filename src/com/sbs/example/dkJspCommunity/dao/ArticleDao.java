@@ -135,4 +135,14 @@ public class ArticleDao {
 		
 		return MysqlUtil.delete(sql);
 	}
+
+	public int getArticlesCountByBoardId(int boardId) {
+	    SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS cnt");
+		sql.append("FROM article AS A");
+		if (boardId != 0) {
+			sql.append("WHERE boardId = ?", boardId);
+		}		
+	    return MysqlUtil.selectRowIntValue(sql);
+	}
 }

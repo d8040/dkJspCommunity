@@ -45,4 +45,8 @@ public class ArticleService {
 		return articleDao.delete(delArgs);
 	}
 
+	public int getArticlesCountByBoardId(int boardId) {
+	    	return articleDao.getArticlesCountByBoardId(boardId);
+	}
+
 }
