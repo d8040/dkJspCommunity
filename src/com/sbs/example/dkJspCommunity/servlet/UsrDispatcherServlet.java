@@ -29,7 +29,11 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 		jspPath = usrMemberController.join(req, resp);
 	    } else if (actionMethodName.equals("doJoin")) {
 		jspPath = usrMemberController.doJoin(req, resp);
-	    } else if (actionMethodName.equals("findLoginId")) {
+	    }else if (actionMethodName.equals("memberModify")) {
+		jspPath = usrMemberController.showMemberModify(req, resp);
+	    } else if (actionMethodName.equals("doMemberModify")) {
+		jspPath = usrMemberController.doMemberModify(req, resp);
+	    }else if (actionMethodName.equals("findLoginId")) {
 		jspPath = usrMemberController.showFindLoginId(req, resp);
 	    } else if (actionMethodName.equals("doFindLoginId")) {
 		jspPath = usrMemberController.doFindLoginId(req, resp);

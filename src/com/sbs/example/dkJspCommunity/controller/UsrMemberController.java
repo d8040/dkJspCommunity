@@ -176,4 +176,45 @@ public class UsrMemberController {
 	req.setAttribute("replaceUrl", "../member/login");
 	return "common/redirect";
     }
+
+    public String showMemberModify(HttpServletRequest req, HttpServletResponse resp) {
+	int memberId = (int) req.getAttribute("loginedMemberId");
+	
+	Member member = memberService.getMemberById(memberId);
+//	if (memberId != member.getId()) {
+//	    req.setAttribute("alertMsg", "회원정보 수정권한이 없습니다.");
+//	    req.setAttribute("historyBack", true);
+//	    return "common/redirect";
+//	}
+	req.setAttribute("member", member);
+	return "usr/member/memberModify";
+	
+    }
+
+    public String doMemberModify(HttpServletRequest req, HttpServletResponse resp) {
+	int memberId = (int) req.getAttribute("loginedMemberId");
+	String nickname = req.getParameter("nickname");
+	String email = req.getParameter("email");
+	String cellphoneNo = req.getParameter("cellphoneNo");
+	
+	Member member = memberService.getMemberById(memberId);
+	if (memberId != member.getId()) {
+	    req.setAttribute("alertMsg", "회원정보 수정권한이 없습니다.");
+	    req.setAttribute("historyBack", true);
+	    return "common/redirect";
+	}
+	Map<String, Object> modifyArgs = new HashMap<>();
+	modifyArgs.put("nickname", nickname);
+	modifyArgs.put("email", email);
+	modifyArgs.put("cellphoneNo", cellphoneNo);
+	modifyArgs.put("id", memberId);
+	
+	int newMemberId = memberService.modify(modifyArgs);
+	
+	req.setAttribute("alertMsg", nickname + "님 회원정보가 수정되었습니다.");
+	req.setAttribute("replaceUrl", String.format("memberModify"));
+	
+	req.setAttribute("member", member);
+	return "common/redirect";
+    }
 }

@@ -6,7 +6,8 @@
 <h1>${pageTitle}</h1>
 <div>
 	<form action="doModify" method="POST">
-		<input type="text" name="id" value="${article.id}" /> <input type="hidden" name="boardId" value="${article.boardId}" />
+		<input type="hidden" name="id" value="${article.id}" /> 
+		<input type="hidden" name="boardId" value="${article.boardId}" />
 
 		<hr />
 		<div>제목</div>

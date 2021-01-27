@@ -36,6 +36,7 @@
 	<div>
 		<c:if test="${sessionScope.loginedMemberId > 0}">
 			<a href="../article/list?boardId=1">게시판으로 이동</a>
+			<a href="../member/memberModify">회원정보수정</a>
 			<a href="../member/doLogout">로그아웃</a>
 		</c:if>
 		<c:if test="${sessionScope.loginedMemberId == null}">
