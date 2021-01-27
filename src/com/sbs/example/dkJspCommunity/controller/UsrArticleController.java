@@ -168,6 +168,8 @@ public class UsrArticleController {
 	modifyArgs.put("id", id);
 	modifyArgs.put("title", title);
 	modifyArgs.put("body", body);
+	
+	System.out.println(body);
 
 	int newArticleId = articleService.modify(modifyArgs);
 

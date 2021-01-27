@@ -104,16 +104,34 @@ public class ArticleDao {
 	return MysqlUtil.insert(sql);
     }
 
-    public int modify(Map<String, Object> modifyArgs) {
+    public int modify(Map<String, Object> args) {
 	SecSql sql = new SecSql();
 	sql.append("UPDATE article");
 	sql.append("SET updateDate = NOW()");
-	sql.append(", boardId = ?", modifyArgs.get("boardId"));
-	sql.append(", body = ?", modifyArgs.get("body"));
-	sql.append(", title = ?", modifyArgs.get("title"));
-	sql.append("where id = ?", modifyArgs.get("id"));
-	sql.append("and memberId = ?", modifyArgs.get("memberId"));
 
+	boolean needToUpdate = false;
+
+	if (args.get("boardId") != null) {
+	    needToUpdate = true;
+	    sql.append(", boardId = ?", args.get("boardId"));
+	}
+
+	if (args.get("body") != null) {
+	    needToUpdate = true;
+	    sql.append(", `body` = ?", args.get("body"));
+	}
+
+	if (args.get("title") != null) {
+	    needToUpdate = true;
+	    sql.append(", title = ?", args.get("title"));
+	}
+
+	if (needToUpdate == false) {
+	    return 0;
+	}
+
+	sql.append("where id = ?", args.get("id"));
+	sql.append("and memberId = ?", args.get("memberId"));
 	return MysqlUtil.update(sql);
     }
 
