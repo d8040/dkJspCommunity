@@ -1,14 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="pageTitle" value= "${article.id}번 게시물 수정"/> 
+<c:set var="pageTitle" value="${article.id}번 게시물 수정" />
 <%@ include file="../../part/head.jspf"%>
 <h1>${pageTitle}</h1>
 <div>
 	<form action="doModify" method="POST">
-		<input type="text" name="id" value="${article.id}" /> 
-		<input type="hidden" name="boardId" value="${article.boardId}" /> 
+		<input type="text" name="id" value="${article.id}" /> <input type="hidden" name="boardId" value="${article.boardId}" />
 
 		<hr />
 		<div>제목</div>
@@ -26,9 +24,9 @@
 				<script type="text/javascript">
 			${article.body}
 			</script>
-			<div class="toast-ui-editor"></div>
+				<div class="toast-ui-editor"></div>
 			</div>
-			
+
 		</div>
 		<hr />
 		<div>
