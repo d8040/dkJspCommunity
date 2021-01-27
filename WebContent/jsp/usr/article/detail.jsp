@@ -15,9 +15,10 @@
 	<br /> 
 	제목 : ${article.title} 
 	<br /> 
-	제목 : ${article.body}
+	내용 :
 	<hr />
-	${article.body}
+	<script type="text/x-template">${article.body}</script>
+  <div class="toast-ui-viewer"></div>
 </div>
 <div>
 	<a href="list?boardId=${article.boardId}">리스트로 이동</a> <a href="modify?memberId=${article.memberId}&id=${article.id}">게시물 수정</a>
