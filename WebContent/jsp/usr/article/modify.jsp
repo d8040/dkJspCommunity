@@ -14,7 +14,7 @@
 		<div>제목</div>
 		<div>
 			<div>
-				<input name="title" type="text" maxlength="50" placeholder="${article.title}" />
+				<input name="title" type="text" maxlength="50" value="${article.title}" />
 			</div>
 		</div>
 
@@ -23,8 +23,12 @@
 		<div>
 			<div>내용</div>
 			<div>
-				<textarea placeholder="${article.body}" name="body" maxlength="5000"></textarea>
+				<script type="text/javascript">
+			${article.body}
+			</script>
+			<div class="toast-ui-editor"></div>
 			</div>
+			
 		</div>
 		<hr />
 		<div>
