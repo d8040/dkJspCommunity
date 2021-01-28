@@ -1,3 +1,6 @@
+# MySQL db 백업
+- C:\xampp\mysql\bin\mysqldump -u root -p dkJspCommunity> C:\work\sts-4.9.0.RELEASE-workspace\dkJspCommunity\current.sql
+
 # 완료리스트
 - [x] 프레임워크 기초
 - [x] 로그인/로그아웃
