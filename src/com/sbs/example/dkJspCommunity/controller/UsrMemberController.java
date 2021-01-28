@@ -193,6 +193,13 @@ public class UsrMemberController {
 
     public String doMemberModify(HttpServletRequest req, HttpServletResponse resp) {
 	int memberId = (int) req.getAttribute("loginedMemberId");
+	
+	String loginPw = (String) req.getParameter("loginPwReal");
+	
+	if (loginPw != null && loginPw.length() == 0) {
+	    loginPw = null;
+	}
+	
 	String nickname = req.getParameter("nickname");
 	String email = req.getParameter("email");
 	String cellphoneNo = req.getParameter("cellphoneNo");
@@ -204,17 +211,16 @@ public class UsrMemberController {
 	    return "common/redirect";
 	}
 	Map<String, Object> modifyArgs = new HashMap<>();
+	modifyArgs.put("loginPw", loginPw);
 	modifyArgs.put("nickname", nickname);
 	modifyArgs.put("email", email);
 	modifyArgs.put("cellphoneNo", cellphoneNo);
 	modifyArgs.put("id", memberId);
 	
-	int newMemberId = memberService.modify(modifyArgs);
+	memberService.modify(modifyArgs);
 	
 	req.setAttribute("alertMsg", nickname + "님 회원정보가 수정되었습니다.");
 	req.setAttribute("replaceUrl", String.format("memberModify"));
-	
-	req.setAttribute("member", member);
 	return "common/redirect";
     }
 }

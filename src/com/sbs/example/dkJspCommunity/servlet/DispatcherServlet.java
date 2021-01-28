@@ -91,8 +91,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 	List<String> needToLoginActionUrls = new ArrayList<>();
 
 	needToLoginActionUrls.add("/usr/member/doLogout");
-	needToLoginActionUrls.add("/usr/member/modify");
-	needToLoginActionUrls.add("/usr/member/doModify");
+	needToLoginActionUrls.add("/usr/member/memberModify");
+	needToLoginActionUrls.add("/usr/member/doMemberModify");
 	needToLoginActionUrls.add("/usr/article/write");
 	needToLoginActionUrls.add("/usr/article/doWrite");
 	needToLoginActionUrls.add("/usr/article/modify");
@@ -120,6 +120,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 	disableToLoginActionUrls.add("/usr/member/doJoin");
 	disableToLoginActionUrls.add("/usr/member/findLoginId");
 	disableToLoginActionUrls.add("/usr/member/doFindLoginId");
+	disableToLoginActionUrls.add("/usr/member/findLoginPw");
+	disableToLoginActionUrls.add("/usr/member/doFindLoginPw");
 
 	if (disableToLoginActionUrls.contains(actionUrl)) {
 	    if ((boolean) req.getAttribute("isLogined") != false) {
