@@ -181,11 +181,11 @@ public class UsrMemberController {
 	int memberId = (int) req.getAttribute("loginedMemberId");
 	
 	Member member = memberService.getMemberById(memberId);
-//	if (memberId != member.getId()) {
-//	    req.setAttribute("alertMsg", "회원정보 수정권한이 없습니다.");
-//	    req.setAttribute("historyBack", true);
-//	    return "common/redirect";
-//	}
+	if (memberId != member.getId()) {
+	    req.setAttribute("alertMsg", "회원정보 수정권한이 없습니다.");
+	    req.setAttribute("historyBack", true);
+	    return "common/redirect";
+	}
 	req.setAttribute("member", member);
 	return "usr/member/memberModify";
 	
