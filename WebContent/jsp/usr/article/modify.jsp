@@ -40,8 +40,10 @@
 		DoModifyForm__submited = true;
 	}
 	</script>
-	<form action="doMemberModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">
-		<input type="hidden" name="boardId" value="${board.id}" /> <input type="hidden" name="body" />
+	<form action="doModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">
+		<input type="hidden" name="id" value="${article.id}" /> 
+		<input type="hidden" name="boardId" value="${article.boardId}" /> 
+		<input type="hidden" name="body" />
 
 		<hr />
 		<div>제목</div>
