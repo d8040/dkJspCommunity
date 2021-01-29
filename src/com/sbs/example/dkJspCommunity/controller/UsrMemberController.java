@@ -51,6 +51,19 @@ public class UsrMemberController {
 	joinArgs.put("cellphoneNo", cellphoneNo);
 
 	int newMemberId = memberService.join(joinArgs);
+	
+	Member member = memberService.getMemberByLoginIdAndEmail(loginId);
+	
+	ResultData sendWelcomeEmail = memberService.sendWelcomeEmail(member);
+
+	if (sendWelcomeEmail.isFail()) {
+	    req.setAttribute("alertMsg", sendWelcomeEmail.getMsg());
+	    req.setAttribute("historyBack", true);
+	    return "common/redirect";
+	}
+//	Container.attrService.setValue("member__"+member.id+"__extra__isUsingTempPassword", "1", null);
+
+	req.setAttribute("alertMsg", sendWelcomeEmail.getMsg());
 
 	req.setAttribute("alertMsg", nickname + "님 회원가입이 완료되었습니다.");
 	req.setAttribute("replaceUrl", String.format("../home/main"));

@@ -45,14 +45,8 @@ public class MemberDao {
     public Member getMemberByLoginId(String id) {
 	SecSql sql = new SecSql();
 	sql.append("SELECT *");
-	sql.append(", T.relId AS extra_memberId");
-	sql.append(", T.type2Code AS extra_typeCode");
-	sql.append(", T.value AS extra_value");
-	sql.append("FROM `member` AS M");
-	sql.append("LEFT JOIN `attr` AS T");
-	sql.append("ON (M.id = T.relId ");
-	sql.append("AND T.type2Code = 'isUsingTempPassword')");
-	sql.append("WHERE M.loginId=?", id);
+	sql.append("FROM `member`");
+	sql.append("WHERE loginId=?", id);
 
 	Map<String, Object> map = MysqlUtil.selectRow(sql);
 
@@ -63,17 +57,11 @@ public class MemberDao {
     }
 
     public Member getMemberById(int loginedMemberId) {
-	SecSql sql = new SecSql();	
+	SecSql sql = new SecSql();
 	sql.append("SELECT *");
-	sql.append(", T.relId AS extra_memberId");
-	sql.append(", T.type2Code AS extra_typeCode");
-	sql.append(", T.value AS extra_value");
-	sql.append("FROM `member` AS M");
-	sql.append("LEFT JOIN `attr` AS T");
-	sql.append("ON (M.id = T.relId ");
-	sql.append("AND T.type2Code = 'isUsingTempPassword')");
-	sql.append("WHERE M.id=?", loginedMemberId);
-	
+	sql.append("FROM `member`");
+	sql.append("WHERE id=?", loginedMemberId);
+
 	Map<String, Object> map = MysqlUtil.selectRow(sql);
 
 	if (map.isEmpty()) {
@@ -156,7 +144,5 @@ public class MemberDao {
 	sql.append("WHERE id = ?", args.get("id"));
 
 	return MysqlUtil.update(sql);
-
     }
-
 }

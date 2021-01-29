@@ -34,7 +34,7 @@
 <body>
 
 	<div>
-		<c:if test="${loginedMember.extra_value eq 1}">
+		<c:if test="${isLogined}">
 			<a href="../member/memberModify" style="color:red">임시 비밀번호를 사용 중입니다.</a>
 		</c:if>	
 	</div>

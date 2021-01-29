@@ -57,15 +57,17 @@ public class MemberService {
 	body += "<a href=\"" + siteLoginUrl + "\" target=\"_blank\">로그인 하러가기</a>";
 
 	Map<String, Object> rs = new HashMap<>();
-	
+
 	// 이메일 발송
 	int sendRs = emailService.send(actor.getEmail(), title, body);
-	
+
 	if (sendRs != 1) {
 	    return new ResultData("F-1", "이메일 발송에 실패하였습니다.");
 	}
 	setTempPassword(actor, tempPassword);
-	
+
+	attrService.setValue("member__" + actor.getId() + "__extra__isUsingTempPassword", "1", null);
+
 	String resultMsg = String.format("고객님의 새 임시 패스워드가 %s (으)로 발송되었습니다.", actor.getEmail());
 	return new ResultData("S-1", resultMsg, "email", actor.getEmail());
     }
@@ -75,12 +77,33 @@ public class MemberService {
 	modifyParam.put("id", actor.getId());
 	modifyParam.put("loginPw", Util.sha256(tempPassword));
 	modify(modifyParam);
-	
-	attrService.setValue("member__"+actor.getId()+"__extra__isUsingTempPassword", "1", null);
     }
 
     public void modify(Map<String, Object> param) {
 	memberDao.modify(param);
+    }
+
+    public ResultData sendWelcomeEmail(Member member) {
+	// 메일 제목과 내용 만들기
+	String siteName = App.getSite();
+	String siteLoginUrl = App.getLoginUrl();
+	String title = "[" + siteName + "] 회원가입 완료";
+	String tempPassword = Util.getTempPassword(6);
+	String body = "<h1>환영합니다.</h1>";
+	body += "<a href=\"" + siteLoginUrl + "\" target=\"_blank\">로그인 하러가기</a>";
+
+	Map<String, Object> rs = new HashMap<>();
+
+	// 이메일 발송
+	int sendRs = emailService.send(member.getEmail(), title, body);
+
+	if (sendRs != 1) {
+	    return new ResultData("F-1", "이메일 발송에 실패하였습니다.");
+	}
+	setTempPassword(member, tempPassword);
+
+	String resultMsg = String.format("고객님의 새 임시 패스워드가 %s (으)로 발송되었습니다.", member.getEmail());
+	return new ResultData("S-1", resultMsg, "email", member.getEmail());
     }
 
 }
