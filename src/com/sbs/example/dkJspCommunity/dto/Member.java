@@ -16,6 +16,9 @@ public class Member {
 	public String email;
 	public String cellphoneNo;
 	public int adminLevel;
+	public int extra_memberId;
+	public String extra_typeCode;
+	public String extra_value;
 
 	public Member(Map<String, Object> map) {
 		this.id = (int) map.get("id");
@@ -28,6 +31,9 @@ public class Member {
 		this.email = (String) map.get("email");
 		this.cellphoneNo = (String) map.get("cellphoneNo");
 		this.adminLevel = (int) map.get("adminLevel");
+		this.extra_memberId = (int) map.get("extra_memberId");
+		this.extra_typeCode = (String) map.get("extra_typeCode");
+		this.extra_value = (String) map.get("extra_value");
 	}
 
 }

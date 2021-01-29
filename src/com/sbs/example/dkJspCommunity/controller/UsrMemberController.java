@@ -80,7 +80,7 @@ public class UsrMemberController {
 	    req.setAttribute("historyBack", true);
 	    return "common/redirect";
 	}
-	
+
 	HttpSession session = req.getSession();
 	session.setAttribute("loginedMemberId", member.getId());
 
@@ -90,7 +90,7 @@ public class UsrMemberController {
     }
 
     public String doLogout(HttpServletRequest req, HttpServletResponse resp) {
-	
+
 	HttpSession session = req.getSession();
 	session.removeAttribute("loginedMemberId");
 
@@ -104,10 +104,10 @@ public class UsrMemberController {
 	String loginId = req.getParameter("loginId");
 
 	Member member = memberService.getMemberByLoginId(loginId);
-		
+
 	String resultCode = null;
 	String msg = null;
-	
+
 	if (member != null) {
 	    resultCode = "F-1";
 	    msg = String.format("이미 사용중인 아이디 입니다.");
@@ -115,8 +115,8 @@ public class UsrMemberController {
 	    resultCode = "S-1";
 	    msg = String.format("사용 가능한 아이디 입니다.");
 	}
-	
-	req.setAttribute("data", new ResultData(resultCode, msg,"loginId", loginId));
+
+	req.setAttribute("data", new ResultData(resultCode, msg, "loginId", loginId));
 	return "common/json";
     }
 
@@ -156,21 +156,21 @@ public class UsrMemberController {
 	    req.setAttribute("historyBack", true);
 	    return "common/redirect";
 	}
-	
+
 	if (member.getEmail().equals(email) == false) {
 	    req.setAttribute("alertMsg", "이메일주소가 일치하지 않습니다.");
 	    req.setAttribute("historyBack", true);
 	    return "common/redirect";
 	}
-	
-	ResultData sendTempLoginPwToEmailRs = memberService.sendTempLoginPwToEmail(member);
-		
-	if ( sendTempLoginPwToEmailRs.isFail() ) {
-		req.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
-		req.setAttribute("historyBack", true);
-		return "common/redirect";
-	}
 
+	ResultData sendTempLoginPwToEmailRs = memberService.sendTempLoginPwToEmail(member);
+
+	if (sendTempLoginPwToEmailRs.isFail()) {
+	    req.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
+	    req.setAttribute("historyBack", true);
+	    return "common/redirect";
+	}
+	Container.attrService.setValue("member__"+member.id+"__extra__isUsingTempPassword", "1", null);
 
 	req.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
 	req.setAttribute("replaceUrl", "../member/login");
@@ -178,47 +178,38 @@ public class UsrMemberController {
     }
 
     public String showMemberModify(HttpServletRequest req, HttpServletResponse resp) {
-	int memberId = (int) req.getAttribute("loginedMemberId");
-	
-	Member member = memberService.getMemberById(memberId);
-	if (memberId != member.getId()) {
-	    req.setAttribute("alertMsg", "회원정보 수정권한이 없습니다.");
-	    req.setAttribute("historyBack", true);
-	    return "common/redirect";
-	}
-	req.setAttribute("member", member);
+
 	return "usr/member/memberModify";
-	
     }
 
     public String doMemberModify(HttpServletRequest req, HttpServletResponse resp) {
-	int memberId = (int) req.getAttribute("loginedMemberId");
-	
+	int loginedMemberId = (int) req.getAttribute("loginedMemberId");
+
 	String loginPw = (String) req.getParameter("loginPwReal");
-	
+
 	if (loginPw != null && loginPw.length() == 0) {
 	    loginPw = null;
 	}
-	
+
 	String nickname = req.getParameter("nickname");
 	String email = req.getParameter("email");
 	String cellphoneNo = req.getParameter("cellphoneNo");
-	
-	Member member = memberService.getMemberById(memberId);
-	if (memberId != member.getId()) {
-	    req.setAttribute("alertMsg", "회원정보 수정권한이 없습니다.");
-	    req.setAttribute("historyBack", true);
-	    return "common/redirect";
-	}
+
 	Map<String, Object> modifyArgs = new HashMap<>();
 	modifyArgs.put("loginPw", loginPw);
 	modifyArgs.put("nickname", nickname);
 	modifyArgs.put("email", email);
 	modifyArgs.put("cellphoneNo", cellphoneNo);
-	modifyArgs.put("id", memberId);
-	
+	modifyArgs.put("id", loginedMemberId);
+
 	memberService.modify(modifyArgs);
-	
+
+	HttpSession session = req.getSession();
+
+	if (loginPw != null) {
+	    Container.attrService.setValue("member__"+loginedMemberId+"__extra__isUsingTempPassword", "0" , null);
+	}	
+
 	req.setAttribute("alertMsg", nickname + "님 회원정보가 수정되었습니다.");
 	req.setAttribute("replaceUrl", String.format("memberModify"));
 	return "common/redirect";

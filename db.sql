@@ -13,8 +13,44 @@ CREATE TABLE `member` (
     `cellphoneNo` VARCHAR(100) NOT NULL,
     loginId CHAR(50) NOT NULL UNIQUE,
     loginPw VARCHAR(200) NOT NULL,
-    adminLevel TINYINT(1) UNSIGNED NOT NULL DEFAULT 2 COMMENT '0=탈퇴/1=로그인정지/2=일반/3=인증된,4=관리자'
+    adminLevel TINYINT(1) UNSIGNED NOT NULL DEFAULT 2 COMMENT '0=탈퇴/1=로그인정지/2=일반/3=인증된,4=관리자, 5=임시비번사용자'
 );
+
+# 게시물 테이블 생성
+CREATE TABLE article (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT(10) UNSIGNED NOT NULL,
+    boardId INT(10) UNSIGNED NOT NULL,
+    title CHAR(100) NOT NULL,
+    `body` LONGTEXT NOT NULL,
+    hitsCount INT(10) UNSIGNED NOT NULL DEFAULT 0
+);
+
+# 게시판 테이블 생성
+CREATE TABLE board (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `code` CHAR(10) NOT NULL UNIQUE,
+    `name` CHAR(10) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE attr(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    relTypeCode CHAR(20) NOT NULL UNIQUE, 
+    relId INT(10) UNSIGNED NOT NULL UNIQUE,
+    typeCode CHAR(30) NOT NULL UNIQUE,
+    type2Code CHAR(30) NOT NULL UNIQUE,
+    `value` TEXT NOT NULL,
+    expireDate DATETIME NULL
+);
+# 특정 조건을 만족하는 회원 또는 게시물(기타데이터)를 빠르게 찾기 위해
+ALTER TABLE attr ADD INDEX (relTypeCode, typeCode, type2Code);
 
 # 회원1 생성
 INSERT INTO `member`
@@ -38,15 +74,6 @@ updateDate = NOW(),
 loginId = "user2",
 loginPw = "user2";
 
-# 게시판 테이블 생성
-CREATE TABLE board (
-    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    `code` CHAR(10) NOT NULL UNIQUE,
-    `name` CHAR(10) NOT NULL UNIQUE
-);
-
 # 공지사항 게시판 생성
 INSERT INTO board
 SET regDate = NOW(),
@@ -67,18 +94,6 @@ SET regDate = NOW(),
 updateDate = NOW(),
 `code` = 'free',
 `name` = '자유';
-
-# 게시물 테이블 생성
-CREATE TABLE article (
-    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    regDate DATETIME NOT NULL,
-    updateDate DATETIME NOT NULL,
-    memberId INT(10) UNSIGNED NOT NULL,
-    boardId INT(10) UNSIGNED NOT NULL,
-    title CHAR(100) NOT NULL,
-    `body` LONGTEXT NOT NULL,
-    hitsCount INT(10) UNSIGNED NOT NULL DEFAULT 0
-);
 
 # 테스트 게시물 생성
 INSERT INTO article

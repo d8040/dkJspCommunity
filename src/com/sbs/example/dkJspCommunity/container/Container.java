@@ -5,15 +5,19 @@ import com.sbs.example.dkJspCommunity.controller.UsrArticleController;
 import com.sbs.example.dkJspCommunity.controller.UsrHomeController;
 import com.sbs.example.dkJspCommunity.controller.UsrMemberController;
 import com.sbs.example.dkJspCommunity.dao.ArticleDao;
+import com.sbs.example.dkJspCommunity.dao.AttrDao;
 import com.sbs.example.dkJspCommunity.dao.MemberDao;
 import com.sbs.example.dkJspCommunity.service.ArticleService;
+import com.sbs.example.dkJspCommunity.service.AttrService;
 import com.sbs.example.dkJspCommunity.service.EmailService;
 import com.sbs.example.dkJspCommunity.service.MemberService;
 
 public class Container {
+    public static AttrDao attrDao;
     public static MemberDao memberDao;
     public static ArticleDao articleDao;
 
+    public static AttrService attrService;
     public static EmailService emailService;
     public static MemberService memberService;
     public static ArticleService articleService;
@@ -24,9 +28,11 @@ public class Container {
     public static UsrHomeController usrHomeController;
 
     static {
+	attrDao = new AttrDao();
 	memberDao = new MemberDao();
 	articleDao = new ArticleDao();
 
+	attrService = new AttrService();
 	emailService = new EmailService();
 	memberService = new MemberService();
 	articleService = new ArticleService();

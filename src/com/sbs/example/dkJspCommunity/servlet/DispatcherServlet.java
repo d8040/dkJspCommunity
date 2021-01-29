@@ -35,19 +35,17 @@ public abstract class DispatcherServlet extends HttpServlet {
 	    return;
 	}
 
-	String jspPath = doAction(req, resp, (String) doBeforeActions.get("controllerName"),
-		(String) doBeforeActions.get("actionMethodName"));
+	String jspPath = doAction(req, resp, (String) doBeforeActions.get("controllerName"), (String) doBeforeActions.get("actionMethodName"));
 
 	if (jspPath == null) {
-	    resp.getWriter().append("올바른 요청이 아닙니다.");
+	    resp.getWriter().append("jsp 정보가 없습니다.");
 	    return;
 	}
 
 	doAfterAction(req, resp, jspPath);
     }
 
-    private Map<String, Object> doBeforeAction(HttpServletRequest req, HttpServletResponse resp)
-	    throws ServletException, IOException {
+    private Map<String, Object> doBeforeAction(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	req.setCharacterEncoding("UTF-8");
 	resp.setContentType("text/html; charset=UTF-8");
 
@@ -82,9 +80,24 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	req.setAttribute("isLogined", isLogined);
 	req.setAttribute("loginedMemberId", loginedMemberId);
-	req.setAttribute("lgoinedMember", loginedMember);
-
+	req.setAttribute("loginedMember", loginedMember);
+		
 	// 데이터 추가 인터셉터 끝
+	
+	// 임시 패스워드 필터링 인터셉터 시작
+//	if (session.getAttribute("tempPw") != null) {
+//	    List<String> needToChangeTempPw = new ArrayList<>();
+//	    needToChangeTempPw.add("/usr/*");
+//
+//	    if (needToChangeTempPw.contains(actionUrl)) {
+//		    req.setAttribute("alertMsg", "임시 비밀번호를 변경 해주세요.");
+//		    req.setAttribute("replaceUrl", "../member/memberModify");
+//
+//		    RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
+//		    rd.forward(req, resp);		
+//	    }
+//	}
+	// 임시 패스워드 필터링 인터셉터 끝
 
 	// 로그인 필요 필터링 인터셉터 시작
 
@@ -102,7 +115,8 @@ public abstract class DispatcherServlet extends HttpServlet {
 	if (needToLoginActionUrls.contains(actionUrl)) {
 	    if ((boolean) req.getAttribute("isLogined") == false) {
 		req.setAttribute("alertMsg", "로그인 후 이용해 주세요.");
-		req.setAttribute("replace", "../member/login");
+		req.setAttribute("replaceUrl", "../member/login");
+		
 
 		RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
 		rd.forward(req, resp);
@@ -141,11 +155,9 @@ public abstract class DispatcherServlet extends HttpServlet {
 	return rs;
     }
 
-    protected abstract String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName,
-	    String actionMethodName);
+    protected abstract String doAction(HttpServletRequest req, HttpServletResponse resp, String controllerName, String actionMethodName);
 
-    private void doAfterAction(HttpServletRequest req, HttpServletResponse resp, String jspPath)
-	    throws ServletException, IOException {
+    private void doAfterAction(HttpServletRequest req, HttpServletResponse resp, String jspPath) throws ServletException, IOException {
 	MysqlUtil.closeConnection();
 
 	RequestDispatcher rd = req.getRequestDispatcher("/jsp/" + jspPath + ".jsp");
