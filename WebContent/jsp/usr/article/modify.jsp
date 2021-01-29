@@ -40,7 +40,9 @@
 		DoModifyForm__submited = true;
 	}
 	</script>
-	<form action="doModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">
+	<form action="doModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">	
+		<input type="hidden" name="boardId" value="${article.boardId}" /> 
+		<input type="hidden" name="id" value="${article.id}" /> 
 		<input type="hidden" name="body" />
 
 		<hr />

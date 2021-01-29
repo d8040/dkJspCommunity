@@ -88,15 +88,16 @@ public class UsrArticleController {
 	int id = Integer.parseInt(req.getParameter("id"));
 
 	Article article = articleService.getForPrintArticleById(id);
-
+	
 	if (article == null) {
 	    req.setAttribute("alertMsg", id + "번 게시물은 존재하지 않습니다.");
 	    req.setAttribute("historyBack", true);
 	    return "common/redirect";
 	}
 
+	Container.articleService.hitCount(id);
+	
 	req.setAttribute("article", article);
-
 	return "usr/article/detail";
     }
 

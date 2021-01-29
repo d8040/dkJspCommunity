@@ -49,4 +49,8 @@ public class ArticleService {
 		return articleDao.getArticlesCountByBoardId(boardId, searchKeywordType, searchKeyword);
 	}
 
+	public void hitCount(int id) {
+	    articleDao.hitCount(id);
+	}
+
 }

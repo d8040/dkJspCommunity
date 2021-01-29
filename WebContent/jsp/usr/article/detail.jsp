@@ -5,6 +5,8 @@
 
 <h1>${pageTitle}</h1>
 <div>
+	조회수: ${article.hitsCount}
+	<br />
 	번호 : ${article.id} 
 	<br /> 
 	작성날짜 : ${article.regDate} 
