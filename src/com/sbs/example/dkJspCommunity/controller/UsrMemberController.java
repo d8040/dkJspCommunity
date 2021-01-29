@@ -61,7 +61,6 @@ public class UsrMemberController {
 	    req.setAttribute("historyBack", true);
 	    return "common/redirect";
 	}
-//	Container.attrService.setValue("member__"+member.id+"__extra__isUsingTempPassword", "1", null);
 
 	req.setAttribute("alertMsg", sendWelcomeEmail.getMsg());
 
