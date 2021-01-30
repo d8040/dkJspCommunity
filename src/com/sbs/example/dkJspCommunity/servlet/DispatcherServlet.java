@@ -80,8 +80,6 @@ public abstract class DispatcherServlet extends HttpServlet {
 	    loginedMember = Container.memberService.getMemberById(loginedMemberId);
 	    isUsingTempPw = Container.attrService.getValue("member__" + loginedMember.id + "__extra__isUsingTempPassword");
 	    expireDateOfPw = Container.attrService.getValue("member__" + loginedMember.id + "__extra__expireDateOfPw");
-	    System.out.println(Container.attrService.getValue("member__" + loginedMember.id + "__extra__expireDateOfPw"));
-	    System.out.println(loginedMember.id);
 	}
 	
 	req.setAttribute("expireDateOfPw", expireDateOfPw);

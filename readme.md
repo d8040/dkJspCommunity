@@ -1,5 +1,5 @@
 # MySQL db 백업
-- C:\xampp\mysql\bin\mysqldump -u root -p dkJspCommunity> C:\work\sts-4.9.0.RELEASE-workspace\dkJspCommunity\current.sql
+- "C:\xampp\mysql\bin\mysqldump -u root -p dkJspCommunity> C:\work\sts-4.9.0.RELEASE-workspace\dkJspCommunity\current.sql"
 
 ### - 금일 완료 리스트✔️
 <br>

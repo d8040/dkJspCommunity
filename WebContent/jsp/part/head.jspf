@@ -32,26 +32,74 @@
 <script src="${pageContext.request.contextPath}/static/common.js" defer></script>
 </head>
 <body>
-	<div>
+	<section class="hearbar">
+		<nav class="side-menu flex">
+			<ul class="menu-btn">
+				<div class="line line--1"></div>
+				<div class="line line--2"></div>
+				<div class="line line--3"></div>
+			</ul>
+			<ul class="nav-links">
+				<li class="link"><a href="../home/main" class="flex"><iclass="fasfa-home"> </i></a></li>
+				<li class="link"><a href="#" class="flex"><span>게시판</span></a>
+					<ul class="link">
+						<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>공지사항</span></a></li>
+						<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>자유게시판</span></a></li>
+					</ul></li>
+				<li class="link"><a href="#" class="flex"><span>이용후기</span></a></li>
+				<li class="link"><a href="#" class="flex"><span>이벤트/혜택</span></a></li>
+			</ul>
+		</nav>
+		<div class="head-bar flex flex-jc-c flex-ai-c">
+			<div class="flex flex-jc-c flex-g-1">
+				<nav class="menu-box visible-md-up">
+					<ul class="flex flex-ai-c">
+						<li><a href="../home/main" class="flex"><i class="fas fa-home"></i></a></li>
+						<li class="flex"><a href="#" class="flex"><span>게시판</span></a>
+							<ul class="">
+								<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>공지사항</span></a></li>
+								<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>자유게시판</span></a></li>
+							</ul></li>
+						<li><a href="#" class="flex"><span>이용후기</span></a></li>
+						<li><a href="#" class="flex"><span>이벤트/혜택</span></a></li>
+					</ul>
+				</nav>
+			</div>
+			<nav class="search-box">
+				<search class="flex flex-jc-end"> <span class="flex">
+					<div class="search">
+						<!--             <input type="text" placeholder=" "> -->
+						<input value="${param.searchKeyword}" type="text" name="searchKeyword" placeholder=" " />
+						<div>
+							<svg>
+                <use xlink:href="#path">
+                  </svg>
+						</div>
+					</div> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 28" id="path">
+              <path
+							d="M32.9418651,-20.6880772 C37.9418651,-20.6880772 40.9418651,-16.6880772 40.9418651,-12.6880772 C40.9418651,-8.68807717 37.9418651,-4.68807717 32.9418651,-4.68807717 C27.9418651,-4.68807717 24.9418651,-8.68807717 24.9418651,-12.6880772 C24.9418651,-16.6880772 27.9418651,-20.6880772 32.9418651,-20.6880772 L32.9418651,-29.870624 C32.9418651,-30.3676803 33.3448089,-30.770624 33.8418651,-30.770624 C34.08056,-30.770624 34.3094785,-30.6758029 34.4782612,-30.5070201 L141.371843,76.386562"
+							transform="translate(83.156854, 22.171573) rotate(-225.000000) translate(-83.156854, -22.171573)"></path>
+            </symbol>
+            </svg>
+				</span> </search>
+			</nav>
+			<div class="logined">
+				<c:if test="${isLogined}">
+					<a href="../member/doLogout"><i class="fas fa-sign-out-alt"></i>logout</a>
+				</c:if>
+				<c:if test="${isLogined == false}">
+					<a href="../member/login"><i class="fas fa-sign-in-alt"></i> login</a>
+				</c:if>
+			</div>
+		</div>
+	</section>
+	<section class="member-state flex">
 		<c:if test="${isUsingTempPw eq 1}">
-			<a href="../member/memberModify" style="color:red">임시 비밀번호를 사용 중입니다.</a>
-		</c:if>	
+			<a href="../member/memberModify" style="color: red">임시 비밀번호를 사용 중입니다.</a>
+		</c:if>
 		<c:if test="${expireDateOfPw eq 0}">
-			<a href="../member/memberModify" style="color:red">보안을 위해 비밀번호를 변경해주세요.</a>
-		</c:if>	
-	</div>
-	<div>
-		<c:if test="${isLogined}">
-			<a href="../article/list?boardId=1">게시판으로 이동</a>
-			<a href="../member/memberModify">회원정보수정</a>
-			<a href="../member/doLogout">로그아웃</a>
+			<a href="../member/memberModify" style="color: red">보안을 위해 비밀번호를 변경해주세요.</a>
 		</c:if>
-		<c:if test="${isLogined == false}">
-			<a href="../member/login">로그인</a>
-			<a href="../member/join">회원가입</a>
-			<a href="../member/findLoginId">아이디 찾기</a>
-			<a href="../member/findLoginPw">비밀번호 찾기</a>
-		</c:if>
-	</div>
-
+	</section>
 	<main>
