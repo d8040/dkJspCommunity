@@ -49,7 +49,7 @@ public class AttrService {
 		String value = attrDao.getValue(relTypeCode, relId, typeCode, type2Code);
 
 		if (value == null) {
-			return "";
+			return "0";
 		}
 
 		return value;
@@ -71,6 +71,7 @@ public class AttrService {
 
 	public int setValue(String relTypeCode, int relId, String typeCode, String type2Code, String value, String expireDate) {
 		attrDao.setValue(relTypeCode, relId, typeCode, type2Code, value, expireDate);
+		
 		Attr attr = get(relTypeCode, relId, typeCode, type2Code);
 
 		if (attr != null) {

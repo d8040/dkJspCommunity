@@ -1,5 +1,8 @@
 package com.sbs.example.dkJspCommunity.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,9 +54,9 @@ public class UsrMemberController {
 	joinArgs.put("cellphoneNo", cellphoneNo);
 
 	int newMemberId = memberService.join(joinArgs);
-	
+
 	Member member = memberService.getMemberByLoginIdAndEmail(loginId);
-	
+
 	ResultData sendWelcomeEmail = memberService.sendWelcomeEmail(member);
 
 	if (sendWelcomeEmail.isFail()) {
@@ -62,8 +65,19 @@ public class UsrMemberController {
 	    return "common/redirect";
 	}
 
-	req.setAttribute("alertMsg", sendWelcomeEmail.getMsg());
+	//6개월 뒤 날짜 계산
+	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //날짜 포멧	
+	Date time = new Date(); //현재 날짜
+	Calendar cal = Calendar.getInstance(); //날짜 계산을 위해 Calendar 추상클래스 선언 getInstance()메소드 사용	
+	cal.setTime(time);
+	cal.add(Calendar.MONTH, 6); //6개월 더하기
+	String date = simpleDate.format(cal.getTime());
+	System.out.println(date);
+	//6개월 뒤 날짜 계산 끝 
+	System.out.println(member.id);
+	Container.attrService.setValue("member__" + member.id + "__extra__expireDateOfPw", "1", date);
 
+	req.setAttribute("alertMsg", sendWelcomeEmail.getMsg());
 	req.setAttribute("alertMsg", nickname + "님 회원가입이 완료되었습니다.");
 	req.setAttribute("replaceUrl", String.format("../home/main"));
 	return "common/redirect";
@@ -182,7 +196,8 @@ public class UsrMemberController {
 	    req.setAttribute("historyBack", true);
 	    return "common/redirect";
 	}
-	Container.attrService.setValue("member__"+member.id+"__extra__isUsingTempPassword", "1", null);
+	System.out.println(member.id);
+	Container.attrService.setValue("member__" + member.id + "__extra__isUsingTempPassword", "1", null);
 
 	req.setAttribute("alertMsg", sendTempLoginPwToEmailRs.getMsg());
 	req.setAttribute("replaceUrl", "../member/login");
@@ -219,8 +234,22 @@ public class UsrMemberController {
 	HttpSession session = req.getSession();
 
 	if (loginPw != null) {
-	    Container.attrService.setValue("member__"+loginedMemberId+"__extra__isUsingTempPassword", "0" , null);
-	}	
+	    Container.attrService.setValue("member__" + loginedMemberId + "__extra__isUsingTempPassword", "0", null);	    
+	}
+
+	//6개월 뒤 날짜 계산
+	SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //날짜 포멧	
+	Date time = new Date(); //현재 날짜
+	Calendar cal = Calendar.getInstance(); //날짜 계산을 위해 Calendar 추상클래스 선언 getInstance()메소드 사용	
+	cal.setTime(time);
+	cal.add(Calendar.MONTH, 6); //6개월 더하기
+	String date = simpleDate.format(cal.getTime());
+	System.out.println(date);
+	//6개월 뒤 날짜 계산 끝 
+	
+	if (loginPw != null) {
+	    Container.attrService.setValue("member__" + loginedMemberId + "__extra__expireDateOfPw", "1", date);
+	}
 
 	req.setAttribute("alertMsg", nickname + "님 회원정보가 수정되었습니다.");
 	req.setAttribute("replaceUrl", String.format("memberModify"));

@@ -70,36 +70,40 @@ public abstract class DispatcherServlet extends HttpServlet {
 	int loginedMemberId = 0;
 	Member loginedMember = null;
 	String isUsingTempPw = null;
-	
+	String expireDateOfPw = null;
+
 	HttpSession session = req.getSession();
 
 	if (session.getAttribute("loginedMemberId") != null) {
 	    isLogined = true;
 	    loginedMemberId = (int) session.getAttribute("loginedMemberId");
 	    loginedMember = Container.memberService.getMemberById(loginedMemberId);
-	    isUsingTempPw = Container.attrService.getValue("member__"+loginedMember.id+"__extra__isUsingTempPassword");
+	    isUsingTempPw = Container.attrService.getValue("member__" + loginedMember.id + "__extra__isUsingTempPassword");
+	    expireDateOfPw = Container.attrService.getValue("member__" + loginedMember.id + "__extra__expireDateOfPw");
+	    System.out.println(Container.attrService.getValue("member__" + loginedMember.id + "__extra__expireDateOfPw"));
+	    System.out.println(loginedMember.id);
 	}
 	
+	req.setAttribute("expireDateOfPw", expireDateOfPw);
 	req.setAttribute("isUsingTempPw", isUsingTempPw);
 	req.setAttribute("isLogined", isLogined);
 	req.setAttribute("loginedMemberId", loginedMemberId);
 	req.setAttribute("loginedMember", loginedMember);
-		
 	// 데이터 추가 인터셉터 끝
-	
+
 	// 임시 패스워드 필터링 인터셉터 시작
-//	if (session.getAttribute("tempPw") != null) {
-//	    List<String> needToChangeTempPw = new ArrayList<>();
-//	    needToChangeTempPw.add("/usr/*");
-//
-//	    if (needToChangeTempPw.contains(actionUrl)) {
-//		    req.setAttribute("alertMsg", "임시 비밀번호를 변경 해주세요.");
-//		    req.setAttribute("replaceUrl", "../member/memberModify");
-//
-//		    RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
-//		    rd.forward(req, resp);		
-//	    }
-//	}
+	//	if (session.getAttribute("tempPw") != null) {
+	//	    List<String> needToChangeTempPw = new ArrayList<>();
+	//	    needToChangeTempPw.add("/usr/*");
+	//
+	//	    if (needToChangeTempPw.contains(actionUrl)) {
+	//		    req.setAttribute("alertMsg", "임시 비밀번호를 변경 해주세요.");
+	//		    req.setAttribute("replaceUrl", "../member/memberModify");
+	//
+	//		    RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
+	//		    rd.forward(req, resp);		
+	//	    }
+	//	}
 	// 임시 패스워드 필터링 인터셉터 끝
 
 	// 로그인 필요 필터링 인터셉터 시작
@@ -119,7 +123,6 @@ public abstract class DispatcherServlet extends HttpServlet {
 	    if ((boolean) req.getAttribute("isLogined") == false) {
 		req.setAttribute("alertMsg", "로그인 후 이용해 주세요.");
 		req.setAttribute("replaceUrl", "../member/login");
-		
 
 		RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
 		rd.forward(req, resp);

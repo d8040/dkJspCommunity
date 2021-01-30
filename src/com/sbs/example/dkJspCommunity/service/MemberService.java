@@ -66,7 +66,7 @@ public class MemberService {
 	}
 	setTempPassword(actor, tempPassword);
 
-	attrService.setValue("member__" + actor.getId() + "__extra__isUsingTempPassword", "1", null);
+	int memberIdByUsingTempPassword = attrService.setValue("member__" + actor.getId() + "__extra__isUsingTempPassword", "1", null);
 
 	String resultMsg = String.format("고객님의 새 임시 패스워드가 %s (으)로 발송되었습니다.", actor.getEmail());
 	return new ResultData("S-1", resultMsg, "email", actor.getEmail());

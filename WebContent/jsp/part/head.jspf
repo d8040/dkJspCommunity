@@ -32,10 +32,12 @@
 <script src="${pageContext.request.contextPath}/static/common.js" defer></script>
 </head>
 <body>
-
 	<div>
 		<c:if test="${isUsingTempPw eq 1}">
 			<a href="../member/memberModify" style="color:red">임시 비밀번호를 사용 중입니다.</a>
+		</c:if>	
+		<c:if test="${expireDateOfPw eq 0}">
+			<a href="../member/memberModify" style="color:red">보안을 위해 비밀번호를 변경해주세요.</a>
 		</c:if>	
 	</div>
 	<div>
