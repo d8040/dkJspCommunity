@@ -6,7 +6,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
 
-<h1>회원가입작성</h1>
 <div>
 	<script>
 	let DoModifyForm__submited = false;
@@ -85,72 +84,45 @@
 	</script>
 	<form action="doMemberModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">
 		<input type="hidden" name="loginPwReal" />
-		<hr />
-		<div>
-			<div>로그인 아이디</div>
-			<div>${loginedMember.loginId}</div>
-		</div>
-
-		<hr />
-
-		<div>
-			<div>이름</div>
-			<div>${loginedMember.name}</div>
-		</div>
-
-		<hr />
-		<div>
-			<div>비밀번호 변경</div>
+		<section class="memberModify-box">
+			<div class="login-box__title">회원정보 수정</div>
+			<table class="memberModify-box__table">
+				<tr>
+					<th>아이디</th>
+					<td>${loginedMember.loginId}</td>
+				</tr>
+				<tr>
+					<th>이름</th>
+					<td>${loginedMember.name}</td>
+				</tr>
+				<tr>
+					<th>비밀번호</th>
+					<td><input name="loginPw" type="password" maxlength="50" placeholder="비밀번호 입력해주세요." /></td>
+				</tr>
+				<tr>
+					<th>비번 확인</th>
+					<td><input name="loginPwConfirm" type="password" maxlength="50" placeholder="비밀번호 입력해주세요." /></td>
+				</tr>
+				<tr>
+					<th>닉네임</th>
+					<td><input name="nickname" type="text" maxlength="50" value="${loginedMember.nickname}" placeholder="닉네임을 입력해주세요."/></td>
+				</tr>
+				<tr>
+					<th>이메일</th>
+					<td><input name="email" type="email" maxlength="100" value="${loginedMember.email}" placeholder="이메일 주소를 입력해주세요."/></td>
+				</tr>
+				<tr>
+					<th>전화번호</th>
+					<td><input name="cellphoneNo" type="tel" maxlength="100" value="${loginedMember.cellphoneNo}" placeholder="전화번호를 입력해 주세요."/></td>
+				</tr>
+			</table>
 			<div>
-				<input name="loginPw" type="password" maxlength="50" placeholder="변경 비밀번호를 입력해주세요." />
+				<div class="login-box__button">
+					<button type="submit" class="btn btn-success">수정</button>
+					<button type="button" class="btn btn-info" onclick="history.back();">취소</button>
+				</div>
 			</div>
-		</div>
-
-		<hr />
-
-		<div>
-			<div>변경 비밀번호 확인</div>
-			<div>
-				<input name="loginPwConfirm" type="password" maxlength="50" placeholder="비밀번호를 다시 입력해주세요." />
-			</div>
-		</div>
-
-		<hr />
-
-		<div>
-			<div>별명</div>
-			<div>
-				<input name="nickname" type="text" maxlength="50" placeholder="별명을 입력해주세요." value="${loginedMember.nickname}" />
-			</div>
-		</div>
-
-		<hr />
-
-		<div>
-			<div>이메일</div>
-			<div>
-				<input name="email" type="email" maxlength="100" placeholder="이메일을 입력해주세요." value="${loginedMember.email}" />
-			</div>
-		</div>
-
-		<hr />
-
-		<div>
-			<div>전화번호</div>
-			<div>
-				<input name="cellphoneNo" type="tel" maxlength="100" placeholder="전화번호를 입력해주세요." value="${loginedMember.cellphoneNo}" />
-			</div>
-		</div>
-
-		<hr />
-
-		<div>
-			<div>회원정보수정</div>
-			<div>
-				<input type="submit" value="수정" />
-				<button type="button" onclick="history.back();">취소</button>
-			</div>
-		</div>
+		</section>
 	</form>
 </div>
 <%@ include file="../../part/foot.jspf"%>

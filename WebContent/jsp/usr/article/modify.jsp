@@ -40,40 +40,43 @@
 		DoModifyForm__submited = true;
 	}
 	</script>
-	<form action="doModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">	
-		<input type="hidden" name="boardId" value="${article.boardId}" /> 
-		<input type="hidden" name="id" value="${article.id}" /> 
-		<input type="hidden" name="body" />
+	<form action="doModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">
+		<input type="hidden" name="boardId" value="${article.boardId}" /> <input type="hidden" name="id" value="${article.id}" /> <input type="hidden" name="body" />
 
-		<hr />
-		<div>제목</div>
-		<div>
-			<div>
-				<input name="title" type="text" maxlength="50" value="${article.title}" />
-				${loginedMember.name}
+		<section class="article-modify con-min-width">
+			<div class="article_modify__board-onclick">
+				<a href="article_list_source code_1.html">게시판 > ${pageTitle} > </a>
 			</div>
-		</div>
-
-		<hr />
-
-		<div>
-			<div>내용</div>
-			<div>
-				<script type="text/x-template">
-${article.body}
-</script>
+			<div class="article-modify__title">
+				<input name="title" type="text" maxlength="50" value="${article.title}" />
+			</div>
+			<div class="article-modify__info">
+				<div class="flex jc-space-between">
+					<div>작성자: ${article.extra_writer}</div>
+					<div>조회수: ${article.hitsCount}</div>
+				</div>
+				<div class="flex jc-space-between">
+					<div>작성일: ${article.regDate}</div>
+					<div>추천수: ${article.updateDate}</div>
+				</div>
+			</div>
+			<hr>
+			<div class="article-modify__body">
+				<script type="text/x-template">${article.body}</script>
 				<div class="toast-ui-editor"></div>
 			</div>
-
-		</div>
-		<hr />
-		<div>
-			<div>작성</div>
-			<div>
-				<input type="submit" value="작성" />
-				<button type="button" onclick="history.back();">뒤로가기</button>
+			<hr>
+			<div class="article-modify__bottom flex flex-ai-c">
+				<div class="flex">
+					<div>
+						<input class="btn" type="submit" value="작성" />
+					</div>
+					<div>
+						<button class="btn btn-success" type="button" onclick="history.back();">뒤로가기</button>
+					</div>
+				</div>
 			</div>
-		</div>
+		</section>
 	</form>
 </div>
 <%@ include file="../../part/foot.jspf"%>

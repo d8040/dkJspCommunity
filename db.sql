@@ -42,13 +42,16 @@ CREATE TABLE attr(
     id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
-    relTypeCode CHAR(20) NOT NULL UNIQUE, 
-    relId INT(10) UNSIGNED NOT NULL UNIQUE,
-    typeCode CHAR(30) NOT NULL UNIQUE,
-    type2Code CHAR(30) NOT NULL UNIQUE,
+    relTypeCode CHAR(20) NOT NULL, 
+    relId INT(10) UNSIGNED NOT NULL,
+    typeCode CHAR(30) NOT NULL,
+    type2Code CHAR(30) NOT NULL,
     `value` TEXT NOT NULL,
     expireDate DATETIME NULL
 );
+# 변수찾는 속도 최적화
+ALTER TABLE attr ADD UNIQUE INDEX (relTypeCode,relId, typeCode, type2Code);
+
 # 특정 조건을 만족하는 회원 또는 게시물(기타데이터)를 빠르게 찾기 위해
 ALTER TABLE attr ADD INDEX (relTypeCode, typeCode, type2Code);
 

@@ -1,15 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="pageTitle" value= "로그인"/> 
+<c:set var="pageTitle" value="로그인" />
 <%@ include file="../../part/head.jspf"%>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js" integrity="sha512-szJ5FSo9hEmXXe7b5AUVtn/WnL8a5VofnFeYC2i2z03uS2LhAch7ewNLbl5flsEmTTimMN0enBZg/3sQ+YOSzQ=="
-	crossorigin="anonymous"></script>
-	
-	<h1>${pageTitle}</h1>
-	<div>
-		<script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js" integrity="sha512-szJ5FSo9hEmXXe7b5AUVtn/WnL8a5VofnFeYC2i2z03uS2LhAch7ewNLbl5flsEmTTimMN0enBZg/3sQ+YOSzQ==" crossorigin="anonymous"></script>
+
+<div>
+	<script type="text/javascript">
 		let DoLoginForm__submited = false;
 		function DoLoginForm__submit(form){
 			if (DoLoginForm__submited){
@@ -42,33 +39,31 @@
 			DoLoginForm__submited = true;			
 		}
 		</script>
-		<form action="doLogin" method="POST" onsubmit="DoLoginForm__submit(this); return false;">
-		<input type="hidden" name ="loginPwReal" />
-			<hr />
-			<div>아이디</div>
-			<div>
-				<div>
-					<input name="loginId" type="text" maxlength="50"
-						placeholder="사용할 아이디를 입력해주세요."> 
-				</div>
-			</div>
+	<form action="doLogin" method="POST" onsubmit="DoLoginForm__submit(this); return false;">
+		<input type="hidden" name="loginPwReal" />
 
-			<hr />
-			<div>비밀번호</div>
+		<section class="login-box">
+			<div class="login-box__title">로그인 화면</div>
 			<div>
 				<div>
-					<input name="loginPw" type="password" maxlength="50"
-						placeholder="사용할 비밀번호 입력해주세요." />
+					<input name="loginId" type="text" placeholder="아이디">
 				</div>
-			</div>
-			
-			<hr />
-			<div>
 				<div>
-					<input type="submit" value="로그인" />
-					<button type="button" onclick="history.back();">취소</button>
+					<input name="loginPw" type="text" placeholder="비밀번호">
+				</div>
+				<div class="login-box__function">
+					<c:if test="${isLogined == false}">
+						<a href="../member/join">회원가입</a>
+						<a href="../member/findLoginId">아이디 찾기</a>
+						<a href="../member/findLoginPw">비밀번호 찾기</a>
+					</c:if>
+				</div>
+				<div class="login-box__button">
+					<button type="submit" class="btn btn-success">로그인</button>
+					<button type="submit" class="btn btn-info" onclick="history.back();">취소</button>
 				</div>
 			</div>
-		</form>
-	</div>
+		</section>
+	</form>
+</div>
 <%@ include file="../../part/foot.jspf"%>

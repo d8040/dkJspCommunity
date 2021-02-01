@@ -44,33 +44,28 @@
 	<form action="doWrite" method="POST" onsubmit="DoWriteForm__submit(this); return false;">
 		<input type="hidden" name="boardId" value="${board.id}" />
 		<input type="hidden" name="body" />
-
 		<hr />
-		<div>
-			<div>제목</div>
-			<div>
-				<input name="title" type="text" maxlength="50"
-					placeholder="제목을 입력해주세요." />
-			</div>
-		</div>
-
-		<hr />
-
-		<div>
-			<div>내용</div>
-			<div>
-				<script type="text/x-template"></script>
- 				<div class="toast-ui-editor"></div>
-			</div>
-		</div>
-		<hr />
-		<div>
-			<div>작성</div>
-			<div>
-				<input type="submit" value="작성" />
-				<button type="button" onclick="history.back();">뒤로가기</button>
-			</div>
-		</div>
+        <section class="article-modify con-min-width">
+          <div class="article-modify__title">
+            <input name="title" type="text" maxlength="50" placeholder="제목을 입력해 주세요" />
+          </div>
+          <hr>
+          <div class="article-modify__body">
+            <script type="text/x-template"></script>
+            <div class="toast-ui-editor"></div>
+          </div>
+          <hr>
+          <div class="article-modify__bottom flex flex-ai-c">
+            <div class="flex">
+              <div>
+                <input class="btn" type="submit" value="작성" />
+              </div>
+              <div>
+                <button class="btn btn-success" type="button" onclick="history.back();">뒤로가기</button>
+              </div>
+            </div>            
+          </div>
+        </section>
 	</form>
 </div>
 <%@ include file="../../part/foot.jspf"%>
