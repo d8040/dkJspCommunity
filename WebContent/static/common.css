@@ -150,13 +150,17 @@ body{
 .con-max-width{
   max-width: 900px;
 }
-
+main {
+	margin-top: 60px;
+}
 
 /* 메인 메뉴 */
 /* 경고창 시작 */
-.member-state{
+.member-state  a{
   margin-top:62px;
   margin-left:auto;
+  z-index: 2;  
+  position:fixed;
 }
 /* 경고창 끝 */
 /* side-bar start */
@@ -529,20 +533,26 @@ div>.head-bar > search .dribbble img {
 /* search-box end*/
 
 /* 메인화면 시작 */
-.main__img > img{
+.main__img{
   width: 100%;
-  height: 100vh;
-  vertical-align: middle;
-  /*   margin:0!important; */
-  padding:0!important;
-  margin-top: -20px;
-  margin-bottom: -20px;
-  margin-left: 0!important;
-  margin-right: 0!important;
-  object-fit:cover;
+/*   height: 100vh; */
+  margin: 0;
+/*   position: absolute; */
+  top: 0;
+  left: 0;
+}
+.main__img > img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center center;
 }
 /* 메인화면 끝 */
-
+main > h1{
+  margin-top: 20px;
+}
 /* 회원가입 페이지 시작 */
 .join-box{
   width: 340px;
@@ -763,7 +773,7 @@ div>.head-bar > search .dribbble img {
 footer{
   background-color:RGBA(34,34,34,0.9);
   width:100%;
-  margin-top:20px;
+/*   margin-top:20px; */
 }
 .footer__contents {
   padding: 20px 0;
@@ -791,7 +801,7 @@ footer{
 /* 하단 바 끝 */
 
 /* 게시물 리스트 시작 */
-.article-list__cell-title> nav{
+.article-list__content__mobile{
   display:none;
 }
 :root {
@@ -872,11 +882,12 @@ footer{
   padding-right:10px;
   height:auto;
 }
-.article-list > .main{
+.article-list > .content{
   border-top:1px solid black;
+  margin: 0 10px;
 }
 
-.article-list > .main > div {
+.article-list > .content > div {
   border-bottom:1px solid black;
 }
 /* 게시물 검색 시작 */
@@ -1036,20 +1047,12 @@ footer{
   .bottom-bar {
     width: auto;
   }
-  .article-list__title, .article-list__cell-rcm, .article-list__cell-id, .article-list__cell-writer, .article-list__cell-reg-date {
+  .article-list__content__web, .header {
     display:none;
   }
-  .article-list__cell-title{
-    font-size:15px;
-    width:100%!important;
-  }
-  .article-list__cell-title>.article-list__cell-writer1,.article-list__cell-title> .article-list__cell-reg-date1{
-    display:flex;
-    font-size:11px!important;
-  } 
-  .article-list__cell-title> nav{
-    display:flex!important;
-    justify-content: space-between;
+ .article-list__content__mobile{
+    display:block!important;
+   padding: 0 10px;
   }
   naming h1{
     font-size:40px;

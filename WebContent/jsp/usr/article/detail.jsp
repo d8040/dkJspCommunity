@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="pageTitle" value="게시물 상세페이지" />
 <%@ include file="../../part/head.jspf"%>
-
+<main class="flex-g-1 con">
 <section class="article-detail con-min-width">
 	<div class="article_detail__board-onclick">
 		<a href="article_list_source code_1.html">게시판 > ${pageTitle} > </a>

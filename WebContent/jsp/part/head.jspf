@@ -35,6 +35,16 @@
 </head>
 <body class="body-contents flex flex-dr-c min-height-100vh">
 	<section class="hearbar">
+	    <div class="flex">
+      <section class="member-state">
+        <c:if test="${isUsingTempPw eq 1}">
+          <a href="../member/memberModify" style="color: red">임시 비밀번호를 사용 중입니다.</a>
+        </c:if>
+        <c:if test="${expireDateOfPw eq 0}">
+          <a href="../member/memberModify" style="color: red">보안을 위해 비밀번호를 변경해주세요.</a>
+        </c:if>
+      </section>
+    </div>
 		<nav class="side-menu">
 			<ul class="menu-btn">
 				<div class="line line--1"></div>
@@ -103,15 +113,3 @@
 
 		</div>
 	</section>
-	<main class="flex-g-1 con">
-		<div class="flex">
-			<section class="member-state">
-				<c:if test="${isUsingTempPw eq 1}">
-					<a href="../member/memberModify" style="color: red">임시 비밀번호를 사용 중입니다.</a>
-				</c:if>
-				<br>
-				<c:if test="${expireDateOfPw eq 0}">
-					<a href="../member/memberModify" style="color: red">보안을 위해 비밀번호를 변경해주세요.</a>
-				</c:if>
-			</section>
-		</div>

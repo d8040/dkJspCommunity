@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 </main>
-<footer class="footer flex flex-jc-c flex-dr-c">
+<footer class="footer web flex flex-jc-c flex-dr-c">
 	<div class="footer__contents con">
 		<div class="footer__top flex jc-space-between flex-ai-c">
 			<ul class="info flex">

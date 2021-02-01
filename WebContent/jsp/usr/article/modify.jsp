@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="pageTitle" value="${article.id}번 게시물 수정" />
 <%@ include file="../../part/head.jspf"%>
+<main class="flex-g-1 con">
 <h1>${pageTitle}</h1>
 <div>
 	<script>
