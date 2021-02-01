@@ -33,7 +33,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/common.css" />
 <script src="${pageContext.request.contextPath}/static/common.js" defer></script>
 </head>
-<body class="body-contents flex flex-dr-c flex-ai-c min-height-100vh">
+<body class="body-contents flex flex-dr-c min-height-100vh">
 	<section class="hearbar">
 		<nav class="side-menu">
 			<ul class="menu-btn">
@@ -103,7 +103,7 @@
 
 		</div>
 	</section>
-	<main class="flex-g-1">
+	<main class="flex-g-1 con">
 		<div class="flex">
 			<section class="member-state">
 				<c:if test="${isUsingTempPw eq 1}">
