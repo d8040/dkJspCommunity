@@ -216,12 +216,10 @@ public class UsrArticleController {
 	public String doLike(HttpServletRequest req, HttpServletResponse resp) {
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		int articleId = Integer.parseInt(req.getParameter("id"));
+				
+		Container.likeService.doLike(memberId, articleId, 1, 0);		
 		
-		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleLike", "1", null);
-		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleHate", "0", null);
-		
-		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
-		
+		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));		
 		return "common/redirect";
 	}
 
@@ -229,33 +227,28 @@ public class UsrArticleController {
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		int articleId = Integer.parseInt(req.getParameter("id"));
 		
-		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleHate", "1", null);
-		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleLike", "0", null);
+		Container.likeService.doLike(memberId, articleId, 0, 1);
 		
-		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
-		
+		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));		
 		return "common/redirect";
 	}
 	public String doLikeCancel(HttpServletRequest req, HttpServletResponse resp) {
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		int articleId = Integer.parseInt(req.getParameter("id"));
 		
-		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleLike", "0", null);
-		Container.likeService.sevValue("member__" + memberId + "__"+articleId+"__articleLike", "0", null);
+		Container.likeService.doLike(memberId, articleId, 0, 0);
 		
-		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
-		
+		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));		
 		return "common/redirect";
 	}
 
 	public String doHateCancel(HttpServletRequest req, HttpServletResponse resp) {
 		int memberId = (int) req.getAttribute("loginedMemberId");
 		int articleId = Integer.parseInt(req.getParameter("id"));
-		
-		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleHate", "0", null);
+				
+		Container.likeService.doLike(memberId, articleId, 0, 0);
 		
 		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
-		
 		return "common/redirect";
 	}
 }

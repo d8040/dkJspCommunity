@@ -38,8 +38,8 @@ public class ArticleDao {
 	    }
 	}
 	sql.append("ORDER BY A.id DESC");
-	
-	if ( limitCount != -1) {
+
+	if (limitCount != -1) {
 	    sql.append("LIMIT ?, ?", limitStart, limitCount);
 	}
 
@@ -180,8 +180,7 @@ public class ArticleDao {
 	    } else if (searchKeywordType.equals("body")) {
 		sql.append("AND A.body LIKE CONCAT('%', ? '%')", searchKeyword);
 	    } else if (searchKeywordType.equals("titleAndBody")) {
-		sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword,
-			searchKeyword);
+		sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword, searchKeyword);
 	    }
 	}
 
@@ -193,29 +192,27 @@ public class ArticleDao {
 	sql.append("UPDATE article");
 	sql.append("SET hitsCount = hitsCount + 1");
 	sql.append("WHERE id = ?", id);
-	
+
 	MysqlUtil.update(sql);
     }
 
-	public int likeCount(int id) {
-		SecSql sql = new SecSql();
-		sql.append("SELECT COUNT(*) AS `like`");
-		sql.append("FROM attr");
-		sql.append("WHERE type2Code = 'articleLike'");
-		sql.append("AND `value` = 1");
-		sql.append("AND typeCode = ?", id);
-		
-		return MysqlUtil.selectRowIntValue(sql);
-	}
+    public int likeCount(int id) {
+	SecSql sql = new SecSql();
+	sql.append("SELECT COUNT(*) AS `like`");
+	sql.append("FROM `like`");
+	sql.append("WHERE `like` = 1");
+	sql.append("AND articleId = ?", id);
 
-	public int hateCount(int id) {
-		SecSql sql = new SecSql();
-		sql.append("SELECT COUNT(*) AS `like`");
-		sql.append("FROM attr");
-		sql.append("WHERE type2Code = 'articleHate'");
-		sql.append("AND `value` = 1");
-		sql.append("AND typeCode = ?", id);
-		
-		return MysqlUtil.selectRowIntValue(sql);
-	}
+	return MysqlUtil.selectRowIntValue(sql);
+    }
+
+    public int hateCount(int id) {
+	SecSql sql = new SecSql();
+	sql.append("SELECT COUNT(*) AS `unlike`");
+	sql.append("FROM `like`");
+	sql.append("WHERE unlike = 1");
+	sql.append("AND articleId = ?", id);
+
+	return MysqlUtil.selectRowIntValue(sql);
+    }
 }

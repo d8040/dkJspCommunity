@@ -62,15 +62,15 @@ CREATE TABLE `like`(
     updateDate DATETIME NOT NULL,    
     memberId INT(10) UNSIGNED NOT NULL,
     articleId INT(10) UNSIGNED NOT NULL,
-    `like` INT(10) NOT NULL,
-    unlike INT(10) NOT NULL
+    `like` INT(10) UNSIGNED NOT NULL,
+    unlike INT(10) UNSIGNED NOT NULL
 );
 
 # 변수찾는 속도 최적화 중복 금지
-ALTER TABLE `like` ADD UNIQUE INDEX (memberId, articleId, `like`, unlike);
+ALTER TABLE `like` ADD UNIQUE INDEX (memberId, articleId);
 
 # 특정 조건을 만족하는 회원 또는 게시물(기타데이터)를 빠르게 찾기 위해
-ALTER TABLE `like` ADD INDEX (articleId, `like`, unlike);
+ALTER TABLE `like` ADD INDEX (memberId, articleId, `like`, unlike);
 
 # 회원1 생성
 INSERT INTO `member`
