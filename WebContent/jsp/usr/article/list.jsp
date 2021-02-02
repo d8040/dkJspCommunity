@@ -74,16 +74,18 @@
                   <div class=article-list__cell-hit>${article.hitsCount}</div>
                 </div>
                 <div class="article-list__content__mobile">
+                <a href="detail?id=${article.id}" class=hover-underline>
                   <div class="flex jc-space-between">
                     <div class=article-list__cell-title1>
-                      <a href="detail?id=${article.id}" class=hover-underline>${article.title} </a>
+                      ${article.title} 
                     </div>
                     <div class=article-list__cell-hit1>${article.hitsCount}</div>
                   </div>
                   <div class="flex jc-space-between">
                     <div class=article-list__cell-writer1>${article.extra_writer}</div>
                     <div class=article-list__cell-reg-date1>${formatRegDate}</div>
-                  </div>                  
+                  </div> 
+                  </a>                 
                 </div>
               </div>
             </c:forEach>

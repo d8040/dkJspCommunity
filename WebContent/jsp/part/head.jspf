@@ -52,7 +52,7 @@
 				<div class="line line--3"></div>
 			</ul>
 			<ul class="nav-links">
-				<li class="link"><a href="../home/main" class="flex"><iclass="fasfa-home"> </i></a></li>
+				<li class="link"><a href="../home/main" class="flex"><i class="fasfa-home"> </i></a></li>
 				<li class="link"><a href="#" class="flex"><span>게시판</span></a>
 					<ul class="link">
 						<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>공지사항</span></a></li>
