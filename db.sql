@@ -49,11 +49,28 @@ CREATE TABLE attr(
     `value` TEXT NOT NULL,
     expireDate DATETIME NULL
 );
-# 변수찾는 속도 최적화
+# 변수찾는 속도 최적화 중복 금지
 ALTER TABLE attr ADD UNIQUE INDEX (relTypeCode,relId, typeCode, type2Code);
 
 # 특정 조건을 만족하는 회원 또는 게시물(기타데이터)를 빠르게 찾기 위해
 ALTER TABLE attr ADD INDEX (relTypeCode, typeCode, type2Code);
+
+#좋아요 싫어요 테이블 생성
+CREATE TABLE `like`(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,    
+    memberId INT(10) UNSIGNED NOT NULL,
+    articleId INT(10) UNSIGNED NOT NULL,
+    `like` INT(10) NOT NULL,
+    unlike INT(10) NOT NULL
+);
+
+# 변수찾는 속도 최적화 중복 금지
+ALTER TABLE `like` ADD UNIQUE INDEX (memberId, articleId, `like`, unlike);
+
+# 특정 조건을 만족하는 회원 또는 게시물(기타데이터)를 빠르게 찾기 위해
+ALTER TABLE `like` ADD INDEX (articleId, `like`, unlike);
 
 # 회원1 생성
 INSERT INTO `member`

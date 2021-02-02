@@ -55,7 +55,7 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 	    if (actionMethodName.equals("list")) {
 		jspPath = articleController.showList(req, resp);
 	    } else if (actionMethodName.equals("detail")) {
-		jspPath = articleController.showDatail(req, resp);
+		jspPath = articleController.showDetail(req, resp);
 	    } else if (actionMethodName.equals("write")) {
 		jspPath = articleController.showWrite(req, resp);
 	    } else if (actionMethodName.equals("doWrite")) {
@@ -66,6 +66,10 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 		jspPath = articleController.doModify(req, resp);
 	    } else if (actionMethodName.equals("doDelete")) {
 		jspPath = articleController.doDelete(req, resp);
+	    } else if (actionMethodName.equals("doLike")) {
+		jspPath = articleController.doLike(req, resp);
+	    } else if (actionMethodName.equals("doHate")) {
+		jspPath = articleController.doHate(req, resp);
 	    }
 	}
 	return jspPath;

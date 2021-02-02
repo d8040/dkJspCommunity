@@ -196,4 +196,26 @@ public class ArticleDao {
 	
 	MysqlUtil.update(sql);
     }
+
+	public int likeCount(int id) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS `like`");
+		sql.append("FROM attr");
+		sql.append("WHERE type2Code = 'articleLike'");
+		sql.append("AND `value` = 1");
+		sql.append("AND typeCode = ?", id);
+		
+		return MysqlUtil.selectRowIntValue(sql);
+	}
+
+	public int hateCount(int id) {
+		SecSql sql = new SecSql();
+		sql.append("SELECT COUNT(*) AS `like`");
+		sql.append("FROM attr");
+		sql.append("WHERE type2Code = 'articleHate'");
+		sql.append("AND `value` = 1");
+		sql.append("AND typeCode = ?", id);
+		
+		return MysqlUtil.selectRowIntValue(sql);
+	}
 }

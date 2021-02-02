@@ -53,4 +53,12 @@ public class ArticleService {
 	    articleDao.hitCount(id);
 	}
 
+	public int likeCount(int id) {
+		return articleDao.likeCount(id);
+	}
+
+	public int hateCount(int id) {
+		return articleDao.hateCount(id);
+	}
+
 }

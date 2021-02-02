@@ -84,7 +84,7 @@ public class UsrArticleController {
 	return "usr/article/list";
     }
 
-    public String showDatail(HttpServletRequest req, HttpServletResponse resp) {
+    public String showDetail(HttpServletRequest req, HttpServletResponse resp) {
 	int id = Integer.parseInt(req.getParameter("id"));
 
 	Article article = articleService.getForPrintArticleById(id);
@@ -96,7 +96,12 @@ public class UsrArticleController {
 	}
 
 	Container.articleService.hitCount(id);
+	int likeCount = Container.articleService.likeCount(id);
+	int hateCount = Container.articleService.hateCount(id);
 	
+	
+	req.setAttribute("likeCount", likeCount);
+	req.setAttribute("hateCount", hateCount);
 	req.setAttribute("article", article);
 	return "usr/article/detail";
     }
@@ -208,4 +213,49 @@ public class UsrArticleController {
 	return "common/redirect";
     }
 
+	public String doLike(HttpServletRequest req, HttpServletResponse resp) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		int articleId = Integer.parseInt(req.getParameter("id"));
+		
+		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleLike", "1", null);
+		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleHate", "0", null);
+		
+		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
+		
+		return "common/redirect";
+	}
+
+	public String doHate(HttpServletRequest req, HttpServletResponse resp) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		int articleId = Integer.parseInt(req.getParameter("id"));
+		
+		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleHate", "1", null);
+		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleLike", "0", null);
+		
+		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
+		
+		return "common/redirect";
+	}
+	public String doLikeCancel(HttpServletRequest req, HttpServletResponse resp) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		int articleId = Integer.parseInt(req.getParameter("id"));
+		
+		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleLike", "0", null);
+		Container.likeService.sevValue("member__" + memberId + "__"+articleId+"__articleLike", "0", null);
+		
+		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
+		
+		return "common/redirect";
+	}
+
+	public String doHateCancel(HttpServletRequest req, HttpServletResponse resp) {
+		int memberId = (int) req.getAttribute("loginedMemberId");
+		int articleId = Integer.parseInt(req.getParameter("id"));
+		
+		Container.attrService.setValue("member__" + memberId + "__"+articleId+"__articleHate", "0", null);
+		
+		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
+		
+		return "common/redirect";
+	}
 }

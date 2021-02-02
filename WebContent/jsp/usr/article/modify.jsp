@@ -42,7 +42,9 @@
 	}
 	</script>
 	<form action="doModify" method="POST" onsubmit="DoModifyForm__submit(this); return false;">
-		<input type="hidden" name="boardId" value="${article.boardId}" /> <input type="hidden" name="id" value="${article.id}" /> <input type="hidden" name="body" />
+		<input type="hidden" name="boardId" value="${article.boardId}" /> 
+		<input type="hidden" name="id" value="${article.id}" /> 
+		<input type="hidden" name="body" />
 
 		<section class="article-modify con-min-width">
 			<div class="article_modify__board-onclick">
