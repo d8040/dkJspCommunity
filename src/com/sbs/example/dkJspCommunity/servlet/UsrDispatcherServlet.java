@@ -8,6 +8,7 @@ import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.controller.UsrArticleController;
 import com.sbs.example.dkJspCommunity.controller.UsrHomeController;
 import com.sbs.example.dkJspCommunity.controller.UsrMemberController;
+import com.sbs.example.dkJspCommunity.controller.UsrReplyController;
 
 @WebServlet("/usr/*")
 public class UsrDispatcherServlet extends DispatcherServlet {
@@ -70,6 +71,18 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 		jspPath = articleController.doLike(req, resp);
 	    } else if (actionMethodName.equals("doHate")) {
 		jspPath = articleController.doHate(req, resp);
+	    } else if (actionMethodName.equals("doLikeCancel")) {
+		jspPath = articleController.doLikeCancel(req, resp);
+	    } else if (actionMethodName.equals("doHateCancel")) {
+		jspPath = articleController.doHateCancel(req, resp);
+	    }
+	} else if (controllerName.equals("reply")) {
+	    UsrReplyController replyController = Container.usrReplyController;
+
+	    if (actionMethodName.equals("doReplyWrite")) {
+		jspPath = replyController.doReplyWrite(req, resp);
+	    }else if (actionMethodName.equals("doReplyDelete")) {
+		jspPath = replyController.doReplyDelete(req, resp);
 	    }
 	}
 	return jspPath;

@@ -10,25 +10,29 @@ import javax.servlet.http.HttpServletResponse;
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Article;
 import com.sbs.example.dkJspCommunity.dto.Board;
+import com.sbs.example.dkJspCommunity.dto.Reply;
 import com.sbs.example.dkJspCommunity.service.ArticleService;
+import com.sbs.example.dkJspCommunity.service.ReplyService;
 import com.sbs.example.util.Util;
 
 public class UsrArticleController {
 
     private ArticleService articleService;
+    private ReplyService replyService;
 
     public UsrArticleController() {
 	articleService = Container.articleService;
+	replyService = Container.replyService;
     }
 
     public String showList(HttpServletRequest req, HttpServletResponse resp) {
 	String searchKeyword = req.getParameter("searchKeyword");
 	String searchKeywordType = req.getParameter("searchKeywordType");
-	
-	int itemsInAPage = 15;	
+
+	int itemsInAPage = 15;
 	int page = Util.getAsInt(req.getParameter("page"), 1);
-	int limitStart = (page -1)* itemsInAPage;
-	
+	int limitStart = (page - 1) * itemsInAPage;
+
 	int boardId = Integer.parseInt(req.getParameter("boardId"));
 
 	Board board = articleService.getBoardById(boardId);
@@ -80,29 +84,35 @@ public class UsrArticleController {
 	req.setAttribute("pageBoxEndAfterPage", pageBoxEndAfterPage);
 	req.setAttribute("pageBoxStartPage", pageBoxStartPage);
 	req.setAttribute("pageBoxEndPage", pageBoxEndPage);
-	
+
 	return "usr/article/list";
     }
 
     public String showDetail(HttpServletRequest req, HttpServletResponse resp) {
 	int id = Integer.parseInt(req.getParameter("id"));
+	int memberId = (int) req.getAttribute("loginedMemberId");
 
 	Article article = articleService.getForPrintArticleById(id);
-	
+
 	if (article == null) {
 	    req.setAttribute("alertMsg", id + "번 게시물은 존재하지 않습니다.");
 	    req.setAttribute("historyBack", true);
 	    return "common/redirect";
 	}
+	List<Reply> replies = replyService.getForPrintrepliesByArticleId(article.id);
 
 	Container.articleService.hitCount(id);
 	int likeCount = Container.articleService.likeCount(id);
 	int hateCount = Container.articleService.hateCount(id);
-	
-	
+	int isLiked = Container.articleService.isLiked(memberId, id);
+	int isHated = Container.articleService.isHated(memberId, id);
+
 	req.setAttribute("likeCount", likeCount);
 	req.setAttribute("hateCount", hateCount);
+	req.setAttribute("isLiked", isLiked);
+	req.setAttribute("isHated", isHated);
 	req.setAttribute("article", article);
+	req.setAttribute("replies", replies);
 	return "usr/article/detail";
     }
 
@@ -174,7 +184,7 @@ public class UsrArticleController {
 	modifyArgs.put("id", id);
 	modifyArgs.put("title", title);
 	modifyArgs.put("body", body);
-	
+
 	System.out.println(body);
 
 	int newArticleId = articleService.modify(modifyArgs);
@@ -209,46 +219,50 @@ public class UsrArticleController {
 
 	req.setAttribute("alertMsg", id + "번 게시물이 삭제되었습니다");
 	req.setAttribute("replaceUrl", String.format("list?boardId=%d", article.boardId));
-
 	return "common/redirect";
     }
 
-	public String doLike(HttpServletRequest req, HttpServletResponse resp) {
-		int memberId = (int) req.getAttribute("loginedMemberId");
-		int articleId = Integer.parseInt(req.getParameter("id"));
-				
-		Container.likeService.doLike(memberId, articleId, 1, 0);		
-		
-		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));		
-		return "common/redirect";
-	}
+    public String doLike(HttpServletRequest req, HttpServletResponse resp) {
+	int memberId = (int) req.getAttribute("loginedMemberId");
+	int articleId = Integer.parseInt(req.getParameter("id"));
 
-	public String doHate(HttpServletRequest req, HttpServletResponse resp) {
-		int memberId = (int) req.getAttribute("loginedMemberId");
-		int articleId = Integer.parseInt(req.getParameter("id"));
-		
-		Container.likeService.doLike(memberId, articleId, 0, 1);
-		
-		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));		
-		return "common/redirect";
-	}
-	public String doLikeCancel(HttpServletRequest req, HttpServletResponse resp) {
-		int memberId = (int) req.getAttribute("loginedMemberId");
-		int articleId = Integer.parseInt(req.getParameter("id"));
-		
-		Container.likeService.doLike(memberId, articleId, 0, 0);
-		
-		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));		
-		return "common/redirect";
-	}
+	Container.likeService.doLike(memberId, articleId, 1, 0);
 
-	public String doHateCancel(HttpServletRequest req, HttpServletResponse resp) {
-		int memberId = (int) req.getAttribute("loginedMemberId");
-		int articleId = Integer.parseInt(req.getParameter("id"));
-				
-		Container.likeService.doLike(memberId, articleId, 0, 0);
-		
-		req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
-		return "common/redirect";
-	}
+	req.setAttribute("alertMsg", "좋아요 추가되었습니다.");
+	req.setAttribute("historyBack", true);
+	return "common/redirect";
+    }
+
+    public String doHate(HttpServletRequest req, HttpServletResponse resp) {
+	int memberId = (int) req.getAttribute("loginedMemberId");
+	int articleId = Integer.parseInt(req.getParameter("id"));
+
+	Container.likeService.doLike(memberId, articleId, 0, 1);
+
+	req.setAttribute("alertMsg", "싫어요 추가되었습니다.");
+	req.setAttribute("historyBack", true);
+	return "common/redirect";
+    }
+
+    public String doLikeCancel(HttpServletRequest req, HttpServletResponse resp) {
+	int memberId = (int) req.getAttribute("loginedMemberId");
+	int articleId = Integer.parseInt(req.getParameter("id"));
+
+	Container.likeService.doLike(memberId, articleId, 0, 0);
+
+	req.setAttribute("alertMsg", "좋아요 취소되었습니다.");
+	req.setAttribute("historyBack", true);
+	return "common/redirect";
+    }
+
+    public String doHateCancel(HttpServletRequest req, HttpServletResponse resp) {
+	int memberId = (int) req.getAttribute("loginedMemberId");
+	int articleId = Integer.parseInt(req.getParameter("id"));
+
+	Container.likeService.doLike(memberId, articleId, 0, 0);
+
+	req.setAttribute("alertMsg", "싫어요 취소되었습니다.");
+	req.setAttribute("historyBack", true);
+	return "common/redirect";
+    }
 }
