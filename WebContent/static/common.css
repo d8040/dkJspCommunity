@@ -496,9 +496,6 @@ font-weight:bold;
   stroke-dasharray: 150 212.908;
   stroke-dashoffset: 300;
 }
-::selection {
-  background: rgba(255, 255, 255, 0.2);
-}
 ::-moz-selection {
   background: rgba(255, 255, 255, 0.2);
 }

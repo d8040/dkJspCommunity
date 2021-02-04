@@ -229,7 +229,7 @@ public class UsrArticleController {
 	Container.likeService.doLike(memberId, articleId, 1, 0);
 
 	req.setAttribute("alertMsg", "좋아요 추가되었습니다.");
-	req.setAttribute("historyBack", true);
+	req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
 	return "common/redirect";
     }
 
@@ -240,7 +240,7 @@ public class UsrArticleController {
 	Container.likeService.doLike(memberId, articleId, 0, 1);
 
 	req.setAttribute("alertMsg", "싫어요 추가되었습니다.");
-	req.setAttribute("historyBack", true);
+	req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
 	return "common/redirect";
     }
 
@@ -251,7 +251,7 @@ public class UsrArticleController {
 	Container.likeService.doLike(memberId, articleId, 0, 0);
 
 	req.setAttribute("alertMsg", "좋아요 취소되었습니다.");
-	req.setAttribute("historyBack", true);
+	req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
 	return "common/redirect";
     }
 
@@ -262,7 +262,7 @@ public class UsrArticleController {
 	Container.likeService.doLike(memberId, articleId, 0, 0);
 
 	req.setAttribute("alertMsg", "싫어요 취소되었습니다.");
-	req.setAttribute("historyBack", true);
+	req.setAttribute("replaceUrl", String.format("detail?id=%d", articleId));
 	return "common/redirect";
     }
 }

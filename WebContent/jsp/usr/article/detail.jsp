@@ -123,7 +123,7 @@
 										<div class="reply-box con-max-width">
 											<div class="con flex-ai-c flex">
 												<div class="reply-box__textarea flex-g-1">
-												<input type="hidden" name="replyId" value="${reply.id}"/>
+												<!-- <input type="hidden" name="replyId" value="${reply.id}"/> -->
 													<textarea name="reReplyBody" placeholder="내용을 입력해 주세요."></textarea>
 												</div>
 												<div class="reply-box__btn">
