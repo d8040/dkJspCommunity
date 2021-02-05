@@ -1,20 +1,17 @@
 # MySQL db 백업
-- "C:\xampp\mysql\bin\mysqldump -u root -p dkJspCommunity> C:\work\sts-4.9.0.RELEASE-workspace\dkJspCommunity\current.sql"
+- C:\xampp\mysql\bin\mysqldump -u root -p dkJspCommunity> C:\work\sts-4.9.0.RELEASE-workspace\dkJspCommunity\current.sql
 
 ### - 금일 완료 리스트✔️
-<br>
 - [x] 회원정보 수정페이지(비밀번호 수정 추가) 👌
 - [x] 게시물 수정페이지에 토스트 에디터 붙이기  👌
 ---
-<br>
+
 ### - 당장 할일 리스트✔️	
-<br>
 - [ ] 게시물 블라인드
 - [ ] 좋아요, 싫어요
 ---
-<br>
+
 ### - 추후 할일 리스트✔️
-<br>
 - [ ] 내 글에 새 댓글 알림
 - [ ] 내 댓글에 추가 댓글 알림
 - [ ] 댓글
@@ -28,10 +25,9 @@
 - [ ] 1:1 쪽지
 - [ ] 신고
 
-<br>
 ---
+
 ### - 그 동안 완료리스트✔️
-<br>
 - 프레임워크 기초   👌
 - 로그인/로그아웃   👌
 - 회원가입   👌
