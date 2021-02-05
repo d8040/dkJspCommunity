@@ -142,4 +142,17 @@ public class Util {
 	}
 	return defaultValue;
     }
+
+    public static boolean isEmpty(String obj) {
+	if ( obj == null) {
+	    return true; 
+	}
+	
+	if ( obj instanceof String) {
+	    if ( ((String)obj).trim().length() == 0 ) {
+		return true;
+	    }
+	}
+	return false;
+    }
 }
