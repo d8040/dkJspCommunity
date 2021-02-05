@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.sbs.example.dkJspCommunity.App;
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
@@ -52,28 +53,36 @@ public abstract class DispatcherServlet extends HttpServlet {
 	String requestUri = req.getRequestURI();
 	String[] requestUriBits = requestUri.split("/");
 
-	if (requestUriBits.length < 5) {
+	int minBitsCount = 5; 
+	
+	if (App.isProductMode()) {
+	    minBitsCount = 4;
+	}
+	if (requestUriBits.length < minBitsCount) {
 	    resp.getWriter().append("올바른 요청이 아닙니다.");
 	    return null;
 	}
-	String profilesActive = System.getProperty("spring.profiles.active");
-	
-	boolean isProductionMode = false;
-
-	if (profilesActive != null && profilesActive.equals("production")) {
-	  isProductionMode = true;
-	}
-			
-	if ( isProductionMode ) {
+	if(App.isProductMode()) {
 	  MysqlUtil.setDBInfo("127.0.0.1", "sbsstLocal", "sbs123414", "dkJspCommunity");
 	}
 	else {
-	  MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "dkJspCommunity");			
+	  MysqlUtil.setDBInfo("127.0.0.1", "sbsst", "sbs123414", "dkJspCommunity");
+	  MysqlUtil.setDevMode(true);
 	}
 
-	String controllerTypeName = requestUriBits[2]; // usr
-	String controllerName = requestUriBits[3]; // article
-	String actionMethodName = requestUriBits[4]; // list
+	int controllerTypeNameIndex = 2;
+	int controllerNameIndex = 3;
+	int actionMethodNameIndex = 4;
+	
+	if (App.isProductMode()) {
+	    controllerTypeNameIndex = 1;
+	    controllerNameIndex = 2;
+	    actionMethodNameIndex = 3;
+	}
+	
+	String controllerTypeName = requestUriBits[controllerTypeNameIndex];
+	String controllerName = requestUriBits[controllerNameIndex];
+	String actionMethodName = requestUriBits[actionMethodNameIndex];
 
 	String actionUrl = "/" + controllerTypeName + "/" + controllerName + "/" + actionMethodName;
 
