@@ -36,7 +36,8 @@
   }	
 	</script>
 		<form action="../reply/doReplyWrite" method="POST" onsubmit="DoReplyWriteForm__submit(this); return false;">
-			<input type="hidden" name="articleId" value="${article.id}" /> <input type="hidden" name="boardId" value="${board.id}" />
+			<input type="hidden" name="articleId" value="${article.id}" /> 
+			<input type="hidden" name="boardId" value="${board.id}" />
 
 			<section class="article-detail con-min-width">
 				<div class="article_detail__board-onclick">

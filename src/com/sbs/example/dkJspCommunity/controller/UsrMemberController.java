@@ -128,7 +128,13 @@ public class UsrMemberController extends Controller{
 	HttpSession session = req.getSession();
 	session.setAttribute("loginedMemberId", member.getId());
 	
-	return msgAndReplace(req,  member.getNickname() + "님 로그인을 환영합니다.", "../home/main");
+	String replaceUrl = "../home/main";
+	
+	if ( Util.isEmpty(req.getParameter("afterLoginUrl")) == false ) {
+		replaceUrl = req.getParameter("afterLoginUrl");
+	}
+	
+	return msgAndReplace(req,  member.getNickname() + "님 로그인을 환영합니다.", replaceUrl);
     }
 
     public String doLogout(HttpServletRequest req, HttpServletResponse resp) {
