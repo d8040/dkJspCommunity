@@ -37,6 +37,9 @@ a {
 .none{
   display:none;
 }
+.red {
+	color: red;
+}
 .flex{
   display:flex;
 }

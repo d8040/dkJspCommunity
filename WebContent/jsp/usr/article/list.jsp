@@ -58,19 +58,18 @@
                 <div class="article-list__cell-hit">조회</div>
               </div>
             </div>
-
             <c:forEach items="${articles}" var="article">
               <div class="content article-box">
                 <div class="article-list__content__web flex">
                   <div class=article-list__cell-id>${article.id}</div>
                   <div class=article-list__cell-writer>${article.extra_writer}</div>
                   <div class=article-list__cell-title>
-                    <a href="detail?id=${article.id}" class=hover-underline>${article.title} </a>
+                    <a href="detail?id=${article.id}" class=hover-underline>${article.title}  <i class="far fa-comment-dots"></i>${article.extra_replyCount}</a>
                   </div>
                   <fmt:parseDate var="parseRegDate" value="${article.regDate}" pattern="yyyy-MM-dd HH:mm:ss" />
                   <fmt:formatDate var="formatRegDate" value="${parseRegDate}" pattern="yyyy-MM-dd" />
                   <div class=article-list__cell-reg-date>${formatRegDate}</div>
-                  <div class=article-list__cell-rcm>0</div>
+                  <div class=article-list__cell-rcm>${article.extra_likeCount}</div>
                   <div class=article-list__cell-hit>${article.hitsCount}</div>
                 </div>
                 <div class="article-list__content__mobile">
@@ -94,7 +93,6 @@
                 color: red;
               }
             </style>
-
             <div class="main paging">
               <div class="page-box con-min-witdh">
                 <div class="page flex flex-jc-c con">

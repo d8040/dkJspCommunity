@@ -43,7 +43,7 @@ public class UsrReplyController extends Controller {
 	
 	int newArticleId = replyService.write(writeArgs);
 	
-	return msgAndReplace(req, newArticleId + "번 게시물이 생성되었습니다.", String.format("../article/detail?id=%d", articleId));
+	return msgAndReplace(req, "댓글이 추가되었습니다.", String.format("../article/detail?id=%d", articleId));
     }
 
     public String doReplyDelete(HttpServletRequest req, HttpServletResponse resp) {
@@ -59,6 +59,6 @@ public class UsrReplyController extends Controller {
 	
 	replyService.delete(delArgs);
 	
-	return msgAndBack(req, replyId + "번 댓글이 삭제되었습니다");
+	return msgAndBack(req,"댓글이 삭제되었습니다");
     }
 }

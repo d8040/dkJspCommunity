@@ -72,7 +72,7 @@ public class UsrArticleController extends Controller {
 	boolean pageBoxStartBeforeBtnNeedToShow = pageBoxStartBeforePage != pageBoxStartPage;
 	// 다음버튼 노출여부 계산
 	boolean pageBoxEndAfterBtnNeedToShow = pageBoxEndAfterPage != pageBoxEndPage;
-
+	
 	req.setAttribute("totalCount", totalCount);
 	req.setAttribute("articles", articles);
 	req.setAttribute("totalPage", totalPage);
@@ -247,7 +247,7 @@ public class UsrArticleController extends Controller {
 	Article article = articleService.getForPrintArticleById(id);
 
 	if (article == null) {
-	    return msgAndBack(req, id + "번 게시물은 존재하지 않습니다.");
+	    return msgAndBack(req, id + "번 게시물이 존재하지 않습니다.");
 	}
 
 	if (memberId != article.getMemberId()) {
@@ -271,7 +271,7 @@ public class UsrArticleController extends Controller {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
 
-	Container.likeService.doLike(memberId, id, 1, 0);
+	Container.likeService.doLike(memberId, id, 1, 0, "article");
 	
 	return msgAndReplace(req, "좋아요가 추가되었습니다.", String.format("detail?id=%d", id));
     }
@@ -284,7 +284,7 @@ public class UsrArticleController extends Controller {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
 	
-	Container.likeService.doLike(memberId, id, 0, 1);
+	Container.likeService.doLike(memberId, id, 0, 1, "article");
 
 	return msgAndReplace(req, "싫어요가 추가되었습니다.", String.format("detail?id=%d", id));
     }
@@ -297,9 +297,9 @@ public class UsrArticleController extends Controller {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
 	
-	Container.likeService.doLike(memberId, id, 0, 0);
+	Container.likeService.doLike(memberId, id, 0, 0, "article");
 
-	return msgAndReplace(req, "좋아요가가 추가되었습니다.", String.format("detail?id=%d", id));
+	return msgAndReplace(req, "좋아요가 취소되었습니다.", String.format("detail?id=%d", id));
     }
 
     public String doHateCancel(HttpServletRequest req, HttpServletResponse resp) {
@@ -310,7 +310,7 @@ public class UsrArticleController extends Controller {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
 
-	Container.likeService.doLike(memberId, id, 0, 0);
+	Container.likeService.doLike(memberId, id, 0, 0, "article");
 	
 	return msgAndReplace(req, "싫어요가 최소되었습니다.", String.format("detail?id=%d", id));
     }

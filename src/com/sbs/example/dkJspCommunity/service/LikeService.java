@@ -10,8 +10,8 @@ public class LikeService {
 	likeDao = Container.likeDao;
     }
 
-    public void doLike(int memberId, int articleId, int like, int unlike) {
-	likeDao.doLike(memberId, articleId, like, unlike);
+    public void doLike(int memberId, int articleId, int like, int unlike, String relTypeCode) {
+	likeDao.doLike(memberId, articleId, like, unlike, relTypeCode);
     }
 
 }

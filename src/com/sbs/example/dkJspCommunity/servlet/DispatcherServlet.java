@@ -109,6 +109,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 	req.setAttribute("isLogined", isLogined);
 	req.setAttribute("loginedMemberId", loginedMemberId);
 	req.setAttribute("loginedMember", loginedMember);
+	
 	String currentUrl = req.getRequestURI();
 
 	if (req.getQueryString() != null) {
@@ -119,23 +120,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 
 	req.setAttribute("currentUrl", currentUrl);
 	req.setAttribute("encodedCurrentUrl", encodedCurrentUrl);
-	// 데이터 추가 인터셉터 끝
-
-	// 임시 패스워드 필터링 인터셉터 시작
-	//	if (session.getAttribute("tempPw") != null) {
-	//	    List<String> needToChangeTempPw = new ArrayList<>();
-	//	    needToChangeTempPw.add("/usr/*");
-	//
-	//	    if (needToChangeTempPw.contains(actionUrl)) {
-	//		    req.setAttribute("alertMsg", "임시 비밀번호를 변경 해주세요.");
-	//		    req.setAttribute("replaceUrl", "../member/memberModify");
-	//
-	//		    RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
-	//		    rd.forward(req, resp);		
-	//	    }
-	//	}
-	// 임시 패스워드 필터링 인터셉터 끝
-
+	
 	// 로그인 필요 필터링 인터셉터 시작
 	List<String> needToLoginActionUrls = new ArrayList<>();
 
@@ -149,8 +134,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 	needToLoginActionUrls.add("/usr/article/doDelete");
 	needToLoginActionUrls.add("/usr/article/doLike");
 	needToLoginActionUrls.add("/usr/article/doHate");
-	needToLoginActionUrls.add("/usr/reply/replyWrite");
-	needToLoginActionUrls.add("/usr/reply/doReplyWrite");
+//	needToLoginActionUrls.add("/usr/reply/doReplyWrite");
 
 	if (needToLoginActionUrls.contains(actionUrl)) {
 	    if ((boolean) req.getAttribute("isLogined") == false) {
@@ -178,13 +162,13 @@ public abstract class DispatcherServlet extends HttpServlet {
 	if (disableToLoginActionUrls.contains(actionUrl)) {
 	    if ((boolean) req.getAttribute("isLogined") != false) {
 		req.setAttribute("alertMsg", "로그아웃 후 이용해주세요.");
-		req.setAttribute("historyBack", true);
+		req.setAttribute("historyBack", "../member/login?afterLoginUrl="+encodedCurrentUrl);
 
 		RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
 		rd.forward(req, resp);
 	    }
 	}
-	// 로그인 필요 필터링 인터셉터 시작
+	// 로그인 불필요 필터링 인터셉터 끝
 
 	Map<String, Object> rs = new HashMap<>();
 	rs.put("controllerName", controllerName);

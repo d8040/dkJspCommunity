@@ -13,11 +13,13 @@ public class Like {
     private int articleId;
     private int like;
     private int unlike;
+    private String relTypeCode;
 
     public Like(Map<String, Object> map) {
 	this.id = (int) map.get("id");
 	this.regDate = (String) map.get("regDate");
 	this.updateDate = (String) map.get("updateDate");
+	this.relTypeCode = (String) map.get("relTypeCode");
 	this.memberId = (int) map.get("memberId");
 	this.articleId = (int) map.get("articleId");
 	this.like = (int) map.get("like");

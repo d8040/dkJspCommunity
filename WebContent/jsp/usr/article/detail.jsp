@@ -6,6 +6,20 @@
 <main class="flex-g-1 con">
 	<div>
 		<script>
+		$(document).ready(function(){
+			$( ".input" ).click(function() {
+			    var url = window.location.href;
+			        $("#reply-box").load(window.location.href+" #reply-box");
+			});
+		});
+		function refrash(){  
+			$('#reply-box').load(window.location.href + '#reply-box');
+		}
+		function goBack() {
+  			window.history.back();
+		}
+		</script>
+		<script>
           let DoReplyWriteForm__submited = false;
           let DoReplyWriteForm__checkedLoginId = "";
 
@@ -15,7 +29,10 @@
               alert('처리중입니다.');
               return;
             }
-
+            if ( ${loginedMemberId} == 0 ){
+              alert('로그인 후 이용해 주세요.');
+              return;
+            }
             if ( form.replyBody.value.length == 0 ) {
               alert('내용을 입력해주세요.');
               form.replyBody.value.focus();
@@ -45,13 +62,10 @@
               return;
             }
 
-            if ( form.reReplyBody.value.length == 0 ) {
-              alert('내용을 입력해주세요.');
-              form.reReplyBody.value.focus();
-
+            if ( ${loginedMemberId} == 0 ){
+              alert('로그인 후 이용해 주세요.');
               return;
             }
-
             form.submit();
             DoReReplyWriteForm__submited = true;
           }         
@@ -65,13 +79,12 @@
               alert('처리중입니다.');
               return;
             }
-
-            if ( form.reReReplyBody.value.length == 0 ) {
-              alert('내용을 입력해주세요.');
-              form.reReReplyBody.value.focus();
-
+            
+            if ( ${loginedMemberId} == 0 ){
+              alert('로그인 후 이용해 주세요.');
               return;
             }
+            
 
             form.submit();
             DoReReReplyWriteForm__submited = true;
@@ -79,7 +92,7 @@
         </script>
 		<section class="article-detail con-min-width">
 			<div class="article_detail__board-onclick">
-				<a href="article_list_source code_1.html">게시판 > ${pageTitle} > </a>
+				<a href="#" onclick="goBack()">게시판 > ${pageTitle} > </a>
 			</div>
 			<div class="article-detail__title">${article.title}</div>
 			<div class="article-detail__info">
@@ -141,7 +154,7 @@
 					</div>
 				</div>
 			</div>
-			<div>
+			<div id="reply-box">
 				<hr />
 				<c:forEach items="${replies}" var="reply">
 					<form action="../reply/doReplyWrite" method="POST" onsubmit="DoReReplyWriteForm__submit(this); return false;">
@@ -157,7 +170,7 @@
 									<div class="reply-box__function">
 										<div class="flex flex-jc-end">
 											<c:if test="${loginedMemberId == reply.memberId}">
-												<a class="del" href="../reply/doReplyDelete?id=${reply.id}">삭제</a>
+												<a class="del input" onclick="refrash()" href="../reply/doReplyDelete?id=${reply.id}">삭제</a>
 											</c:if>
 											<a href="javascript:toggleLayer('${reply.id}xx');">답글</a>
 										</div>
@@ -168,7 +181,7 @@
 													<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reply.extra_writer}::</textarea>
 												</div>
 												<div class="reply-box__btn">
-													<input type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
+													<input class="input" type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
 												</div>
 											</div>
 										</div>
@@ -189,7 +202,7 @@
 												<div class="reply-box__function">
 													<div class="flex flex-jc-end">
 														<c:if test="${loginedMemberId == reReply.memberId}">
-															<a class="del" href="../reply/doReplyDelete?id=${reReply.id}">삭제</a>
+															<a class="del input" onclick="refrash()" href="../reply/doReplyDelete?id=${reReply.id}">삭제</a>
 														</c:if>
 														<a href="javascript:toggleLayer('${reReply.id}xx');">답글</a>
 													</div>
@@ -222,7 +235,7 @@
 							<textarea name="replyBody" placeholder="내용을 입력해 주세요."></textarea>
 						</div>
 						<div class="reply-box__btn">
-							<input type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
+							<input class="input" type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
 						</div>
 					</div>
 				</div>

@@ -19,6 +19,9 @@ public class ArticleDao {
 	sql.append(", M.name AS extra_writer");
 	sql.append(", B.code AS extra_boardCode");
 	sql.append(", B.name AS extra_boardName");
+	sql.append(", (SELECT COUNT(*) FROM reply AS R WHERE articleId = A.id) AS extra_replyCount");
+	sql.append(", (SELECT COUNT(`like`) FROM `like` AS R WHERE articleId = A.id AND `like`=1) AS extra_likeCount");
+	sql.append(", (SELECT COUNT(unlike) FROM `like` AS R WHERE articleId = A.id AND `unlike`=1) AS extra_unlikeCount");
 	sql.append("FROM article AS A");
 	sql.append("INNER JOIN `member` AS M");
 	sql.append("ON A.memberId = M.id");
