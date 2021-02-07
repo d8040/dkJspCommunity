@@ -207,7 +207,7 @@
 														<a href="javascript:toggleLayer('${reReply.id}xx');">답글</a>
 													</div>
 													<div class="re-reply-box" id="${reReply.id}xx" style="display: none;">
-														<div>&#11177; ${loginedMemberId}:: ${reReply.extra_writer}님께 댓글쓰기</div>
+														<div>&#11177; ${reply.extra_writer}:: ${reReply.extra_writer}님께 댓글쓰기</div>
 														<div class="reply-box flex">
 															<div class="reply-box__textarea flex-g-1">
 																<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reReply.extra_writer}::</textarea>
