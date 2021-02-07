@@ -151,7 +151,7 @@ body{
   max-width: 900px;
 }
 main {
-	margin-top: 60px;
+   margin-top: 60px;
 }
 
 /* 메인 메뉴 */
@@ -980,6 +980,7 @@ footer{
 /* 댓글 창 시작 */
 .reply-box {
   padding: 10px 10px;
+  border-top: 1px solid;
 }
 .reply-box textarea {
   width:100%;
@@ -1002,20 +1003,24 @@ footer{
   font-weight:bold;
   margin-right: 20px;
 }
-.reply-box__body > div:first-child > div:last-child{
+.reply-box__body > .reply-box__body__info > div:last-child{
   color: rgba(1,1,1,0.5);
   font-size: 12px;
 }
-.reply-box__body > div:last-child{
+.reply-box__body > .reply-box__body__body{
   padding-left: 40px;
   padding-right: 20px;
   padding-top: 10px;
+  padding-bottom: 10px;
 }
-.reply-box__function > div{
-  margin-left:auto;
+.reply-box__function .del{
+ margin-right:10px;
 }
-.reply-box__function > div > a:first-child{
- margin-right:20px;
+.reReply-box{
+  padding: 10px 20px;
+  background-color:#ebebeb;
+  border-top: 1px solid;
+/*   display:inline-block; */
 }
 /* 댓글 리스트 끝 */
 

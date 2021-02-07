@@ -1,18 +1,15 @@
 package com.sbs.example.dkJspCommunity.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.dkJspCommunity.container.Container;
-import com.sbs.example.dkJspCommunity.dto.Reply;
-import com.sbs.example.dkJspCommunity.service.ArticleService;
 import com.sbs.example.dkJspCommunity.service.ReplyService;
 
-public class UsrReplyController {
+public class UsrReplyController extends Controller {
 
     private ReplyService replyService;
 
@@ -24,19 +21,29 @@ public class UsrReplyController {
 	int articleId = Integer.parseInt(req.getParameter("articleId"));	
 	int memberId = (int) req.getAttribute("loginedMemberId");
 	String replyBody = req.getParameter("replyBody");
+	String reReplyBody = req.getParameter("reReplyBody");
+	String parentReplyId = req.getParameter("parentReplyId");
 		
-	System.out.println(replyBody);
+	System.out.println("replyBody::"+replyBody);
+	System.out.println("reReplyBody::"+reReplyBody);	
+	System.out.println("parentReplyId::"+parentReplyId);
 
 	Map<String, Object> writeArgs = new HashMap<>();
 	writeArgs.put("articleId", articleId);
 	writeArgs.put("memberId", memberId);
+	if (replyBody != null) {
 	writeArgs.put("replyBody", replyBody);	
-
+	}
+	else {
+	    writeArgs.put("replyBody", reReplyBody);	
+	}
+	if (parentReplyId != null) {
+	    writeArgs.put("parentReplyId", parentReplyId);
+	}
+	
 	int newArticleId = replyService.write(writeArgs);
 	
-	req.setAttribute("alertMsg", newArticleId + "번 댓글이 생성되었습니다.");
-	req.setAttribute("replaceUrl", String.format("../article/detail?id=%d", articleId));
-	return "common/redirect";
+	return msgAndReplace(req, newArticleId + "번 게시물이 생성되었습니다.", String.format("../article/detail?id=%d", articleId));
     }
 
     public String doReplyDelete(HttpServletRequest req, HttpServletResponse resp) {
@@ -52,8 +59,6 @@ public class UsrReplyController {
 	
 	replyService.delete(delArgs);
 	
-	req.setAttribute("alertMsg", replyId + "번 댓글이 삭제되었습니다");
-	req.setAttribute("historyBack", true);
-	return "common/redirect";
+	return msgAndBack(req, replyId + "번 댓글이 삭제되었습니다");
     }
 }
