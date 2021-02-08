@@ -1,5 +1,4 @@
-# MySQL db 백업
-- C:\xampp\mysql\bin\mysqldump -u root -p dkJspCommunity> C:\work\sts-4.9.0.RELEASE-workspace\dkJspCommunity\current.sql
+
 
 ### - 금일 완료 리스트✔️
 - [x] 회원정보 수정페이지(비밀번호 수정 추가) 👌
@@ -50,3 +49,21 @@
 다음 추가 작업💻
 ===
 - 메인페이지 디자인 적용
+
+
+# MySQL db 백업
+- C:\xampp\mysql\bin\mysqldump -u root -p dkJspCommunity> C:\work\sts-4.9.0.RELEASE-workspace\dkJspCommunity\current.sql
+
+# maven settings.xml 템플릿
+```
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+        <server>
+            <id>서버ID</id>
+            <username>톰캣웹관리자계정(배포관리자)의 로그인아이디</username>
+            <password>톰캣웹관리자계정(배포관리자)의 비빌번호</password>
+        </server>
+    </servers>
+</settings>
+```

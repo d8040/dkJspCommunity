@@ -1,0 +1,118 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>${pageTitle}</title>
+
+<!-- 반응형 사이트 적용 메타 -->
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- 폰트어썸 불러오기 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+
+<!-- 아작스 추가 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+<!-- 토스트 UI 시작 -->
+<!-- 하이라이트 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/default.min.css">
+
+<!-- 토스트 UI 에디터, 자바스크립트 코어 -->
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js" defer></script>
+
+<!-- 코드 미러 라이브러리 추가, 토스트 UI 에디터에서 사용됨 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" />
+<!-- 토스트 UI 에디터, CSS 코어 -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
+<!-- 토스트 UI 에디터, 신택스 하이라이트 플러그인 추가 -->
+<script src="https://uicdn.toast.com/editor-plugin-code-syntax-highlight/latest/toastui-editor-plugin-code-syntax-highlight.min.js" defer></script>
+<!-- 토스트 UI 끝 -->
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/common.css" />
+<script src="${pageContext.request.contextPath}/static/common.js" defer></script>
+</head>
+<body class="body-contents flex flex-dr-c min-height-100vh">
+	<section class="hearbar">
+		<div class="flex">
+			<section class="member-state">
+				<c:if test="${isUsingTempPw eq 1}">
+					<a href="../member/memberModify" style="color: red">임시 비밀번호를 사용 중입니다.</a>
+				</c:if>
+				<c:if test="${expireDateOfPw eq 0}">
+					<a href="../member/memberModify" style="color: red">보안을 위해 비밀번호를 변경해주세요.</a>
+				</c:if>
+			</section>
+		</div>
+		<nav class="side-menu">
+			<ul class="menu-btn">
+				<div class="line line--1"></div>
+				<div class="line line--2"></div>
+				<div class="line line--3"></div>
+			</ul>
+			<ul class="nav-links">
+				<li class="link"><a href="../home/main" class="flex"><i class="fas fa-home"></i></a></li>
+				<li class="link"><a href="#" class="flex"><span>게시판</span></a>
+					<ul class="link">
+						<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>공지사항</span></a></li>
+						<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>자유게시판</span></a></li>
+					</ul></li>
+				<li class="link"><a href="#" class="flex"><span>이용후기</span></a></li>
+				<li class="link"><a href="#" class="flex"><span>이벤트/혜택</span></a></li>
+			</ul>
+		</nav>
+		<div class="head-bar flex flex-jc-c flex-ai-c">
+			<div class="flex flex-jc-c flex-g-1">
+				<nav class="menu-box visible-md-up">
+					<ul class="flex flex-ai-c">
+						<li><a href="../home/main" class="flex"><i class="fas fa-home"></i></a></li>
+						<li class="flex"><a href="#" class="flex"><span>게시판</span></a>
+							<ul class="">
+								<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>공지사항</span></a></li>
+								<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>자유게시판</span></a></li>
+							</ul></li>
+						<li><a href="#" class="flex"><span>이용후기</span></a></li>
+						<li><a href="#" class="flex"><span>이벤트/혜택</span></a></li>
+					</ul>
+				</nav>
+			</div>
+			<div>
+				<div class="logined">
+					<c:if test="${isLogined}">
+						<a href="../member/doLogout"><i class="fas fa-sign-out-alt"></i>로그아웃</a>
+						<a href="../member/memberModify">마이페이지</a>
+						<a href="../member/doLogout">고객센터</a>
+					</c:if>
+					<c:if test="${isLogined == false}">
+						<a href="../member/login"><i class="fas fa-sign-in-alt"></i> 로그인</a>
+						<a href="../member/join">회원가입</a>
+						<a href="../member/login">고객센터</a>
+					</c:if>
+				</div>
+				<nav class="search-box">
+					<search class="flex flex-jc-end"> <span class="flex">
+						<div class="search">
+							<!--             <input type="text" placeholder=" "> -->
+							<input value="${param.searchKeyword}" type="text" name="searchKeyword" placeholder=" " />
+							<div>
+								<svg>
+                    <use xlink:href="#path">
+                      </svg>
+							</div>
+						</div> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 28" id="path">
+                  <path
+								d="M32.9418651,-20.6880772 C37.9418651,-20.6880772 40.9418651,-16.6880772 40.9418651,-12.6880772 C40.9418651,-8.68807717 37.9418651,-4.68807717 32.9418651,-4.68807717 C27.9418651,-4.68807717 24.9418651,-8.68807717 24.9418651,-12.6880772 C24.9418651,-16.6880772 27.9418651,-20.6880772 32.9418651,-20.6880772 L32.9418651,-29.870624 C32.9418651,-30.3676803 33.3448089,-30.770624 33.8418651,-30.770624 C34.08056,-30.770624 34.3094785,-30.6758029 34.4782612,-30.5070201 L141.371843,76.386562"
+								transform="translate(83.156854, 22.171573) rotate(-225.000000) translate(-83.156854, -22.171573)"></path>
+                </symbol>
+                </svg>
+					</span> </search>
+				</nav>
+			</div>
+
+		</div>
+	</section>
