@@ -219,24 +219,26 @@ public class ArticleDao {
 	return MysqlUtil.selectRowIntValue(sql);
     }
 
-    public int isLiked(int memberId, int articleId) {
+    public int isLiked(int memberId, int articleId, String code) {
 	SecSql sql = new SecSql();
 	sql.append("SELECT `like`");
 	sql.append("FROM `like`");
 	sql.append("WHERE `like` = 1");
 	sql.append("AND memberId = ?", memberId);
 	sql.append("AND articleId = ?", articleId);
+	sql.append("AND relTypeCode = ?", code);
 
 	return MysqlUtil.selectRowIntValue(sql);
     }
 
-    public int isHated(int memberId, int articleId) {
+    public int isHated(int memberId, int articleId, String code) {
 	SecSql sql = new SecSql();
 	sql.append("SELECT unlike");
 	sql.append("FROM `like`");
 	sql.append("WHERE `unlike` = 1");
 	sql.append("AND memberId = ?", memberId);
 	sql.append("AND articleId = ?", articleId);
+	sql.append("AND relTypeCode = ?", code);
 
 	return MysqlUtil.selectRowIntValue(sql);
     }

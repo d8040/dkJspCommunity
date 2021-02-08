@@ -60,12 +60,12 @@ public class ArticleService {
 	return articleDao.hateCount(id);
     }
 
-    public int isLiked(int memberId, int articleId) {
-	return articleDao.isLiked(memberId, articleId);
+    public int isLiked(int memberId, int articleId, String code) {
+	return articleDao.isLiked(memberId, articleId, code);
     }
 
-    public int isHated(int memberId, int articleId) {
-	return articleDao.isHated(memberId, articleId);
+    public int isHated(int memberId, int articleId, String code) {
+	return articleDao.isHated(memberId, articleId, code);
     }
 
 }

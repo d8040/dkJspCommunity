@@ -4,18 +4,28 @@ import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
 import com.sbs.example.dkJspCommunity.mysqlutil.SecSql;
 
 public class LikeDao {
-     public void doLike(int memberId, int articleId, int like, int unlike, String relTypeCode) {
-	SecSql sql = new SecSql();
-	
-	sql.append("INSERT INTO `like`");
-	sql.append("(regDate, updateDate, memberId, articleId, `like`, unlike)");
-	sql.append("VALUES (NOW(), NOW(), ?, ?, ?, ?)", memberId, articleId, like, unlike);
-	sql.append("ON DUPLICATE KEY UPDATE");
-	sql.append("updateDAte = NOW()");
-	sql.append(", `like` = ?", like);
-	sql.append(", unlike = ?", unlike);
-	sql.append(", relTypeCode = ?", relTypeCode);
 
-	MysqlUtil.insert(sql);
-    }
+	public int removePoint(String relTypeCode, int relId, int memberId) {
+		SecSql sql = new SecSql();
+		sql.append("DELETE FROM `like`");
+		sql.append("WHERE 1");
+		sql.append("AND relTypeCode = ?", relTypeCode);
+		sql.append("AND relId = ? ", relId);
+		sql.append("AND memberId = ?", memberId);
+		
+		return MysqlUtil.delete(sql);
+	}
+
+	public int setPoint(String relTypeCode, int relId, int memberId, int point) {
+		SecSql sql = new SecSql();
+		sql.append("INSERT INTO `like`");
+		sql.append("SET regDate = NOW()");
+		sql.append(", updateDate = NOW()");
+		sql.append(", relTypeCode = ?", relTypeCode);
+		sql.append(", relId = ? ", relId);
+		sql.append(", memberId = ?", memberId);
+		sql.append(", point = ?", point);
+		
+		return MysqlUtil.insert(sql);
+	}
 }

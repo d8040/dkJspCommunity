@@ -3,6 +3,7 @@ package com.sbs.example.dkJspCommunity.container;
 import com.sbs.example.dkJspCommunity.controller.AdmMemberController;
 import com.sbs.example.dkJspCommunity.controller.UsrArticleController;
 import com.sbs.example.dkJspCommunity.controller.UsrHomeController;
+import com.sbs.example.dkJspCommunity.controller.UsrLikeController;
 import com.sbs.example.dkJspCommunity.controller.UsrMemberController;
 import com.sbs.example.dkJspCommunity.controller.UsrReplyController;
 import com.sbs.example.dkJspCommunity.dao.ArticleDao;
@@ -31,6 +32,7 @@ public class Container {
     public static LikeService likeService;
     public static ReplyService replyService;
 
+	public static UsrLikeController usrLikeController;
     public static AdmMemberController admMemberController;
     public static UsrMemberController usrMemberController;
     public static UsrArticleController articleController;
@@ -51,6 +53,7 @@ public class Container {
 	likeService = new LikeService();
 	replyService = new ReplyService();
 
+	usrLikeController = new UsrLikeController();
 	admMemberController = new AdmMemberController();
 	usrMemberController = new UsrMemberController();
 	articleController = new UsrArticleController();

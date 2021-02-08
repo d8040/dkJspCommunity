@@ -10,8 +10,12 @@ public class LikeService {
 	likeDao = Container.likeDao;
     }
 
-    public void doLike(int memberId, int articleId, int like, int unlike, String relTypeCode) {
-	likeDao.doLike(memberId, articleId, like, unlike, relTypeCode);
-    }
+	public void setLikePoint(String relTypeCode, int relId, int actorId, int point) {
+		if (point == 0) {
+			likeDao.removePoint(relTypeCode, relId, actorId);
+		} else {
+			likeDao.setPoint(relTypeCode, relId, actorId, point);
+		}
+	}
 
 }

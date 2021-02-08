@@ -99,21 +99,21 @@
 			<div class="article-detail__articleRcm flex">
 				<div>
 					<c:if test="${isLiked == -1}">
-						<a href="doLike?memberId=${loginedMemberId}&id=${article.id}">좋아요<i class="far fa-thumbs-up"></i>[${likeCount}]
+						<a onclick="history.go(0)" href="doLike?memberId=${loginedMemberId}&relId=${article.id}&relTypeCode=article">좋아요<i class="far fa-thumbs-up"></i>[${likeCount}]
 						</a>
 					</c:if>
 					<c:if test="${isLiked == 1}">
-						<a href="doLikeCancel?memberId=${loginedMemberId}&id=${article.id}">좋아요<i class="fas fa-thumbs-up"></i>[${likeCount}]
+						<a onclick="history.go(0)" href="doLikeCancel?memberId=${loginedMemberId}&relId=${article.id}&relTypeCode=article">좋아요<i class="fas fa-thumbs-up"></i>[${likeCount}]
 						</a>
 					</c:if>
 				</div>
 				<div>
 					<c:if test="${isHated == -1}">
-						<a href="doHate?memberId=${loginedMemberId}&id=${article.id}">싫어요<i class="far fa-thumbs-down"></i>[${hateCount}]
+						<a onclick="history.go(0)" href="doHate?memberId=${loginedMemberId}&relId=${article.id}&relTypeCode=article">싫어요<i class="far fa-thumbs-down"></i>[${hateCount}]
 						</a>
 					</c:if>
 					<c:if test="${isHated == 1}">
-						<a href="doLikeCancel?memberId=${loginedMemberId}&id=${article.id}">싫어요<i class="fas fa-thumbs-down"></i>[${hateCount}]
+						<a onclick="history.go(0)" href="doLikeCancel?memberId=${loginedMemberId}&relId=${article.id}&relTypeCode=article">싫어요<i class="fas fa-thumbs-down"></i>[${hateCount}]
 						</a>
 					</c:if>
 				</div>
@@ -150,7 +150,25 @@
 								<div class="reply-box__body">
 									<div class="reply-box__body__info flex flex-ai-end">
 										<div>${reply.extra_writer}</div>
-										<div>${reply.regDate}</div>
+										<div class="reply-box__body__date">${reply.regDate}</div>
+										<div class="reply-box__body__rcm flex flex-jc-end flex-g-1">
+											<div>
+												<c:if test="${isLiked == -1}">
+													<a href="doLike?memberId=${loginedMemberId}&id=${reply.id}&relTypeCode=reply"><i class="far fa-thumbs-up"></i>[${reply.extra_likeCount}] </a>
+												</c:if>
+												<c:if test="${isLiked == 1}">
+													<a href="doLikeCancel?memberId=${loginedMemberId}&id=${reply.id}&relTypeCode=reply"><i class="fas fa-thumbs-up"></i>[${reply.extra_likeCount}] </a>
+												</c:if>
+											</div>
+											<div>
+												<c:if test="${isHated == -1}">
+													<a href="doHate?memberId=${loginedMemberId}&id=${reply.id}&relTypeCode=reply"><i class="far fa-thumbs-down"></i>[${reply.extra_unlikeCount}] </a>
+												</c:if>
+												<c:if test="${isHated == 1}">
+													<a href="doLikeCancel?memberId=${loginedMemberId}&id=${reply.id}&relTypeCode=reply"><i class="fas fa-thumbs-down"></i>[${reply.extra_unlikeCount}] </a>
+												</c:if>
+											</div>
+										</div>
 									</div>
 									<div class="reply-box__body__body">${reply.body}</div>
 									<div class="reply-box__function">
@@ -182,7 +200,25 @@
 											<div class="reply-box__body">
 												<div class="reply-box__body__info flex flex-ai-end">
 													<div>&#11177; ${reReply.extra_writer}</div>
-													<div>${reReply.regDate}</div>
+													<div class="reply-box__body__date">${reReply.regDate}</div>
+													<div class="reply-box__body__rcm flex flex-jc-end flex-g-1">
+														<div>
+															<c:if test="${isLiked == -1}">
+																<a href="doLike?memberId=${loginedMemberId}&id=${reReply.id}&relTypeCode=reply"><i class="far fa-thumbs-up"></i>[${reReply.extra_likeCount}] </a>
+															</c:if>
+															<c:if test="${isLiked == 1}">
+																<a href="doLikeCancel?memberId=${loginedMemberId}&id=${reReply.id}&relTypeCode=reply"><i class="fas fa-thumbs-up"></i>[${reReply.extra_unlikeCount}] </a>
+															</c:if>
+														</div>
+														<div>
+															<c:if test="${isHated == -1}">
+																<a href="doHate?memberId=${loginedMemberId}&id=${reReply.id}&relTypeCode=reply"><i class="far fa-thumbs-down"></i>[${reReply.extra_unlikeCount}] </a>
+															</c:if>
+															<c:if test="${isHated == 1}">
+																<a href="doLikeCancel?memberId=${loginedMemberId}&id=${reReply.id}&relTypeCode=reply"><i class="fas fa-thumbs-down"></i>[${reReply.extra_likeCount}] </a>
+															</c:if>
+														</div>
+													</div>
 												</div>
 												<div class="reply-box__body__body">${reReply.body}</div>
 												<div class="reply-box__function">
@@ -218,7 +254,7 @@
 				<div class="reply-box con-max-width">
 					<div class="con flex-ai-c flex">
 						<div class="reply-box__textarea flex-g-1">
-							<textarea name="replyBody" placeholder="내용을 입력해 주세요." style="white-space:pre"></textarea>
+							<textarea name="replyBody" placeholder="내용을 입력해 주세요." style="white-space: pre"></textarea>
 						</div>
 						<div class="reply-box__btn">
 							<input class="input" type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />

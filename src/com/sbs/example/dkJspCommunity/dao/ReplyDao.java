@@ -17,6 +17,8 @@ public class ReplyDao {
 	SecSql sql = new SecSql();
 	sql.append("SELECT *");
 	sql.append(", M.name AS extra_writer");
+	sql.append(", (SELECT COUNT(`like`) FROM `like` AS L WHERE articleId = R.id AND L.relTypeCode = 'reply' AND `like`=1) AS extra_likeCount");
+	sql.append(", (SELECT COUNT(unlike) FROM `like` AS L WHERE articleId = R.id AND L.relTypeCode = 'reply' AND `unlike`=1) AS extra_unlikeCount");
 	sql.append("FROM reply AS R");
 	sql.append("LEFT JOIN `member` AS M");
 	sql.append("ON R.memberId = M.id");

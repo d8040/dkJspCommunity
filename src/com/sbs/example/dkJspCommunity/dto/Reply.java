@@ -15,6 +15,8 @@ public class Reply {
     public String updateDate;
     public int hitsCount;
     public String extra_writer;
+    public int extra_likeCount;
+    public int extra_unlikeCount;
     
     public Reply(Map<String, Object> replyMap) {
 	this.id = (int) replyMap.get("id");
@@ -26,5 +28,7 @@ public class Reply {
 	this.articleId = (int) replyMap.get("articleId");
 	this.hitsCount = (int) replyMap.get("hitsCount");
 	this.extra_writer = (String) replyMap.get("extra_writer");
+	this.extra_likeCount = (int) replyMap.get("extra_likeCount");
+	this.extra_unlikeCount = (int) replyMap.get("extra_unlikeCount");
     }
 }

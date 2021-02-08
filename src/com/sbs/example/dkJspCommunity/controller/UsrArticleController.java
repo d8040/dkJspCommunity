@@ -90,7 +90,8 @@ public class UsrArticleController extends Controller {
 
     public String showDetail(HttpServletRequest req, HttpServletResponse resp) {
 	int memberId = (int) req.getAttribute("loginedMemberId");
-	int id = Util.getAsInt(req.getParameter("id"), 0);
+	int id = Integer.parseInt(req.getParameter("id"));	
+	String relTypeCode = req.getParameter("relTypeCode");
 
 	if (id == 0) {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
@@ -107,8 +108,8 @@ public class UsrArticleController extends Controller {
 	Container.articleService.hitCount(id);
 	int likeCount = Container.articleService.likeCount(id);
 	int hateCount = Container.articleService.hateCount(id);
-	int isLiked = Container.articleService.isLiked(memberId, id);
-	int isHated = Container.articleService.isHated(memberId, id);
+	int isLiked = Container.articleService.isLiked(memberId, id, relTypeCode);
+	int isHated = Container.articleService.isHated(memberId, id, relTypeCode);
 
 	req.setAttribute("likeCount", likeCount);
 	req.setAttribute("hateCount", hateCount);
@@ -265,52 +266,58 @@ public class UsrArticleController extends Controller {
 
     public String doLike(HttpServletRequest req, HttpServletResponse resp) {
 	int memberId = (int) req.getAttribute("loginedMemberId");
-	int id = Util.getAsInt(req.getParameter("id"), 0);
-
+	int id = Integer.parseInt(req.getParameter("id"));	
+	String relTypeCode = req.getParameter("relTypeCode");
+	
+	System.out.println("id::"+id);
+	System.out.println("relTypeCode: "+relTypeCode);
 	if (id == 0) {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
-
-	Container.likeService.doLike(memberId, id, 1, 0, "article");
 	
 	return msgAndReplace(req, "좋아요가 추가되었습니다.", String.format("detail?id=%d", id));
     }
 
     public String doHate(HttpServletRequest req, HttpServletResponse resp) {
 	int memberId = (int) req.getAttribute("loginedMemberId");
-	int id = Util.getAsInt(req.getParameter("id"), 0);
+	int id = Integer.parseInt(req.getParameter("id"));	
+	String relTypeCode = req.getParameter("relTypeCode");
 
+	System.out.println("id::"+id);
+	System.out.println("relTypeCode: "+relTypeCode);
 	if (id == 0) {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
 	
-	Container.likeService.doLike(memberId, id, 0, 1, "article");
 
 	return msgAndReplace(req, "싫어요가 추가되었습니다.", String.format("detail?id=%d", id));
     }
 
     public String doLikeCancel(HttpServletRequest req, HttpServletResponse resp) {
 	int memberId = (int) req.getAttribute("loginedMemberId");
-	int id = Util.getAsInt(req.getParameter("id"), 0);
+	int id = Integer.parseInt(req.getParameter("id"));	
+	String relTypeCode = req.getParameter("relTypeCode");
 
+	System.out.println("id::"+id);
+	System.out.println("relTypeCode: "+relTypeCode);
 	if (id == 0) {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
-	
-	Container.likeService.doLike(memberId, id, 0, 0, "article");
 
 	return msgAndReplace(req, "좋아요가 취소되었습니다.", String.format("detail?id=%d", id));
     }
 
     public String doHateCancel(HttpServletRequest req, HttpServletResponse resp) {
 	int memberId = (int) req.getAttribute("loginedMemberId");
-	int id = Util.getAsInt(req.getParameter("id"), 0);
+//	int id = Util.getAsInt(req.getParameter("id"), 0);
+	int id = Integer.parseInt(req.getParameter("id"));	
+	String relTypeCode = req.getParameter("relTypeCode");
 
+	System.out.println("id::"+id);
+	System.out.println("relTypeCode: "+relTypeCode);
 	if (id == 0) {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
-
-	Container.likeService.doLike(memberId, id, 0, 0, "article");
 	
 	return msgAndReplace(req, "싫어요가 최소되었습니다.", String.format("detail?id=%d", id));
     }
