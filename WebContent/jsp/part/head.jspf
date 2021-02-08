@@ -38,16 +38,16 @@
 </head>
 <body class="body-contents flex flex-dr-c min-height-100vh">
 	<section class="hearbar">
-	    <div class="flex">
-      <section class="member-state">
-        <c:if test="${isUsingTempPw eq 1}">
-          <a href="../member/memberModify" style="color: red">임시 비밀번호를 사용 중입니다.</a>
-        </c:if>
-        <c:if test="${expireDateOfPw eq 0}">
-          <a href="../member/memberModify" style="color: red">보안을 위해 비밀번호를 변경해주세요.</a>
-        </c:if>
-      </section>
-    </div>
+		<div class="flex">
+			<section class="member-state">
+				<c:if test="${isUsingTempPw eq 1}">
+					<a href="../member/memberModify" style="color: red">임시 비밀번호를 사용 중입니다.</a>
+				</c:if>
+				<c:if test="${expireDateOfPw eq 0}">
+					<a href="../member/memberModify" style="color: red">보안을 위해 비밀번호를 변경해주세요.</a>
+				</c:if>
+			</section>
+		</div>
 		<nav class="side-menu">
 			<ul class="menu-btn">
 				<div class="line line--1"></div>
@@ -55,7 +55,7 @@
 				<div class="line line--3"></div>
 			</ul>
 			<ul class="nav-links">
-				<li class="link"><a href="../home/main" class="flex"><i class="fasfa-home"> </i></a></li>
+				<li class="link"><a href="../home/main" class="flex"><i class="fas fa-home"></i></a></li>
 				<li class="link"><a href="#" class="flex"><span>게시판</span></a>
 					<ul class="link">
 						<li><a href="../article/list?boardId=1" class="flex flex-jc-c flex-ai-c "><span>공지사항</span></a></li>

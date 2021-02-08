@@ -5,6 +5,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <main class="flex-g-1 con">
 	<div>
+		<!-- textarea 줄바꿈 -->
+		<script>
+		var str = $("#textarea").val();
+		str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+		</script>
 		<script>
 		$(document).ready(function(){
 			$( ".input" ).click(function() {
@@ -178,7 +183,7 @@
 											<div>&#11177;${reply.extra_writer}:: ${reply.extra_writer}님께 댓글쓰기</div>
 											<div class="reply-box flex">
 												<div class="reply-box__textarea flex-g-1">
-													<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reply.extra_writer}::</textarea>
+													<textarea id="textarea" name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reply.extra_writer}::</textarea>
 												</div>
 												<div class="reply-box__btn">
 													<input class="input" type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
@@ -210,7 +215,7 @@
 														<div>&#11177; ${reply.extra_writer}:: ${reReply.extra_writer}님께 댓글쓰기</div>
 														<div class="reply-box flex">
 															<div class="reply-box__textarea flex-g-1">
-																<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reReply.extra_writer}::</textarea>
+																<textarea id="textarea" name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reReply.extra_writer}::</textarea>
 															</div>
 															<div class="reply-box__btn">
 																<input type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
@@ -232,7 +237,7 @@
 				<div class="reply-box con-max-width">
 					<div class="con flex-ai-c flex">
 						<div class="reply-box__textarea flex-g-1">
-							<textarea name="replyBody" placeholder="내용을 입력해 주세요."></textarea>
+							<textarea id="textarea" name="replyBody" placeholder="내용을 입력해 주세요." style="white-space:pre"></textarea>
 						</div>
 						<div class="reply-box__btn">
 							<input class="input" type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
