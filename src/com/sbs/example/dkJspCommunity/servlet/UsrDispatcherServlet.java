@@ -52,7 +52,7 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 		jspPath = usrMemberController.getLoginIdDup(req, resp);
 	    }
 	} else if (controllerName.equals("article")) {
-	    UsrArticleController articleController = Container.articleController;
+	    UsrArticleController articleController = Container.usrArticleController;
 
 	    if (actionMethodName.equals("list")) {
 		jspPath = articleController.showList(req, resp);
@@ -82,21 +82,23 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 
 	    if (actionMethodName.equals("doReplyWrite")) {
 		jspPath = replyController.doReplyWrite(req, resp);
-	    }else if (actionMethodName.equals("doReplyDelete")) {
+	    } else if (actionMethodName.equals("doReplyDelete")) {
 		jspPath = replyController.doReplyDelete(req, resp);
+	    } else if (actionMethodName.equals("doReplyModify")) {
+		jspPath = replyController.doReplyModify(req, resp);
 	    }
-	}else if (controllerName.equals("like")) {
+	} else if (controllerName.equals("like")) {
 	    UsrLikeController likeController = Container.usrLikeController;
 
-		if (actionMethodName.equals("doLike")) {
-			jspPath = likeController.doLike(req, resp);
-		} else if (actionMethodName.equals("doCancelLike")) {
-			jspPath = likeController.doCancelLike(req, resp);
-		} else if (actionMethodName.equals("doDislike")) {
-			jspPath = likeController.doDislike(req, resp);
-		} else if (actionMethodName.equals("doCancelDislike")) {
-			jspPath = likeController.doCancelDislike(req, resp);
-		}
+	    if (actionMethodName.equals("doLike")) {
+		jspPath = likeController.doLike(req, resp);
+	    } else if (actionMethodName.equals("doCancelLike")) {
+		jspPath = likeController.doCancelLike(req, resp);
+	    } else if (actionMethodName.equals("doDislike")) {
+		jspPath = likeController.doDislike(req, resp);
+	    } else if (actionMethodName.equals("doCancelDislike")) {
+		jspPath = likeController.doCancelDislike(req, resp);
+	    }
 	}
 	return jspPath;
     }

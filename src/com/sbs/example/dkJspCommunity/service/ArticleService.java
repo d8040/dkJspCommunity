@@ -7,12 +7,15 @@ import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dao.ArticleDao;
 import com.sbs.example.dkJspCommunity.dto.Article;
 import com.sbs.example.dkJspCommunity.dto.Board;
+import com.sbs.example.dkJspCommunity.dto.Member;
 
 public class ArticleService {
 
     private ArticleDao articleDao;
+    private LikeService likeService;
 
     public ArticleService() {
+	likeService = Container.likeService;
 	articleDao = Container.articleDao;
     }
 
@@ -21,7 +24,34 @@ public class ArticleService {
     }
 
     public Article getForPrintArticleById(int id) {
-	return articleDao.getForPrintArticleById(id);
+//	return articleDao.getForPrintArticleById(id);
+	return getForPrintArticleById(id, null);
+    }
+
+    public Article getForPrintArticleById(int id, Member actor) {
+	Article article = articleDao.getForPrintArticleById(id);
+
+	if (article == null) {
+		return null;
+	}
+
+	if (actor != null) {
+		updateInfoForPrint(article, actor);
+	}
+
+	return article;
+    }
+
+    private void updateInfoForPrint(Article article, Member actor) {
+	boolean actorCanLike = likeService.actorCanLike(article, actor);
+	boolean actorCanCancelLike = likeService.actorCanCancelLike(article, actor);
+	boolean actorCanDislike = likeService.actorCanDislike(article, actor);
+	boolean actorCanCancelDislike = likeService.actorCanCancelDislike(article, actor);
+
+	article.getExtra().put("actorCanLike", actorCanLike);
+	article.getExtra().put("actorCanCancelLike", actorCanCancelLike);
+	article.getExtra().put("actorCanDislike", actorCanDislike);
+	article.getExtra().put("actorCanCancelDislike", actorCanCancelDislike);	
     }
 
     public Board getBoardById(int id) {
@@ -47,25 +77,4 @@ public class ArticleService {
     public int getArticlesCountByBoardId(int boardId, String searchKeywordType, String searchKeyword) {
 	return articleDao.getArticlesCountByBoardId(boardId, searchKeywordType, searchKeyword);
     }
-
-    public void hitCount(int id) {
-	articleDao.hitCount(id);
-    }
-
-    public int likeCount(int id) {
-	return articleDao.likeCount(id);
-    }
-
-    public int hateCount(int id) {
-	return articleDao.hateCount(id);
-    }
-
-    public int isLiked(int memberId, int articleId, String code) {
-	return articleDao.isLiked(memberId, articleId, code);
-    }
-
-    public int isHated(int memberId, int articleId, String code) {
-	return articleDao.isHated(memberId, articleId, code);
-    }
-
 }

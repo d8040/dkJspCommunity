@@ -16,17 +16,21 @@ public class ArticleDao {
 
 	SecSql sql = new SecSql();
 	sql.append("SELECT *");
-	sql.append(", M.name AS extra_writer");
-	sql.append(", B.code AS extra_boardCode");
-	sql.append(", B.name AS extra_boardName");
-	sql.append(", (SELECT COUNT(*) FROM reply AS R WHERE articleId = A.id) AS extra_replyCount");
-	sql.append(", (SELECT COUNT(`like`) FROM `like` AS R WHERE articleId = A.id AND `like`=1) AS extra_likeCount");
-	sql.append(", (SELECT COUNT(unlike) FROM `like` AS R WHERE articleId = A.id AND `unlike`=1) AS extra_unlikeCount");
+	sql.append(", M.name AS extra__writer");
+	sql.append(", B.code AS extra__boardCode");
+	sql.append(", B.name AS extra__boardName");
+	sql.append(", IFNULL(SUM(L.point), 0) AS extra__likePoint");
+	sql.append(", IFNULL(SUM(IF(L.point > 0, L.point, 0)), 0) AS extra__likeOnlyPoint");
+	sql.append(", IFNULL(SUM(IF(L.point < 0, L.point * -1, 0)), 0) extra__dislikeOnlyPoint");
+	sql.append(", (SELECT COUNT(*) FROM reply AS R WHERE R.articleId = A.id) AS extra__replyCount");
 	sql.append("FROM article AS A");
 	sql.append("INNER JOIN `member` AS M");
 	sql.append("ON A.memberId = M.id");
 	sql.append("INNER JOIN `board` AS B");
 	sql.append("ON A.boardId = B.id");
+	sql.append("LEFT JOIN `like` AS L");
+	sql.append("ON L.relTypeCode = 'article'");
+	sql.append("AND A.id = L.relId");
 	if (boardId != 0) {
 	    sql.append("WHERE boardId = ?", boardId);
 	}
@@ -40,13 +44,13 @@ public class ArticleDao {
 		sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword, searchKeyword);
 	    }
 	}
+	sql.append("GROUP BY A.id");
+	
 	sql.append("ORDER BY A.id DESC");
 
 	if (limitCount != -1) {
 	    sql.append("LIMIT ?, ?", limitStart, limitCount);
 	}
-
-	System.out.println(sql.getRawSql());
 
 	List<Map<String, Object>> articleMapList = MysqlUtil.selectRows(sql);
 
@@ -60,15 +64,22 @@ public class ArticleDao {
     public Article getForPrintArticleById(int id) {
 	SecSql sql = new SecSql();
 	sql.append("SELECT A.*");
-	sql.append(", M.name AS extra_writer");
-	sql.append(", B.name AS extra_boardName");
-	sql.append(", B.code AS extra_boardCode");
+	sql.append(", M.name AS extra__writer");
+	sql.append(", B.name AS extra__boardName");
+	sql.append(", B.code AS extra__boardCode");
+	sql.append(", IFNULL(SUM(L.point), 0) AS extra__likePoint");
+	sql.append(", IFNULL(SUM(IF(L.point > 0, L.point, 0)), 0) AS extra__likeOnlyPoint");
+	sql.append(", IFNULL(SUM(IF(L.point < 0, L.point * -1, 0)), 0) extra__dislikeOnlyPoint");
 	sql.append("FROM article AS A");
 	sql.append("INNER JOIN `member` AS M");
 	sql.append("ON A.memberId = M.id");
 	sql.append("INNER JOIN `board` AS B");
 	sql.append("ON A.boardId = B.id");
+	sql.append("LEFT JOIN `like` AS L");
+	sql.append("ON L.relTypeCode = 'article'");
+	sql.append("AND A.id = L.relId");
 	sql.append("WHERE A.id = ?", id);
+	sql.append("GROUP BY A.id");
 
 	Map<String, Object> map = MysqlUtil.selectRow(sql);
 
@@ -141,9 +152,9 @@ public class ArticleDao {
     public Article getForPrintArticleByMemberIdAndId(int memberId, int id) {
 	SecSql sql = new SecSql();
 	sql.append("SELECT A.*");
-	sql.append(", M.name AS extra_writer");
-	sql.append(", B.name AS extra_boardName");
-	sql.append(", B.code AS extra_boardCode");
+	sql.append(", M.name AS extra__writer");
+	sql.append(", B.name AS extra__boardName");
+	sql.append(", B.code AS extra__boardCode");
 	sql.append("FROM article AS A");
 	sql.append("INNER JOIN `member` AS M");
 	sql.append("ON A.memberId = M.id");
@@ -186,59 +197,6 @@ public class ArticleDao {
 		sql.append("AND (A.title LIKE CONCAT('%', ? '%') OR A.body LIKE CONCAT('%', ? '%'))", searchKeyword, searchKeyword);
 	    }
 	}
-
-	return MysqlUtil.selectRowIntValue(sql);
-    }
-
-    public void hitCount(int id) {
-	SecSql sql = new SecSql();
-	sql.append("UPDATE article");
-	sql.append("SET hitsCount = hitsCount + 1");
-	sql.append("WHERE id = ?", id);
-
-	MysqlUtil.update(sql);
-    }
-
-    public int likeCount(int id) {
-	SecSql sql = new SecSql();
-	sql.append("SELECT COUNT(*) AS `like`");
-	sql.append("FROM `like`");
-	sql.append("WHERE `like` = 1");
-	sql.append("AND articleId = ?", id);
-
-	return MysqlUtil.selectRowIntValue(sql);
-    }
-
-    public int hateCount(int id) {
-	SecSql sql = new SecSql();
-	sql.append("SELECT COUNT(*) AS `unlike`");
-	sql.append("FROM `like`");
-	sql.append("WHERE unlike = 1");
-	sql.append("AND articleId = ?", id);
-
-	return MysqlUtil.selectRowIntValue(sql);
-    }
-
-    public int isLiked(int memberId, int articleId, String code) {
-	SecSql sql = new SecSql();
-	sql.append("SELECT `like`");
-	sql.append("FROM `like`");
-	sql.append("WHERE `like` = 1");
-	sql.append("AND memberId = ?", memberId);
-	sql.append("AND articleId = ?", articleId);
-	sql.append("AND relTypeCode = ?", code);
-
-	return MysqlUtil.selectRowIntValue(sql);
-    }
-
-    public int isHated(int memberId, int articleId, String code) {
-	SecSql sql = new SecSql();
-	sql.append("SELECT unlike");
-	sql.append("FROM `like`");
-	sql.append("WHERE `unlike` = 1");
-	sql.append("AND memberId = ?", memberId);
-	sql.append("AND articleId = ?", articleId);
-	sql.append("AND relTypeCode = ?", code);
 
 	return MysqlUtil.selectRowIntValue(sql);
     }

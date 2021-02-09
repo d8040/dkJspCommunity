@@ -50,7 +50,7 @@
 					<input name="loginId" type="text" placeholder="아이디">
 				</div>
 				<div>
-					<input name="loginPw" type="text" placeholder="비밀번호">
+					<input name="loginPw" type="password" placeholder="비밀번호">
 				</div>
 				<div class="login-box__function">
 					<c:if test="${isLogined == false}">

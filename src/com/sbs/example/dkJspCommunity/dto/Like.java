@@ -13,6 +13,8 @@ public class Like {
     private int relId;
     private String relTypeCode;
     private int point;
+    
+    private Map<String, Object> extra;
 
     public Like(Map<String, Object> map) {
 	this.id = (int) map.get("id");

@@ -1017,6 +1017,9 @@ footer{
 .reply-box__function .del{
  margin-right:10px;
 }
+.reply-box__function .modify{
+ margin-right:10px;
+}
 .reReply-box{
 /*   padding: 10px 20px; */
   padding-top: 10px;

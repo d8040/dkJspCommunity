@@ -55,7 +55,7 @@
 			</div>
 			<div class="article-modify__info">
 				<div class="flex jc-space-between">
-					<div>작성자: ${article.extra_writer}</div>
+					<div>작성자: ${article.extra__writer}</div>
 					<div>조회수: ${article.hitsCount}</div>
 				</div>
 				<div class="flex jc-space-between">

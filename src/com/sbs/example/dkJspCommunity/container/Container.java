@@ -20,45 +20,45 @@ import com.sbs.example.dkJspCommunity.service.ReplyService;
 
 public class Container {
     public static AttrDao attrDao;
-    public static MemberDao memberDao;
-    public static ArticleDao articleDao;
     public static LikeDao likeDao;
     public static ReplyDao replyDao;
+    public static MemberDao memberDao;
+    public static ArticleDao articleDao;
 
     public static AttrService attrService;
+    public static LikeService likeService;
+    public static ReplyService replyService;
     public static EmailService emailService;
     public static MemberService memberService;
     public static ArticleService articleService;
-    public static LikeService likeService;
-    public static ReplyService replyService;
 
-	public static UsrLikeController usrLikeController;
+    public static UsrLikeController usrLikeController;
+    public static UsrReplyController usrReplyController;
     public static AdmMemberController admMemberController;
     public static UsrMemberController usrMemberController;
-    public static UsrArticleController articleController;
     public static UsrHomeController usrHomeController;
-    public static UsrReplyController usrReplyController;
+    public static UsrArticleController usrArticleController;
 
     static {
 	attrDao = new AttrDao();
-	memberDao = new MemberDao();
-	articleDao = new ArticleDao();
 	likeDao = new LikeDao();
 	replyDao = new ReplyDao();
+	memberDao = new MemberDao();
+	articleDao = new ArticleDao();
 
 	attrService = new AttrService();
+	likeService = new LikeService();
+	replyService = new ReplyService();
 	emailService = new EmailService();
 	memberService = new MemberService();
 	articleService = new ArticleService();
-	likeService = new LikeService();
-	replyService = new ReplyService();
 
 	usrLikeController = new UsrLikeController();
+	usrReplyController = new UsrReplyController();
 	admMemberController = new AdmMemberController();
 	usrMemberController = new UsrMemberController();
-	articleController = new UsrArticleController();
 	usrHomeController = new UsrHomeController();
-	usrReplyController = new UsrReplyController();
+	usrArticleController = new UsrArticleController();
     }
 
 }

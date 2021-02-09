@@ -132,8 +132,11 @@ public abstract class DispatcherServlet extends HttpServlet {
 	needToLoginActionUrls.add("/usr/article/modify");
 	needToLoginActionUrls.add("/usr/article/doModify");
 	needToLoginActionUrls.add("/usr/article/doDelete");
-	needToLoginActionUrls.add("/usr/article/doLike");
-	needToLoginActionUrls.add("/usr/article/doHate");
+	needToLoginActionUrls.add("/usr/like/doLike");
+	needToLoginActionUrls.add("/usr/like/doLike");
+	needToLoginActionUrls.add("/usr/like/doCancelLike");
+	needToLoginActionUrls.add("/usr/like/doDislike");
+	needToLoginActionUrls.add("/usr/like/doCancelDislike");
 //	needToLoginActionUrls.add("/usr/reply/doReplyWrite");
 
 	if (needToLoginActionUrls.contains(actionUrl)) {

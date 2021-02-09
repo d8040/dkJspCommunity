@@ -1,5 +1,6 @@
 package com.sbs.example.dkJspCommunity.dto;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import lombok.Data;
@@ -13,13 +14,17 @@ public class Article {
     public int boardId;
     public String regDate;
     public String updateDate;
-    public String extra_writer;
-    public String extra_boardName;
-    public String extra_boardCode;
     public int hitsCount;
-    public int extra_replyCount;
-    public int extra_likeCount;
-    public int extra_unlikeCount;
+
+    private Map<String, Object> extra;
+
+    public String extra__writer;
+    public String extra__boardName;
+    public String extra__boardCode;
+    private int extra__likePoint;
+    private int extra__likeOnlyPoint;
+    private int extra__dislikeOnlyPoint;
+    private int extra__replyCount;
 
     public Article(Map<String, Object> articleMap) {
 	this.id = (int) articleMap.get("id");
@@ -30,24 +35,29 @@ public class Article {
 	this.memberId = (int) articleMap.get("memberId");
 	this.boardId = (int) articleMap.get("boardId");
 	this.hitsCount = (int) articleMap.get("hitsCount");
-	if (articleMap.containsKey("extra_writer")) {
-	    this.extra_writer = (String) articleMap.get("extra_writer");
+	if (articleMap.containsKey("extra__writer")) {
+	    this.extra__writer = (String) articleMap.get("extra__writer");
 	}
-	if (articleMap.containsKey("extra_boardName")) {
-	    this.extra_boardName = (String) articleMap.get("extra_boardName");
+	if (articleMap.containsKey("extra__boardName")) {
+	    this.extra__boardName = (String) articleMap.get("extra__boardName");
 	}
-	if (articleMap.containsKey("extra_boardCode")) {
-	    this.extra_boardCode = (String) articleMap.get("extra_boardCode");
+	if (articleMap.containsKey("extra__boardCode")) {
+	    this.extra__boardCode = (String) articleMap.get("extra__boardCode");
 	}
-	if (articleMap.containsKey("extra_replyCount")) {
-	    this.extra_replyCount = (int) articleMap.get("extra_replyCount");
+	if (articleMap.containsKey("extra__likePoint")) {
+	    this.extra__likePoint = (int) articleMap.get("extra__likePoint");
 	}
-	if (articleMap.containsKey("extra_likeCount")) {
-	    this.extra_likeCount = (int) articleMap.get("extra_likeCount");
+	if (articleMap.containsKey("extra__likeOnlyPoint")) {
+	    this.extra__likeOnlyPoint = (int) articleMap.get("extra__likeOnlyPoint");
 	}
-	if (articleMap.containsKey("extra_unlikeCount")) {
-	    this.extra_unlikeCount = (int) articleMap.get("extra_unlikeCount");
+	if (articleMap.containsKey("extra__dislikeOnlyPoint")) {
+	    this.extra__dislikeOnlyPoint = (int) articleMap.get("extra__dislikeOnlyPoint");
+	}if (articleMap.containsKey("extra__replyCount")) {
+	    this.extra__replyCount = (int) articleMap.get("extra__replyCount");
 	}
+
+
+	this.extra = new LinkedHashMap<>();
     }
 
 }

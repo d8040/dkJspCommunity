@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Article;
 import com.sbs.example.dkJspCommunity.dto.Board;
+import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.dto.Reply;
 import com.sbs.example.dkJspCommunity.service.ArticleService;
 import com.sbs.example.dkJspCommunity.service.ReplyService;
@@ -89,32 +90,24 @@ public class UsrArticleController extends Controller {
     }
 
     public String showDetail(HttpServletRequest req, HttpServletResponse resp) {
-	int memberId = (int) req.getAttribute("loginedMemberId");
-	int id = Integer.parseInt(req.getParameter("id"));	
-	String relTypeCode = req.getParameter("relTypeCode");
+	int id = Util.getAsInt(req.getParameter("id"), 0);
+	int replyId = Util.getAsInt(req.getParameter("replyId"), 0);
+	
+	System.out.println(replyId);
 
+	
 	if (id == 0) {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}
-
-	Article article = articleService.getForPrintArticleById(id);
-
+	Member loginedMember = (Member)req.getAttribute("loginedMember");
+		
+	Article article = articleService.getForPrintArticleById(id, loginedMember);	
 	if (article == null) {
 	    return msgAndBack(req, id + "번 게시물은 존재하지 않습니다.");
 	}
 
-	List<Reply> replies = replyService.getForPrintrepliesByArticleId(article.id);
-
-	Container.articleService.hitCount(id);
-	int likeCount = Container.articleService.likeCount(id);
-	int hateCount = Container.articleService.hateCount(id);
-	int isLiked = Container.articleService.isLiked(memberId, id, relTypeCode);
-	int isHated = Container.articleService.isHated(memberId, id, relTypeCode);
-
-	req.setAttribute("likeCount", likeCount);
-	req.setAttribute("hateCount", hateCount);
-	req.setAttribute("isLiked", isLiked);
-	req.setAttribute("isHated", isHated);
+	List<Reply> replies = replyService.getForPrintRepliesByArticleId(article.id);
+	
 	req.setAttribute("article", article);
 	req.setAttribute("replies", replies);
 	return "usr/article/detail";
@@ -171,7 +164,7 @@ public class UsrArticleController extends Controller {
     public String showModify(HttpServletRequest req, HttpServletResponse resp) {
 	int memberId = (int) req.getAttribute("loginedMemberId");
 	int id = Util.getAsInt(req.getParameter("id"), 0);
-
+	
 	if (id == 0) {
 	    return msgAndBack(req, "게시물 번호를 입력해주세요.");
 	}

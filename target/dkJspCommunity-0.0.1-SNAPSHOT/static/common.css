@@ -1001,9 +1001,12 @@ footer{
   font-weight:bold;
   margin-right: 20px;
 }
-.reply-box__body > .reply-box__body__info > div:last-child{
+.reply-box__body > .reply-box__body__info > .reply-box__body__date{
   color: rgba(1,1,1,0.5);
   font-size: 12px;
+}
+.reply-box__body > .reply-box__body__info > .reply-box__body__rcm a{
+ padding-left: 15px;
 }
 .reply-box__body > .reply-box__body__body{
   padding-left: 40px;
@@ -1012,6 +1015,9 @@ footer{
   padding-bottom: 10px;
 }
 .reply-box__function .del{
+ margin-right:10px;
+}
+.reply-box__function .modify{
  margin-right:10px;
 }
 .reReply-box{

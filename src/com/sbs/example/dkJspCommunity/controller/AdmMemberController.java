@@ -9,7 +9,7 @@ import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.service.MemberService;
 
-public class AdmMemberController {
+public class AdmMemberController extends Controller{
 
 	private MemberService memberService;
 	

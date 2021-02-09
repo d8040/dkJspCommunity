@@ -7,7 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.dkJspCommunity.container.Container;
+import com.sbs.example.dkJspCommunity.dto.Article;
+import com.sbs.example.dkJspCommunity.dto.Member;
+import com.sbs.example.dkJspCommunity.dto.Reply;
 import com.sbs.example.dkJspCommunity.service.ReplyService;
+import com.sbs.example.util.Util;
 
 public class UsrReplyController extends Controller {
 
@@ -27,7 +31,7 @@ public class UsrReplyController extends Controller {
 	System.out.println("replyBody::"+replyBody);
 	System.out.println("reReplyBody::"+reReplyBody);	
 	System.out.println("parentReplyId::"+parentReplyId);
-
+			
 	Map<String, Object> writeArgs = new HashMap<>();
 	writeArgs.put("articleId", articleId);
 	writeArgs.put("memberId", memberId);
@@ -42,11 +46,12 @@ public class UsrReplyController extends Controller {
 	}
 	
 	int newArticleId = replyService.write(writeArgs);
-	
+		
 	return msgAndReplace(req, "댓글이 추가되었습니다.", String.format("../article/detail?id=%d", articleId));
     }
 
     public String doReplyDelete(HttpServletRequest req, HttpServletResponse resp) {
+	int articleId = Integer.parseInt(req.getParameter("articleId"));	
 	int replyId = Integer.parseInt(req.getParameter("id"));	
 	int memberId = (int) req.getAttribute("loginedMemberId");
 	
@@ -59,6 +64,30 @@ public class UsrReplyController extends Controller {
 	
 	replyService.delete(delArgs);
 	
-	return msgAndBack(req,"댓글이 삭제되었습니다");
+	return msgAndReplace(req, "댓글이 삭제되었습니다.", String.format("../article/detail?id=%d", articleId));
+    }
+
+    public String doReplyModify(HttpServletRequest req, HttpServletResponse resp) {
+	int articleId = Integer.parseInt(req.getParameter("articleId"));
+	int replyId = Integer.parseInt(req.getParameter("replyId"));
+	String replyBody = req.getParameter("replyBody");
+	String reReplyBody = req.getParameter("reReplyBody");
+
+	System.out.println("replyIdmodify::"+replyId);
+	System.out.println("replyBody::"+replyBody);
+	System.out.println("reReplyBody::"+reReplyBody);	
+	
+	Map<String, Object> modifyArgs = new HashMap<>();
+	modifyArgs.put("replyId", replyId);
+	if (replyBody != null) {
+	    modifyArgs.put("replyBody", replyBody);	
+	}
+	else {
+	    modifyArgs.put("replyBody", reReplyBody);	
+	}
+	
+	replyService.doModify(modifyArgs);
+	
+	return msgAndReplace(req, "댓글이 수정되었습니다.", String.format("../article/detail?id=%d", articleId));
     }
 }
