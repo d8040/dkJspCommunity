@@ -237,7 +237,7 @@
 									<form action="../reply/doReplyModify" method="POST" onsubmit="Reply__submit(this); return false;">
 										<input type="hidden" name="articleId" value="${reply.articleId}" /> <input type="hidden" name="replyId" value="${reply.id}" />
 										<div class="re-reply-box" id="${reply.id}modify" style="display: none;">
-											<div>&#11177;${reply.extra__writer}:: ${reply.extra__writer}님께 댓글쓰기</div>
+											<div>댓글 수정</div>
 											<div class="reply-box flex">
 												<div class="reply-box__textarea flex-g-1">
 													<textarea name="replyBody" placeholder="내용을 입력해 주세요.">${reply.body}</textarea>
@@ -336,7 +336,7 @@
 												<input type="hidden" name="articleId" value="${reReply.articleId}" /> 
 												<input type="hidden" name="replyId" value="${reReply.id}" />
 												<div class="re-reply-box" id="${reReply.id}modify" style="display: none;">
-													<div>&#11177; ${reply.extra__writer}:: ${reReply.extra__writer}님께 댓글쓰기</div>
+													<div>댓글 수정</div>
 													<div class="reply-box flex">
 														<div class="reply-box__textarea flex-g-1">
 															<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">${reReply.body}</textarea>

@@ -218,7 +218,7 @@
 										<div class="flex flex-jc-end">
 											<c:if test="${loginedMemberId == reply.memberId}">
 												<a class="modify input" href="javascript:toggleLayer('${reply.id}modify');">수정</a>
-												<a class="del input" onclick="return confirm('정말로 삭제하시겠습니까?')" href="../reply/doReplyDelete?id=${reply.id}&articleId=${reㅡply.articleId}">삭제</a>
+												<a class="del input" onclick="return confirm('정말로 삭제하시겠습니까?')" href="../reply/doReplyDelete?id=${reply.id}&articleId=${reply.articleId}">삭제</a>
 											</c:if>
 											<a href="javascript:toggleLayer('${reply.id}xx');">답글</a>
 										</div>
