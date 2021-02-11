@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.sbs.example.dkJspCommunity.dto.Article;
 import com.sbs.example.dkJspCommunity.dto.Reply;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
 import com.sbs.example.dkJspCommunity.mysqlutil.SecSql;
@@ -112,7 +111,6 @@ public class ReplyDao {
 	sql.append("where id = ?", modifyArgs.get("replyId"));
 	
 	MysqlUtil.update(sql);
-	System.out.println(sql.getRawSql());
     }
 
 }

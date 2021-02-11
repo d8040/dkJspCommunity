@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.sbs.example.util.Util"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="pageTitle" value="게시물 상세페이지" />
 <%@ include file="../../part/head.jspf"%>
@@ -6,11 +7,11 @@
 <main class="flex-g-1 con">
 	<div>
 		<script>
-          let Reply__submited = false;
-          let Reply__checkedLoginId = "";
+          let DoReplyModifyForm__submited = false;
+          let DoReplyModifyForm__checkedLoginId = "";
 
-          function Reply__submit(form) {
-            if (Reply__submited) {
+          function DoReplyModifyForm__submit(form) {
+            if (DoReplyModifyForm__submited) {
               alert('처리중입니다.');
               return;
             }
@@ -22,7 +23,7 @@
             
 
             form.submit();
-            Reply__submited = true;
+            DoReplyModifyForm__submited = true;
           }         
         </script>
 		<script>
@@ -45,7 +46,6 @@
 
               return;
             }
-
             form.submit();
             DoReplyWriteForm__submited = true;
           }
@@ -96,7 +96,24 @@
             DoReReReplyWriteForm__submited = true;
           }         
         </script>
-
+		<script>
+		$(function() {
+			if ( param.focusReplyId ) {
+				const $target = $('.reply-box-list div[data-id="' + param.focusReplyId + '"]');
+				$target.addClass('focus');
+				
+				setTimeout(function() {
+					const targetOffset = $target.offset();
+					
+					$(window).scrollTop(targetOffset.top - 300);
+					
+					setTimeout(function() {
+						$target.removeClass('focus');
+					}, 1000);
+				}, 1000);
+			}
+		});		
+		</script>
 		<section class="article-detail con-min-width">
 			<div class="article_detail__board-onclick">
 				<a href="#" onclick="goBack()">게시판 > ${pageTitle} > </a>
@@ -177,7 +194,8 @@
 				<hr />
 				<c:forEach items="${replies}" var="reply">
 					<c:if test="${reply.parentReplyId == 0}">
-						<div class="reply-box">
+					  <div class="reply-box-list">
+					  	<div class="reply-box" data-id="${reply.id}">
 							<div class="reply-box__body">
 								<div class="reply-box__body__info flex flex-ai-end">
 									<div>${reply.extra__writer}</div>
@@ -214,7 +232,7 @@
 								<div class="reply-box__body__body">${reply.body}</div>
 								<div class="reply-box__function">
 									<form action="../reply/doReplyWrite" method="POST" onsubmit="DoReReplyWriteForm__submit(this); return false;">
-										<input type="hidden" name="articleId" value="${reply.articleId}" /> <input type="hidden" name="parentReplyId" value="${reply.id}" />
+										<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${reply.articleId}" /> <input type="hidden" name="parentReplyId" value="${reply.id}" />
 										<div class="flex flex-jc-end">
 											<c:if test="${loginedMemberId == reply.memberId}">
 												<a class="modify input" href="javascript:toggleLayer('${reply.id}modify');">수정</a>
@@ -224,7 +242,7 @@
 										</div>
 										<div class="re-reply-box" id="${reply.id}xx" style="display: none;">
 											<div>&#11177;${reply.extra__writer}:: ${reply.extra__writer}님께 댓글쓰기</div>
-											<div class="reply-box flex">
+											<div class="reply-box flex flex-ai-c">
 												<div class="reply-box__textarea flex-g-1">
 													<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reply.extra__writer}::</textarea>
 												</div>
@@ -234,8 +252,8 @@
 											</div>
 										</div>
 									</form>
-									<form action="../reply/doReplyModify" method="POST" onsubmit="Reply__submit(this); return false;">
-										<input type="hidden" name="articleId" value="${reply.articleId}" /> <input type="hidden" name="replyId" value="${reply.id}" />
+									<form action="../reply/doReplyModify" method="POST" onsubmit="DoReplyModifyForm__submit(this); return false;">
+										<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${reply.articleId}" /> <input type="hidden" name="replyId" value="${reply.id}" />
 										<div class="re-reply-box" id="${reply.id}modify" style="display: none;">
 											<div>댓글 수정</div>
 											<div class="reply-box flex">
@@ -250,13 +268,16 @@
 									</form>
 								</div>
 							</div>
-						</div>
+						</div></div>
 						<c:forEach items="${replies}" var="reReply">
 							<c:if test="${reply.id == reReply.parentReplyId}">
-								<div class="reReply-box">
+							 <div class="reply-box-list">
+								<div class="reReply-box" data-id="${reReply.id}">
 									<div class="reply-box__body">
 										<div class="reply-box__body__info flex flex-ai-end">
-											<div>&#11177; ${reReply.extra__writer}</div>
+											<div>
+												&#11177; ${reReply.extra__writer}<br> <br>
+											</div>
 											<div class="reply-box__body__rcm flex flex-jc-end flex-g-1">
 												<div>
 													<c:if test="${reReply.extra.actorCanLike}">
@@ -319,10 +340,10 @@
 											</div>
 
 											<form action="../reply/doReplyWrite" method="POST" onsubmit="DoReReReplyWriteForm__submit(this); return false;">
-												<input type="hidden" name="articleId" value="${reReply.articleId}" /> <input type="hidden" name="parentReplyId" value="${reply.id}" />
+												<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${reReply.articleId}" /> <input type="hidden" name="parentReplyId" value="${reply.id}" />
 												<div class="re-reply-box" id="${reReply.id}reply" style="display: none;">
 													<div>&#11177; ${reply.extra__writer}:: ${reReply.extra__writer}님께 댓글쓰기</div>
-													<div class="reply-box flex">
+													<div class="reply-box flex flex-ai-c">
 														<div class="reply-box__textarea flex-g-1">
 															<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reReply.extra__writer}::</textarea>
 														</div>
@@ -332,9 +353,8 @@
 													</div>
 												</div>
 											</form>
-											<form action="../reply/doReplyModify" method="POST" onsubmit="Reply__submit(this); return false;">
-												<input type="hidden" name="articleId" value="${reReply.articleId}" /> 
-												<input type="hidden" name="replyId" value="${reReply.id}" />
+											<form action="../reply/doReplyModify" method="POST" onsubmit="DoReplyModifyForm__submit(this); return false;">
+												<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${reReply.articleId}" /> <input type="hidden" name="replyId" value="${reReply.id}" />
 												<div class="re-reply-box" id="${reReply.id}modify" style="display: none;">
 													<div>댓글 수정</div>
 													<div class="reply-box flex">
@@ -349,14 +369,14 @@
 											</form>
 										</div>
 									</div>
-								</div>
+								</div></div>
 							</c:if>
 						</c:forEach>
 					</c:if>
 				</c:forEach>
 			</div>
 			<form action="../reply/doReplyWrite" method="POST" onsubmit="DoReplyWriteForm__submit(this); return false;">
-				<input type="hidden" name="articleId" value="${article.id}" />
+				<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${article.id}" />
 				<div class="reply-box con-max-width">
 					<div class="con flex-ai-c flex">
 						<div class="reply-box__textarea flex-g-1">

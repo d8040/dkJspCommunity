@@ -27,6 +27,7 @@ public class UsrReplyController extends Controller {
 	String replyBody = req.getParameter("replyBody");
 	String reReplyBody = req.getParameter("reReplyBody");
 	String parentReplyId = req.getParameter("parentReplyId");
+	String redirectUrl = req.getParameter("redirectUrl");
 		
 	System.out.println("replyBody::"+replyBody);
 	System.out.println("reReplyBody::"+reReplyBody);	
@@ -46,8 +47,10 @@ public class UsrReplyController extends Controller {
 	}
 	
 	int newArticleId = replyService.write(writeArgs);
+	
+	redirectUrl = redirectUrl.replace("[NEW_REPLY_ID]", newArticleId + "");
 		
-	return msgAndReplace(req, "댓글이 추가되었습니다.", String.format("../article/detail?id=%d", articleId));
+	return msgAndReplace(req, "댓글이 추가되었습니다.", redirectUrl);
     }
 
     public String doReplyDelete(HttpServletRequest req, HttpServletResponse resp) {
@@ -72,6 +75,8 @@ public class UsrReplyController extends Controller {
 	int replyId = Integer.parseInt(req.getParameter("replyId"));
 	String replyBody = req.getParameter("replyBody");
 	String reReplyBody = req.getParameter("reReplyBody");
+	String redirectUrl = req.getParameter("redirectUrl");
+	
 
 	System.out.println("replyIdmodify::"+replyId);
 	System.out.println("replyBody::"+replyBody);
@@ -88,6 +93,8 @@ public class UsrReplyController extends Controller {
 	
 	replyService.doModify(modifyArgs);
 	
-	return msgAndReplace(req, "댓글이 수정되었습니다.", String.format("../article/detail?id=%d", articleId));
+	redirectUrl = redirectUrl.replace("[NEW_REPLY_ID]", replyId + "");
+	
+	return msgAndReplace(req, "댓글이 수정되었습니다.", redirectUrl);
     }
 }
