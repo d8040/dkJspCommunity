@@ -150,7 +150,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 				req.setAttribute("alertMsg", "로그인 후 이용해 주세요.");
 				req.setAttribute("replaceUrl", "../member/login?afterLoginUrl=" + encodedCurrentUrl);
 
-				RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
+				RequestDispatcher rd = req.getRequestDispatcher(getJspDirPath() + "/common/redirect.jsp");
 				rd.forward(req, resp);
 			}
 		}
@@ -173,7 +173,7 @@ public abstract class DispatcherServlet extends HttpServlet {
 				req.setAttribute("alertMsg", "로그아웃 후 이용해주세요.");
 				req.setAttribute("historyBack", "../member/login?afterLoginUrl=" + encodedCurrentUrl);
 
-				RequestDispatcher rd = req.getRequestDispatcher("/jsp/common/redirect.jsp");
+				RequestDispatcher rd = req.getRequestDispatcher(getJspDirPath() + "/common/redirect.jsp");
 				rd.forward(req, resp);
 			}
 		}
@@ -191,7 +191,11 @@ public abstract class DispatcherServlet extends HttpServlet {
 	private void doAfterAction(HttpServletRequest req, HttpServletResponse resp, String jspPath) throws ServletException, IOException {
 		MysqlUtil.closeConnection();
 
-		RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/jsp/" + jspPath + ".jsp");
+		RequestDispatcher rd = req.getRequestDispatcher(getJspDirPath() + "/" +jspPath + ".jsp");
 		rd.forward(req, resp);
+	}
+	
+	private String getJspDirPath() {
+	    return "/WEB-INF/jsp";
 	}
 }
