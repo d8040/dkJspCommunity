@@ -134,58 +134,89 @@
 				<script type="text/x-template">${article.body}</script>
 				<div class="toast-ui-viewer"></div>
 			</div>
-			<script type="text/javascript">
-			$(function(){
-				$("#likeUp").click(function(){
-					$.ajax({
-						url: "../like/doLike",
-						type: "POST",
-						data: {
-							relTypeCode: "article"
-							relId: '${article.id}'
-							redirectUrl: '${encodedCurrentUrl}'
+			<script>		
+				function callDoLike() {
+					$.post('../like/doLikeAjax',
+						{
+							relTypeCode:"article",
+							relId:'${article.id}'
+						},								
+					'json',
+					function(data){
+							$(".article-like-point").jsp(data.extra__likeOnlyPoint);	
+						}				
+					);					
+				}
+				
+				function callDoCancelLike() {
+					$.post('../like/doCancelLike',
+						{
+							relTypeCode:"article",
+							relId:'${article.id}'
 						},
-						success: function(){			
+						function(data){
+						},						
+					'json'
+					);					
+				}
+								
+				function callDoDislike() {
+					$.post('../like/doDislike',
+						{
+							relTypeCode:"article",
+							relId:'${article.id}'
 						},
-						 error:function(error){
-        					// 요청이 실패했을 경우
-        					alert(error)
-        				}
-					})
-				})
-			});
+						function(data){
+						},						
+					'json'
+					);					
+				}
+				
+				function callDoCancelDislike() {
+					$.post('../like/doCancelDislike',
+						{
+							relTypeCode:"article",
+							relId:'${article.id}'
+						},
+						function(data){
+						},						
+					'json'
+					);					
+				}
 			</script>
 			<div class="article-detail__articleRcm flex">
 				<div>
 					<c:choose>
 						<c:when test="${article.extra.actorCanLike}">
-							<%-- <a id="likeUP" onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}] --%>
-							<a id="likeUp" href="">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]
-							</a>
+							<%-- <a id="likeUP" onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
+							<a href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>							
 						</c:when>
 						<c:when test="${article.extra.actorCanCancelLike}">
-							<a onclick="history.go(0)" href="../like/doCancelLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="fas fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]
-							</a>
+							<%-- <a onclick="history.go(0)" href="../like/doCancelLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="fas fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
+							<a href="#" onclick="callDoCancelLike();">좋아요<i class="fas fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
 						</c:when>
 						<c:otherwise>
-							<a onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]
-							</a>
+							<%-- <a onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
+							<a href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
 						</c:otherwise>
 					</c:choose>
 				</div>
 				<div>
 					<c:choose>
 						<c:when test="${article.extra.actorCanDislike}">
-							<a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a>
+							<%-- <a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
+							</a> --%>
+							<a href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-up"></i>[${article.extra__dislikeOnlyPoint}]</a>
 						</c:when>
 						<c:when test="${article.extra.actorCanCancelDislike}">
-							<a onclick="history.go(0)" href="../like/doCancelDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a>
+							<%-- <a onclick="history.go(0)" href="../like/doCancelDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
+							</a> --%>
+							<a href="#" onclick="callDoCancelDislike();">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]</a>
 						</c:when>
 						<c:otherwise>
-							<a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a>
+							<%-- <a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
+							</a> --%>
+							<a href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-up"></i>[${article.extra__dislikeOnlyPoint}]</a>
 						</c:otherwise>
 					</c:choose>
 				</div>
