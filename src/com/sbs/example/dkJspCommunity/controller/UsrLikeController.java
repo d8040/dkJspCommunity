@@ -7,15 +7,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.dkJspCommunity.container.Container;
+import com.sbs.example.dkJspCommunity.dto.Article;
+import com.sbs.example.dkJspCommunity.service.ArticleService;
 import com.sbs.example.dkJspCommunity.service.LikeService;
 import com.sbs.example.util.Util;
 
 public class UsrLikeController extends Controller {
 
 	private LikeService likeService;
+	private ArticleService articleService;
 
 	public UsrLikeController() {
 		likeService = Container.likeService;
+		articleService = Container.articleService;
 	}
 
 	public String doLike(HttpServletRequest req, HttpServletResponse resp) {
@@ -115,8 +119,14 @@ public class UsrLikeController extends Controller {
 		}
 
 		int actorId = (int) req.getAttribute("loginedMemberId");
+		
+		likeService.setLikePoint(relTypeCode, relId, actorId, 1);
+		
+		Article article = articleService.getForPrintArticleById(relId);
+		System.out.println("좋아요: "+article.getExtra__likeOnlyPoint());
+		rs.put("likePoint", article.getExtra__likeOnlyPoint());
 
-		return likeService.setLikePoint(relTypeCode, relId, actorId, 1);
+		return null;
 	}
 
 	public String doCancelLikeAjax(HttpServletRequest req, HttpServletResponse resp) {

@@ -134,21 +134,47 @@
 				<script type="text/x-template">${article.body}</script>
 				<div class="toast-ui-viewer"></div>
 			</div>
-			<script>		
+			<script>
+				$('.like').click(function(){
+				  $.ajax({
+				      url: "{% url 'pledge:pledge_like' pledge.pk %}", // 통신할 url을 지정한다.
+				      data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}, // 서버로 데이터를 전송할 때 이 옵션을 사용한다.
+				      dataType: "json", // 서버측에서 전송한 데이터를 어떤 형식의 데이터로서 해석할 것인가를 지정한다. 없으면 알아서 판단한다.
+				
+				      success: function(response){
+				        // 요청이 성공했을 경우 좋아요/싫어요 개수 레이블 업데이트
+				        $('#like_count'+ pk).html("count : "+ response.like_count);
+				        $('#dislike_count'+ pk).html("count : "+ response.dislike_count);
+				      },
+				      error:function(error){
+				        // 요청이 실패했을 경우
+				        alert(error)
+				      }
+				  });
+				})
 				function callDoLike() {
+					if ( ${loginedMemberId} == 0 ){
+            			alert('로그인 후 이용해 주세요.');
+         		    	return;
+        		    }
 					$.post('../like/doLikeAjax',
 						{
 							relTypeCode:"article",
 							relId:'${article.id}'
-						},								
-					'json',
-					function(data){
-							$(".article-like-point").jsp(data.extra__likeOnlyPoint);	
-						}				
+						},
+						success : function(data){
+							$('.article-detail__articleRcm').html(data).find('.article-detail__articleRcm');
+							return false;
+						},																
+						'json',						
 					);					
 				}
 				
 				function callDoCancelLike() {
+					if ( ${loginedMemberId} == 0 ){
+            			alert('로그인 후 이용해 주세요.');
+         		    	return;
+        		    }
 					$.post('../like/doCancelLike',
 						{
 							relTypeCode:"article",
@@ -161,6 +187,10 @@
 				}
 								
 				function callDoDislike() {
+					if ( ${loginedMemberId} == 0 ){
+            			alert('로그인 후 이용해 주세요.');
+         		    	return;
+        		    }
 					$.post('../like/doDislike',
 						{
 							relTypeCode:"article",
@@ -173,6 +203,10 @@
 				}
 				
 				function callDoCancelDislike() {
+					if ( ${loginedMemberId} == 0 ){
+            			alert('로그인 후 이용해 주세요.');
+         		    	return;
+        		    }
 					$.post('../like/doCancelDislike',
 						{
 							relTypeCode:"article",
@@ -189,7 +223,7 @@
 					<c:choose>
 						<c:when test="${article.extra.actorCanLike}">
 							<%-- <a id="likeUP" onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
-							<a href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>							
+							<a class="like" href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>							
 						</c:when>
 						<c:when test="${article.extra.actorCanCancelLike}">
 							<%-- <a onclick="history.go(0)" href="../like/doCancelLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="fas fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
@@ -206,7 +240,7 @@
 						<c:when test="${article.extra.actorCanDislike}">
 							<%-- <a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
 							</a> --%>
-							<a href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-up"></i>[${article.extra__dislikeOnlyPoint}]</a>
+							<a href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]</a>
 						</c:when>
 						<c:when test="${article.extra.actorCanCancelDislike}">
 							<%-- <a onclick="history.go(0)" href="../like/doCancelDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
@@ -216,7 +250,7 @@
 						<c:otherwise>
 							<%-- <a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
 							</a> --%>
-							<a href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-up"></i>[${article.extra__dislikeOnlyPoint}]</a>
+							<a href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]</a>
 						</c:otherwise>
 					</c:choose>
 				</div>
