@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.sbs.example.dkJspCommunity.dto.Article;
 import com.sbs.example.dkJspCommunity.dto.Board;
+import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
 import com.sbs.example.dkJspCommunity.mysqlutil.SecSql;
 
@@ -200,4 +201,5 @@ public class ArticleDao {
 
 	return MysqlUtil.selectRowIntValue(sql);
     }
+
 }

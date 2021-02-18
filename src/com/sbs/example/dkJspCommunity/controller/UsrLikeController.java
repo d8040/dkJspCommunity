@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Article;
+import com.sbs.example.dkJspCommunity.dto.ResultData;
 import com.sbs.example.dkJspCommunity.service.ArticleService;
 import com.sbs.example.dkJspCommunity.service.LikeService;
 import com.sbs.example.util.Util;
@@ -103,44 +104,91 @@ public class UsrLikeController extends Controller {
 	}
 
 	public String doLikeAjax(HttpServletRequest req, HttpServletResponse resp) {
-		
-		Map<String, Object> rs = new HashMap<>();
-		
+
 		String relTypeCode = req.getParameter("relTypeCode");
-		
+
 		if (relTypeCode == null) {
 			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
 		}
 
 		int relId = Util.getAsInt(req.getParameter("relId"), 0);
-		
+
 		if (relId == 0) {
 			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
 		}
 
 		int actorId = (int) req.getAttribute("loginedMemberId");
-		
-		likeService.setLikePoint(relTypeCode, relId, actorId, 1);
-		
-		Article article = articleService.getForPrintArticleById(relId);
-		System.out.println("좋아요: "+article.getExtra__likeOnlyPoint());
-		rs.put("likePoint", article.getExtra__likeOnlyPoint());
 
-		return null;
+		likeService.setLikePoint(relTypeCode, relId, actorId, 1);
+
+		Article article = articleService.getForPrintArticleById(relId);
+
+		return json(req, new ResultData("", "", article));
 	}
 
 	public String doCancelLikeAjax(HttpServletRequest req, HttpServletResponse resp) {
-		// TODO Auto-generated method stub
-		return null;
+		String relTypeCode = req.getParameter("relTypeCode");
+
+		if (relTypeCode == null) {
+			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
+		}
+
+		int relId = Util.getAsInt(req.getParameter("relId"), 0);
+
+		if (relId == 0) {
+			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
+		}
+
+		int actorId = (int) req.getAttribute("loginedMemberId");
+
+		likeService.setLikePoint(relTypeCode, relId, actorId, 0);
+
+		Article article = articleService.getForPrintArticleById(relId);
+
+		return json(req, new ResultData("", "", article));
 	}
 
 	public String doDislikeAjax(HttpServletRequest req, HttpServletResponse resp) {
-		// TODO Auto-generated method stub
-		return null;
+		String relTypeCode = req.getParameter("relTypeCode");
+
+		if (relTypeCode == null) {
+			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
+		}
+
+		int relId = Util.getAsInt(req.getParameter("relId"), 0);
+
+		if (relId == 0) {
+			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
+		}
+
+		int actorId = (int) req.getAttribute("loginedMemberId");
+
+		likeService.setLikePoint(relTypeCode, relId, actorId, -1);
+
+		Article article = articleService.getForPrintArticleById(relId);
+
+		return json(req, new ResultData("", "", article));
 	}
 
 	public String doCancelDislikeAjax(HttpServletRequest req, HttpServletResponse resp) {
-		// TODO Auto-generated method stub
-		return null;
+		String relTypeCode = req.getParameter("relTypeCode");
+
+		if (relTypeCode == null) {
+			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
+		}
+
+		int relId = Util.getAsInt(req.getParameter("relId"), 0);
+
+		if (relId == 0) {
+			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
+		}
+
+		int actorId = (int) req.getAttribute("loginedMemberId");
+
+		likeService.setLikePoint(relTypeCode, relId, actorId, 0);
+
+		Article article = articleService.getForPrintArticleById(relId);
+
+		return json(req, new ResultData("", "", article));
 	}
 }

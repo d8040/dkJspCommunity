@@ -1,5 +1,8 @@
 package com.sbs.example.dkJspCommunity.dao;
 
+import java.util.Map;
+
+import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.mysqlutil.MysqlUtil;
 import com.sbs.example.dkJspCommunity.mysqlutil.SecSql;
 
@@ -53,4 +56,45 @@ public class LikeDao {
 	System.out.println(sql.getRawSql());
 	MysqlUtil.update(sql);
     }
+    
+
+	public boolean isLikedArticle(int id, int memberId, String relTypeCode) {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * FROM `like`");
+		sql.append("WHERE `relTypeCode` = ?", relTypeCode);
+		sql.append("AND `point` = 1");
+		sql.append("AND `relId` = ?", id);
+		if (memberId != 0) {
+			sql.append("AND `memberId` = ?", memberId);
+		}
+
+		Map<String, Object> recommendMap = MysqlUtil.selectRow(sql);
+
+		if (!recommendMap.isEmpty()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isDislikedArticle(int id, int memberId, String relTypeCode) {
+		SecSql sql = new SecSql();
+
+		sql.append("SELECT * FROM `like`");
+		sql.append("WHERE `relTypeCode` = ?", relTypeCode);
+		sql.append("AND `point` = -1");
+		sql.append("AND `relId` = ?", id);
+		if (memberId != 0) {
+			sql.append("AND `memberId` = ?", memberId);
+		}
+
+		Map<String, Object> recommendMap = MysqlUtil.selectRow(sql);
+
+		if (!recommendMap.isEmpty()) {
+			return true;
+		}
+
+		return false;
+	}
 }

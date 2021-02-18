@@ -77,4 +77,5 @@ public class ArticleService {
     public int getArticlesCountByBoardId(int boardId, String searchKeywordType, String searchKeyword) {
 	return articleDao.getArticlesCountByBoardId(boardId, searchKeywordType, searchKeyword);
     }
+
 }

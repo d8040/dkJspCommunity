@@ -21,6 +21,13 @@
               return;
             }
             
+            if ( form.replyBody.value.length == 0 ) {
+              alert('내용을 입력해주세요.');
+              form.replyBody.value.focus();
+
+              return;
+            }
+            
 
             form.submit();
             DoReplyModifyForm__submited = true;
@@ -72,6 +79,12 @@
               alert('로그인 후 이용해 주세요.');
               return;
             }
+            if ( form.replyBody.value.length == 0 ) {
+              alert('내용을 입력해주세요.');
+              form.replyBody.value.focus();
+
+              return;
+            }
             form.submit();
             DoReReplyWriteForm__submited = true;
           }         
@@ -91,12 +104,19 @@
               return;
             }
             
+            if ( form.replyBody.value.length == 0 ) {
+              alert('내용을 입력해주세요.');
+              form.replyBody.value.focus();
+
+              return;
+            }
 
             form.submit();
             DoReReReplyWriteForm__submited = true;
           }         
         </script>
 		<script>
+		
 		$(function() {
 			if ( param.focusReplyId ) {
 				const $target = $('.reply-box-list div[data-id="' + param.focusReplyId + '"]');
@@ -135,53 +155,38 @@
 				<div class="toast-ui-viewer"></div>
 			</div>
 			<script>
-				$('.like').click(function(){
-				  $.ajax({
-				      url: "{% url 'pledge:pledge_like' pledge.pk %}", // 통신할 url을 지정한다.
-				      data: {'csrfmiddlewaretoken': '{{ csrf_token }}'}, // 서버로 데이터를 전송할 때 이 옵션을 사용한다.
-				      dataType: "json", // 서버측에서 전송한 데이터를 어떤 형식의 데이터로서 해석할 것인가를 지정한다. 없으면 알아서 판단한다.
-				
-				      success: function(response){
-				        // 요청이 성공했을 경우 좋아요/싫어요 개수 레이블 업데이트
-				        $('#like_count'+ pk).html("count : "+ response.like_count);
-				        $('#dislike_count'+ pk).html("count : "+ response.dislike_count);
-				      },
-				      error:function(error){
-				        // 요청이 실패했을 경우
-				        alert(error)
-				      }
-				  });
-				})
 				function callDoLike() {
 					if ( ${loginedMemberId} == 0 ){
             			alert('로그인 후 이용해 주세요.');
          		    	return;
         		    }
-					$.post('../like/doLikeAjax',
+					$.get('../like/doLikeAjax',
 						{
 							relTypeCode:"article",
-							relId:'${article.id}'
+							relId:param.id
 						},
-						success : function(data){
-							$('.article-detail__articleRcm').html(data).find('.article-detail__articleRcm');
-							return false;
-						},																
+						function(data){
+							$('.article-like-point').text('['+ data.body.extra__likePoint+']');
+							$('.far fa-thumbs-up').empty().attr('class', 'fas fa-thumbs-up');
+						},																						
 						'json',						
 					);					
 				}
+				
 				
 				function callDoCancelLike() {
 					if ( ${loginedMemberId} == 0 ){
             			alert('로그인 후 이용해 주세요.');
          		    	return;
         		    }
-					$.post('../like/doCancelLike',
+					$.get('../like/doCancelLikeAjax',
 						{
 							relTypeCode:"article",
 							relId:'${article.id}'
 						},
 						function(data){
-						},						
+							$('.article-like-point').text('['+ data.body.extra__likePoint+']');
+						},					
 					'json'
 					);					
 				}
@@ -191,13 +196,14 @@
             			alert('로그인 후 이용해 주세요.');
          		    	return;
         		    }
-					$.post('../like/doDislike',
+					$.post('../like/doDislikeAjax',
 						{
 							relTypeCode:"article",
 							relId:'${article.id}'
 						},
 						function(data){
-						},						
+							$('.article-like-point').text('['+ data.body.extra__disLlikePoint+']');
+						},					
 					'json'
 					);					
 				}
@@ -207,13 +213,15 @@
             			alert('로그인 후 이용해 주세요.');
          		    	return;
         		    }
-					$.post('../like/doCancelDislike',
+					$.post('../like/doCancelDislikeAjax',
 						{
 							relTypeCode:"article",
 							relId:'${article.id}'
 						},
 						function(data){
-						},						
+							$('.article-like-point').text('['+ data.body.extra__disLikePoint+']');
+							
+						},				
 					'json'
 					);					
 				}
@@ -221,17 +229,17 @@
 			<div class="article-detail__articleRcm flex">
 				<div>
 					<c:choose>
-						<c:when test="${article.extra.actorCanLike}">
+						<c:when test="${isLikedArticle == false}">
 							<%-- <a id="likeUP" onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
-							<a class="like" href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>							
+							<a class="like" href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
 						</c:when>
-						<c:when test="${article.extra.actorCanCancelLike}">
+						<c:when test="${isLikedArticle == true}">
 							<%-- <a onclick="history.go(0)" href="../like/doCancelLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="fas fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
-							<a href="#" onclick="callDoCancelLike();">좋아요<i class="fas fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
+							<a class="like" href="#" onclick="callDoCancelLike();">좋아요<i class="fas fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
 						</c:when>
 						<c:otherwise>
 							<%-- <a onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
-							<a href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
+							<a class="like" href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -240,17 +248,20 @@
 						<c:when test="${article.extra.actorCanDislike}">
 							<%-- <a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
 							</a> --%>
-							<a href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]</a>
+							<a class="disLike" href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
+							</a>
 						</c:when>
 						<c:when test="${article.extra.actorCanCancelDislike}">
 							<%-- <a onclick="history.go(0)" href="../like/doCancelDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
 							</a> --%>
-							<a href="#" onclick="callDoCancelDislike();">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]</a>
+							<a class="disLike" href="#" onclick="callDoCancelDislike();">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
+							</a>
 						</c:when>
 						<c:otherwise>
 							<%-- <a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
 							</a> --%>
-							<a href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]</a>
+							<a class="disLike" href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
+							</a>
 						</c:otherwise>
 					</c:choose>
 				</div>

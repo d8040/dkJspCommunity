@@ -13,6 +13,7 @@ import com.sbs.example.dkJspCommunity.dto.Board;
 import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.dto.Reply;
 import com.sbs.example.dkJspCommunity.service.ArticleService;
+import com.sbs.example.dkJspCommunity.service.LikeService;
 import com.sbs.example.dkJspCommunity.service.ReplyService;
 import com.sbs.example.util.Util;
 
@@ -105,9 +106,16 @@ public class UsrArticleController extends Controller {
 	if (article == null) {
 	    return msgAndBack(req, id + "번 게시물은 존재하지 않습니다.");
 	}
+	
+	int memberId = (int) req.getAttribute("loginedMemberId");
+	
+	boolean isLikedArticle = LikeService.isLikedArticle(id, memberId, "article");
+	boolean isDislikedArticle = LikeService.isDislikedArticle(id, memberId, "article");
 
 	List<Reply> replies = replyService.getForPrintRepliesByArticleId(article.id);
 	
+	req.setAttribute("isLikedArticle", isLikedArticle);
+	req.setAttribute("isDislikedArticle", isDislikedArticle);
 	req.setAttribute("article", article);
 	req.setAttribute("replies", replies);
 	return "usr/article/detail";

@@ -7,7 +7,7 @@ import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.dto.Reply;
 
 public class LikeService {
-	private LikeDao likeDao;
+	private static LikeDao likeDao;
 
 	public LikeService() {
 		likeDao = Container.likeDao;
@@ -26,6 +26,14 @@ public class LikeService {
 			likeDao.setPoint(relTypeCode, relId, actorId, point);
 		}
 		return null;
+	}
+
+	public static boolean isLikedArticle(int id, int memberId, String relTypeCode) {
+		return likeDao.isLikedArticle(id,memberId, relTypeCode);
+	}
+
+	public static boolean isDislikedArticle(int id, int memberId, String relTypeCode) {
+		return likeDao.isDislikedArticle(id,memberId, relTypeCode);
 	}
 
 	public boolean actorCanLike(Article article, Member actor) {
