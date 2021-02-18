@@ -166,105 +166,59 @@
 							relId:param.id
 						},
 						function(data){
-							$('.article-like-point').text('['+ data.body.extra__likePoint+']');
-							$('.far fa-thumbs-up').empty().attr('class', 'fas fa-thumbs-up');
+							$('.article-like-point').text('['+ data.body.extra__likeOnlyPoint+']');
+							$('.article-dislike-point').text('['+ data.body.extra__dislikeOnlyPoint+']');
+							$('.article-detail__articleRcm > div > a > #dislike').attr('class', 'far fa-thumbs-down');
+							if(data.resultCode == 'F-1'){
+								$('#like').replaceWith('<i id="like" class="far fa-thumbs-up"></i>');
+							}else{
+								$('#like').replaceWith('<i id="like" class="fas fa-thumbs-up"></i>');
+							}								
 						},																						
 						'json',						
-					);					
-				}
-				
-				
-				function callDoCancelLike() {
-					if ( ${loginedMemberId} == 0 ){
-            			alert('로그인 후 이용해 주세요.');
-         		    	return;
-        		    }
-					$.get('../like/doCancelLikeAjax',
-						{
-							relTypeCode:"article",
-							relId:'${article.id}'
-						},
-						function(data){
-							$('.article-like-point').text('['+ data.body.extra__likePoint+']');
-						},					
-					'json'
-					);					
-				}
-								
+					);
+				}	
 				function callDoDislike() {
 					if ( ${loginedMemberId} == 0 ){
             			alert('로그인 후 이용해 주세요.');
          		    	return;
         		    }
-					$.post('../like/doDislikeAjax',
+					$.get('../like/doDislikeAjax',
 						{
 							relTypeCode:"article",
-							relId:'${article.id}'
+							relId:param.id
 						},
 						function(data){
-							$('.article-like-point').text('['+ data.body.extra__disLlikePoint+']');
-						},					
-					'json'
-					);					
-				}
-				
-				function callDoCancelDislike() {
-					if ( ${loginedMemberId} == 0 ){
-            			alert('로그인 후 이용해 주세요.');
-         		    	return;
-        		    }
-					$.post('../like/doCancelDislikeAjax',
-						{
-							relTypeCode:"article",
-							relId:'${article.id}'
-						},
-						function(data){
-							$('.article-like-point').text('['+ data.body.extra__disLikePoint+']');
-							
-						},				
-					'json'
-					);					
-				}
+							$('.article-dislike-point').text('['+ data.body.extra__dislikeOnlyPoint+']');
+							$('.article-like-point').text('['+ data.body.extra__likeOnlyPoint+']');
+							$('.article-detail__articleRcm > div > a > #like').attr('class', 'far fa-thumbs-up');
+							if(data.resultCode == 'F-1'){
+								$('#dislike').replaceWith('<i id="dislike" class="far fa-thumbs-down"></i>');
+							}else{
+								$('#dislike').replaceWith('<i id="dislike" class="fas fa-thumbs-down"></i>');
+							}								
+						},																						
+						'json',						
+					);
+				}	
 			</script>
 			<div class="article-detail__articleRcm flex">
 				<div>
-					<c:choose>
-						<c:when test="${isLikedArticle == false}">
-							<%-- <a id="likeUP" onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
-							<a class="like" href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
-						</c:when>
-						<c:when test="${isLikedArticle == true}">
-							<%-- <a onclick="history.go(0)" href="../like/doCancelLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="fas fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
-							<a class="like" href="#" onclick="callDoCancelLike();">좋아요<i class="fas fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
-						</c:when>
-						<c:otherwise>
-							<%-- <a onclick="history.go(0)" href="../like/doLike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">좋아요<i class="far fa-thumbs-up"></i>[${article.extra__likeOnlyPoint}]</a> --%>
-							<a class="like" href="#" onclick="callDoLike();">좋아요<i class="far fa-thumbs-up"></i><span class="article-like-point">[${article.extra__likeOnlyPoint}]</span></a>
-						</c:otherwise>
-					</c:choose>
+					<a href="#" onclick="callDoLike();">
+					<span>좋아요</span>
+					<c:if test="${isLikedArticle == false}"><i id="like" class="far fa-thumbs-up"></i></c:if>
+					<c:if test="${isLikedArticle == true}"><i id="like" class="fas fa-thumbs-up"></i></c:if>
+					<span class="article-like-point">[${article.extra__likeOnlyPoint}]</span>
+					</a>
 				</div>
 				<div>
-					<c:choose>
-						<c:when test="${article.extra.actorCanDislike}">
-							<%-- <a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a> --%>
-							<a class="disLike" href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a>
-						</c:when>
-						<c:when test="${article.extra.actorCanCancelDislike}">
-							<%-- <a onclick="history.go(0)" href="../like/doCancelDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a> --%>
-							<a class="disLike" href="#" onclick="callDoCancelDislike();">싫어요<i class="fas fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a>
-						</c:when>
-						<c:otherwise>
-							<%-- <a onclick="history.go(0)" href="../like/doDislike?relTypeCode=article&relId=${article.id}&redirectUrl=${encodedCurrentUrl}">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a> --%>
-							<a class="disLike" href="#" onclick="callDoDislike();">싫어요<i class="far fa-thumbs-down"></i>[${article.extra__dislikeOnlyPoint}]
-							</a>
-						</c:otherwise>
-					</c:choose>
-				</div>
+					<a href="#" onclick="callDoDislike();">
+					<span>싫어요</span>
+					<c:if test="${isDislikedArticle == false}"><i id="dislike" class="far fa-thumbs-down"></i></c:if>
+					<c:if test="${isDislikedArticle == true}"><i id="dislike" class="fas fa-thumbs-down"></i></c:if>
+					<span class="article-dislike-point">[${article.extra__dislikeOnlyPoint}]</span>
+					</a>
+				</div>				
 			</div>
 			<hr>
 			<div class="article-detail__bottom flex jc-space-between flex-ai-c">

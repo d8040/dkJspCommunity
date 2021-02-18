@@ -1,8 +1,5 @@
 package com.sbs.example.dkJspCommunity.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,180 +12,83 @@ import com.sbs.example.util.Util;
 
 public class UsrLikeController extends Controller {
 
-	private LikeService likeService;
-	private ArticleService articleService;
+    private LikeService likeService;
+    private ArticleService articleService;
 
-	public UsrLikeController() {
-		likeService = Container.likeService;
-		articleService = Container.articleService;
+    public UsrLikeController() {
+	likeService = Container.likeService;
+	articleService = Container.articleService;
+    }
+
+    public String doLikeAjax(HttpServletRequest req, HttpServletResponse resp) {
+
+	String relTypeCode = req.getParameter("relTypeCode");
+
+	if (relTypeCode == null) {
+	    return msgAndBack(req, "관련데이터코드를 입력해주세요.");
 	}
 
-	public String doLike(HttpServletRequest req, HttpServletResponse resp) {
-		String relTypeCode = req.getParameter("relTypeCode");
-		System.out.println(relTypeCode);
-		if (relTypeCode == null) {
-			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
-		}
+	int relId = Util.getAsInt(req.getParameter("relId"), 0);
 
-		int relId = Util.getAsInt(req.getParameter("relId"), 0);
-
-		if (relId == 0) {
-			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
-		}
-
-		int actorId = (int) req.getAttribute("loginedMemberId");
-
-		likeService.setLikePoint(relTypeCode, relId, actorId, 1);
-
-		return msgAndReplace(req, "`좋아요` 처리되었습니다.", req.getParameter("redirectUrl"));
+	if (relId == 0) {
+	    return msgAndBack(req, "관련데이터번호를 입력해주세요.");
 	}
 
-	public String doCancelLike(HttpServletRequest req, HttpServletResponse resp) {
-		String relTypeCode = req.getParameter("relTypeCode");
+	int actorId = (int) req.getAttribute("loginedMemberId");
+	boolean isLiked = LikeService.isLikedArticle(relId, actorId, "article");
+	boolean isDisliked = LikeService.isDislikedArticle(relId, actorId, "article");
 
-		if (relTypeCode == null) {
-			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
-		}
+	String resultCode = null;
+	
+	if (isLiked) {
+	    likeService.removePoint(relTypeCode, relId, actorId, 0);
+	    resultCode = "F-1";
+	} else if (isDisliked) {
+	    likeService.modifyPoint(relTypeCode, relId, actorId, 1);
+	    resultCode = "S-1";
+	} else {
+	    likeService.setLikePoint(relTypeCode, relId, actorId, 1);
+	    resultCode = "S-1";
+	}
+	
+	Article article = articleService.getForPrintArticleById(relId);
 
-		int relId = Util.getAsInt(req.getParameter("relId"), 0);
+	return json(req, new ResultData(resultCode, "", article));
+    }
 
-		if (relId == 0) {
-			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
-		}
+    public String doDislikeAjax(HttpServletRequest req, HttpServletResponse resp) {
+	String relTypeCode = req.getParameter("relTypeCode");
 
-		int actorId = (int) req.getAttribute("loginedMemberId");
-
-		likeService.setLikePoint(relTypeCode, relId, actorId, 0);
-
-		return msgAndReplace(req, "`좋아요`가 취소 처리되었습니다.", req.getParameter("redirectUrl"));
+	if (relTypeCode == null) {
+	    return msgAndBack(req, "관련데이터코드를 입력해주세요.");
 	}
 
-	public String doDislike(HttpServletRequest req, HttpServletResponse resp) {
-		String relTypeCode = req.getParameter("relTypeCode");
+	int relId = Util.getAsInt(req.getParameter("relId"), 0);
 
-		if (relTypeCode == null) {
-			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
-		}
-
-		int relId = Util.getAsInt(req.getParameter("relId"), 0);
-
-		if (relId == 0) {
-			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
-		}
-
-		int actorId = (int) req.getAttribute("loginedMemberId");
-
-		likeService.setLikePoint(relTypeCode, relId, actorId, -1);
-
-		return msgAndReplace(req, "`싫어요` 처리되었습니다.", req.getParameter("redirectUrl"));
+	if (relId == 0) {
+	    return msgAndBack(req, "관련데이터번호를 입력해주세요.");
 	}
 
-	public String doCancelDislike(HttpServletRequest req, HttpServletResponse resp) {
-		String relTypeCode = req.getParameter("relTypeCode");
+	int actorId = (int) req.getAttribute("loginedMemberId");
 
-		if (relTypeCode == null) {
-			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
-		}
+	boolean isLiked = LikeService.isLikedArticle(relId, actorId, "article");
+	boolean isDisliked = LikeService.isDislikedArticle(relId, actorId, "article");
 
-		int relId = Util.getAsInt(req.getParameter("relId"), 0);
-
-		if (relId == 0) {
-			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
-		}
-
-		int actorId = (int) req.getAttribute("loginedMemberId");
-
-		likeService.setLikePoint(relTypeCode, relId, actorId, 0);
-
-		return msgAndReplace(req, "`싫어요`가 취소 처리되었습니다.", req.getParameter("redirectUrl"));
+	String resultCode = null;
+	
+	if (isDisliked) {
+	    likeService.removePoint(relTypeCode, relId, actorId, 0);
+	    resultCode = "F-1";
+	} else if (isLiked) {
+	    likeService.modifyPoint(relTypeCode, relId, actorId, -1);
+	    resultCode = "S-1";
+	} else {
+	    likeService.setLikePoint(relTypeCode, relId, actorId, -1);
+	    resultCode = "S-1";
 	}
 
-	public String doLikeAjax(HttpServletRequest req, HttpServletResponse resp) {
+	Article article = articleService.getForPrintArticleById(relId);
 
-		String relTypeCode = req.getParameter("relTypeCode");
-
-		if (relTypeCode == null) {
-			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
-		}
-
-		int relId = Util.getAsInt(req.getParameter("relId"), 0);
-
-		if (relId == 0) {
-			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
-		}
-
-		int actorId = (int) req.getAttribute("loginedMemberId");
-
-		likeService.setLikePoint(relTypeCode, relId, actorId, 1);
-
-		Article article = articleService.getForPrintArticleById(relId);
-
-		return json(req, new ResultData("", "", article));
-	}
-
-	public String doCancelLikeAjax(HttpServletRequest req, HttpServletResponse resp) {
-		String relTypeCode = req.getParameter("relTypeCode");
-
-		if (relTypeCode == null) {
-			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
-		}
-
-		int relId = Util.getAsInt(req.getParameter("relId"), 0);
-
-		if (relId == 0) {
-			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
-		}
-
-		int actorId = (int) req.getAttribute("loginedMemberId");
-
-		likeService.setLikePoint(relTypeCode, relId, actorId, 0);
-
-		Article article = articleService.getForPrintArticleById(relId);
-
-		return json(req, new ResultData("", "", article));
-	}
-
-	public String doDislikeAjax(HttpServletRequest req, HttpServletResponse resp) {
-		String relTypeCode = req.getParameter("relTypeCode");
-
-		if (relTypeCode == null) {
-			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
-		}
-
-		int relId = Util.getAsInt(req.getParameter("relId"), 0);
-
-		if (relId == 0) {
-			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
-		}
-
-		int actorId = (int) req.getAttribute("loginedMemberId");
-
-		likeService.setLikePoint(relTypeCode, relId, actorId, -1);
-
-		Article article = articleService.getForPrintArticleById(relId);
-
-		return json(req, new ResultData("", "", article));
-	}
-
-	public String doCancelDislikeAjax(HttpServletRequest req, HttpServletResponse resp) {
-		String relTypeCode = req.getParameter("relTypeCode");
-
-		if (relTypeCode == null) {
-			return msgAndBack(req, "관련데이터코드를 입력해주세요.");
-		}
-
-		int relId = Util.getAsInt(req.getParameter("relId"), 0);
-
-		if (relId == 0) {
-			return msgAndBack(req, "관련데이터번호를 입력해주세요.");
-		}
-
-		int actorId = (int) req.getAttribute("loginedMemberId");
-
-		likeService.setLikePoint(relTypeCode, relId, actorId, 0);
-
-		Article article = articleService.getForPrintArticleById(relId);
-
-		return json(req, new ResultData("", "", article));
-	}
+	return json(req, new ResultData(resultCode, "", article));
+    }
 }

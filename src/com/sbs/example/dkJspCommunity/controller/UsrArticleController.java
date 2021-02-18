@@ -113,7 +113,7 @@ public class UsrArticleController extends Controller {
 	boolean isDislikedArticle = LikeService.isDislikedArticle(id, memberId, "article");
 
 	List<Reply> replies = replyService.getForPrintRepliesByArticleId(article.id);
-	
+	System.out.println(isLikedArticle);
 	req.setAttribute("isLikedArticle", isLikedArticle);
 	req.setAttribute("isDislikedArticle", isDislikedArticle);
 	req.setAttribute("article", article);

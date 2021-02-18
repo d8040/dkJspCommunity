@@ -7,64 +7,62 @@ import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.dto.Reply;
 
 public class LikeService {
-	private static LikeDao likeDao;
+    private static LikeDao likeDao;
 
-	public LikeService() {
-		likeDao = Container.likeDao;
-	}
+    public LikeService() {
+	likeDao = Container.likeDao;
+    }
 
-	public String setLikePoint(String relTypeCode, int relId, int actorId, int point) {
-		int likePoint = likeDao.getPoint(relTypeCode, relId, actorId);
+    public void setLikePoint(String relTypeCode, int relId, int actorId, int point) {
+	likeDao.setPoint(relTypeCode, relId, actorId, point);
+    }
 
-		System.out.println("likePoint: " + likePoint);
+    public void removePoint(String relTypeCode, int relId, int actorId, int point) {
+	likeDao.removePoint(relTypeCode, relId, actorId);
+    }
 
-		if (likePoint != 0) {
-			likeDao.modifyPoint(relTypeCode, relId, actorId, point);
-		} else if (point == 0) {
-			likeDao.removePoint(relTypeCode, relId, actorId);
-		} else {
-			likeDao.setPoint(relTypeCode, relId, actorId, point);
-		}
-		return null;
-	}
+    public void modifyPoint(String relTypeCode, int relId, int actorId, int point) {
+	likeDao.modifyPoint(relTypeCode, relId, actorId, point);
+    }
+    
+    public static boolean isLikedArticle(int id, int memberId, String relTypeCode) {
+	return likeDao.isLikedArticle(id, memberId, relTypeCode);
+    }
 
-	public static boolean isLikedArticle(int id, int memberId, String relTypeCode) {
-		return likeDao.isLikedArticle(id,memberId, relTypeCode);
-	}
+    public static boolean isDislikedArticle(int id, int memberId, String relTypeCode) {
+	return likeDao.isDislikedArticle(id, memberId, relTypeCode);
+    }
 
-	public static boolean isDislikedArticle(int id, int memberId, String relTypeCode) {
-		return likeDao.isDislikedArticle(id,memberId, relTypeCode);
-	}
+    public boolean actorCanLike(Article article, Member actor) {
+	return likeDao.getPoint("article", article.getId(), actor.getId()) == 0;
+    }
 
-	public boolean actorCanLike(Article article, Member actor) {
-		return likeDao.getPoint("article", article.getId(), actor.getId()) == 0;
-	}
+    public boolean actorCanCancelLike(Article article, Member actor) {
+	return likeDao.getPoint("article", article.getId(), actor.getId()) > 0;
+    }
 
-	public boolean actorCanCancelLike(Article article, Member actor) {
-		return likeDao.getPoint("article", article.getId(), actor.getId()) > 0;
-	}
+    public boolean actorCanDislike(Article article, Member actor) {
+	return likeDao.getPoint("article", article.getId(), actor.getId()) == 0;
+    }
 
-	public boolean actorCanDislike(Article article, Member actor) {
-		return likeDao.getPoint("article", article.getId(), actor.getId()) == 0;
-	}
+    public boolean actorCanCancelDislike(Article article, Member actor) {
+	return likeDao.getPoint("article", article.getId(), actor.getId()) < 0;
+    }
 
-	public boolean actorCanCancelDislike(Article article, Member actor) {
-		return likeDao.getPoint("article", article.getId(), actor.getId()) < 0;
-	}
+    public boolean actorCanLike(Reply reply, Member actor) {
+	return likeDao.getPoint("reply", reply.getId(), actor.getId()) == 0;
+    }
 
-	public boolean actorCanLike(Reply reply, Member actor) {
-		return likeDao.getPoint("reply", reply.getId(), actor.getId()) == 0;
-	}
+    public boolean actorCanCancelLike(Reply reply, Member actor) {
+	return likeDao.getPoint("reply", reply.getId(), actor.getId()) > 0;
+    }
 
-	public boolean actorCanCancelLike(Reply reply, Member actor) {
-		return likeDao.getPoint("reply", reply.getId(), actor.getId()) > 0;
-	}
+    public boolean actorCanDislike(Reply reply, Member actor) {
+	return likeDao.getPoint("reply", reply.getId(), actor.getId()) == 0;
+    }
 
-	public boolean actorCanDislike(Reply reply, Member actor) {
-		return likeDao.getPoint("reply", reply.getId(), actor.getId()) == 0;
-	}
+    public boolean actorCanCancelDislike(Reply reply, Member actor) {
+	return likeDao.getPoint("reply", reply.getId(), actor.getId()) < 0;
+    }
 
-	public boolean actorCanCancelDislike(Reply reply, Member actor) {
-		return likeDao.getPoint("reply", reply.getId(), actor.getId()) < 0;
-	}
 }

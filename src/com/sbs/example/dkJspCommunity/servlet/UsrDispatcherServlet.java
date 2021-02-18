@@ -89,25 +89,12 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 			}
 		} else if (controllerName.equals("like")) {
 			UsrLikeController likeController = Container.usrLikeController;
-
-			if (actionMethodName.equals("doLike")) {
-				jspPath = likeController.doLike(req, resp);
-			} else if (actionMethodName.equals("doCancelLike")) {
-				jspPath = likeController.doCancelLike(req, resp);
-			} else if (actionMethodName.equals("doDislike")) {
-				jspPath = likeController.doDislike(req, resp);
-			} else if (actionMethodName.equals("doCancelDislike")) {
-				jspPath = likeController.doCancelDislike(req, resp);
-			}
-			else if (actionMethodName.equals("doLikeAjax")) {
+			
+			if (actionMethodName.equals("doLikeAjax")) {
 				jspPath = likeController.doLikeAjax(req, resp);
-			} else if (actionMethodName.equals("doCancelLikeAjax")) {
-				jspPath = likeController.doCancelLikeAjax(req, resp);
 			} else if (actionMethodName.equals("doDislikeAjax")) {
 				jspPath = likeController.doDislikeAjax(req, resp);
-			} else if (actionMethodName.equals("doCancelDislikeAjax")) {
-				jspPath = likeController.doCancelDislikeAjax(req, resp);
-			}
+			} 
 		}
 		return jspPath;
 	}
