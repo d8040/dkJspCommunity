@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Article;
 import com.sbs.example.dkJspCommunity.dto.Board;
+import com.sbs.example.dkJspCommunity.dto.Like;
 import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.dto.Reply;
 import com.sbs.example.dkJspCommunity.service.ArticleService;
@@ -21,10 +22,12 @@ public class UsrArticleController extends Controller {
 
     private ArticleService articleService;
     private ReplyService replyService;
+    private LikeService likeService;
 
     public UsrArticleController() {
 	articleService = Container.articleService;
 	replyService = Container.replyService;
+	likeService = Container.likeService;
     }
 
     public String showList(HttpServletRequest req, HttpServletResponse resp) {
@@ -111,12 +114,14 @@ public class UsrArticleController extends Controller {
 	
 	boolean isLikedArticle = LikeService.isLikedArticle(id, memberId, "article");
 	boolean isDislikedArticle = LikeService.isDislikedArticle(id, memberId, "article");
-
+	
 	List<Reply> replies = replyService.getForPrintRepliesByArticleId(article.id);
-	System.out.println(isLikedArticle);
+	List<Like> likes = likeService.getForPintLikesByArticleId(article.id, memberId);
+	
 	req.setAttribute("isLikedArticle", isLikedArticle);
 	req.setAttribute("isDislikedArticle", isDislikedArticle);
 	req.setAttribute("article", article);
+	req.setAttribute("likes", likes);
 	req.setAttribute("replies", replies);
 	return "usr/article/detail";
     }

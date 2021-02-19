@@ -1,8 +1,11 @@
 package com.sbs.example.dkJspCommunity.service;
 
+import java.util.List;
+
 import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dao.LikeDao;
 import com.sbs.example.dkJspCommunity.dto.Article;
+import com.sbs.example.dkJspCommunity.dto.Like;
 import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.dto.Reply;
 
@@ -63,6 +66,10 @@ public class LikeService {
 
     public boolean actorCanCancelDislike(Reply reply, Member actor) {
 	return likeDao.getPoint("reply", reply.getId(), actor.getId()) < 0;
+    }
+
+    public List<Like> getForPintLikesByArticleId(int id, int memberId) {	
+	return likeDao.getForPintLikesByArticleId(id, memberId);
     }
 
 }

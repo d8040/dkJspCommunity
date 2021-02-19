@@ -94,6 +94,10 @@ public class UsrDispatcherServlet extends DispatcherServlet {
 				jspPath = likeController.doLikeAjax(req, resp);
 			} else if (actionMethodName.equals("doDislikeAjax")) {
 				jspPath = likeController.doDislikeAjax(req, resp);
+			} else if (actionMethodName.equals("doReplyLikeAjax")) {
+				jspPath = likeController.doReplyLikeAjax(req, resp);
+			} else if (actionMethodName.equals("doReplyDislikeAjax")) {
+				jspPath = likeController.doReplyDislikeAjax(req, resp);
 			} 
 		}
 		return jspPath;

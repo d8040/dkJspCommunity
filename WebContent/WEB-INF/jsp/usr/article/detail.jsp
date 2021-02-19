@@ -155,15 +155,16 @@
 				<div class="toast-ui-viewer"></div>
 			</div>
 			<script>
-				function callDoLike() {
+			/* 게시물 좋아요, 싫어요 시작 */
+				function callDoLike(reltyepCode, id) {
 					if ( ${loginedMemberId} == 0 ){
             			alert('로그인 후 이용해 주세요.');
          		    	return;
         		    }
 					$.get('../like/doLikeAjax',
 						{
-							relTypeCode:"article",
-							relId:param.id
+							relTypeCode:reltyepCode,
+							relId:id
 						},
 						function(data){
 							$('.article-like-point').text('['+ data.body.extra__likeOnlyPoint+']');
@@ -178,15 +179,15 @@
 						'json',						
 					);
 				}	
-				function callDoDislike() {
+				function callDoDislike(reltyepCode, id) {
 					if ( ${loginedMemberId} == 0 ){
             			alert('로그인 후 이용해 주세요.');
          		    	return;
         		    }
 					$.get('../like/doDislikeAjax',
 						{
-							relTypeCode:"article",
-							relId:param.id
+							relTypeCode:reltyepCode,
+							relId:id
 						},
 						function(data){
 							$('.article-dislike-point').text('['+ data.body.extra__dislikeOnlyPoint+']');
@@ -201,10 +202,62 @@
 						'json',						
 					);
 				}	
+				/* 게시물 좋아요, 싫어요 끝 */
+				
+				/* 댓글 좋아요, 싫어요 시작 */
+				function callDoReplyLike(reltyepCode, id) {
+					if ( ${loginedMemberId} == 0 ){
+            			alert('로그인 후 이용해 주세요.');
+         		    	return;
+        		    }
+					$.post('../like/doReplyLikeAjax',
+						{
+							relTypeCode:reltyepCode,
+							relId:id
+						},
+						function(data){
+							$('.reply-like-point'+data.body.id).text('['+ data.body.extra__likeOnlyPoint+']');
+							$('.reply-dislike-point'+data.body.id).text('['+ data.body.extra__dislikeOnlyPoint+']');
+							$('.reply-box__body__rcm'+data.body.id+' > div > a > #replyDislike'+data.body.id).attr('class', 'far fa-thumbs-down');
+							if(data.resultCode == "F-1"){
+								$('#replyLike'+data.body.id).replaceWith('<i id="replyLike'+data.body.id+'" class="far fa-thumbs-up"></i>');
+ 							}else {
+								$('#replyLike'+data.body.id).replaceWith('<i id="replyLike'+data.body.id+'" class="fas fa-thumbs-up"></i>');
+							}													
+						},
+						'json',						
+					);
+				}	
+				function callDoReplyDislike(reltyepCode, id) {
+					if ( ${loginedMemberId} == 0 ){
+            			alert('로그인 후 이용해 주세요.');
+         		    	return;
+        		    }
+					async:false,
+					$.get('../like/doReplyDislikeAjax',
+						{
+							relTypeCode:reltyepCode,
+							relId:id,
+							async:false,
+						},
+						function(data){
+							$('.reply-dislike-point'+data.body.id).text('['+ data.body.extra__dislikeOnlyPoint+']');
+							$('.reply-like-point'+data.body.id).text('['+ data.body.extra__likeOnlyPoint+']');
+							$('.reply-box__body__rcm'+data.body.id+' > div > a > #replyLike'+data.body.id).attr('class', 'far fa-thumbs-up');
+							if(data.resultCode == "F-1"){
+								$('#replyDislike'+data.body.id).replaceWith('<i id="replyDislike'+data.body.id+'" class="far fa-thumbs-down"></i>');
+							}else {
+								$('#replyDislike'+data.body.id).replaceWith('<i id="replyDislike'+data.body.id+'" class="fas fa-thumbs-down"></i>');
+							}								
+						},																						
+						'json',						
+					);
+				}	
+				/* 댓글 좋아요, 싫어요 끝 */
 			</script>
 			<div class="article-detail__articleRcm flex">
 				<div>
-					<a href="#" onclick="callDoLike();">
+					<a href="#none" onclick="callDoLike('article', ${article.id});">
 					<span>좋아요</span>
 					<c:if test="${isLikedArticle == false}"><i id="like" class="far fa-thumbs-up"></i></c:if>
 					<c:if test="${isLikedArticle == true}"><i id="like" class="fas fa-thumbs-up"></i></c:if>
@@ -212,7 +265,7 @@
 					</a>
 				</div>
 				<div>
-					<a href="#" onclick="callDoDislike();">
+					<a href="#none" onclick="callDoDislike('article', ${article.id});">
 					<span>싫어요</span>
 					<c:if test="${isDislikedArticle == false}"><i id="dislike" class="far fa-thumbs-down"></i></c:if>
 					<c:if test="${isDislikedArticle == true}"><i id="dislike" class="fas fa-thumbs-down"></i></c:if>
@@ -252,39 +305,51 @@
 									<div class="reply-box__body__info flex flex-ai-end">
 										<div>${reply.extra__writer}</div>
 										<div class="reply-box__body__date">${reply.regDate}</div>
-										<div class="reply-box__body__rcm flex flex-jc-end flex-g-1">
+										<div class="reply-box__body__rcm${reply.id} flex flex-jc-end flex-g-1">
 											<div>
-												<c:choose>
-													<c:when test="${reply.extra.actorCanLike}">
-														<a onclick="history.go(0)" href="../like/doLike?relTypeCode=reply&relId=${reply.id}&redirectUrl=${encodedCurrentUrl}"><i class="far fa-thumbs-up"></i>[${reply.extra__likeOnlyPoint}] </a>
-													</c:when>
-													<c:when test="${reply.extra.actorCanCancelLike}">
-														<a onclick="history.go(0)" href="../like/doCancelLike?relTypeCode=replye&relId=${reply.id}&redirectUrl=${encodedCurrentUrl}"><i class="fas fa-thumbs-up"></i>[${reply.extra__likeOnlyPoint}] </a>
-													</c:when>
-													<c:otherwise>
-														<a onclick="history.go(0)" href="../like/doLike?relTypeCode=reply&relId=${reply.id}&redirectUrl=${encodedCurrentUrl}"><i class="far fa-thumbs-up"></i>[${reply.extra__likeOnlyPoint}] </a>
-													</c:otherwise>
-												</c:choose>
+												<c:set var="likePointed" value="false" />
+												<a href="#none" onclick="callDoReplyLike('reply', ${reply.id});">
+												<c:forEach items="${likes}" var="like">										
+													<c:if test="${like.relId == reply.id && like.memberId == loginedMemberId}">	
+														<c:if test="${like.point == 1}">
+															<i id="replyLike${reply.id}" class="fas fa-thumbs-up"></i>
+															<c:set var="likePointed" value="true" />
+														</c:if>
+													</c:if>	
+												</c:forEach>
+												<c:if test="${likePointed == false}">
+													<i id="replyLike${reply.id}" class="far fa-thumbs-up"></i>
+													<c:set var="likePointed" value="false" />
+												</c:if>												
+												<span class="reply-like-point${reply.id}">[${reply.extra__likeOnlyPoint}]</span>
+												</a>												
 											</div>
 											<div>
-												<c:choose>
-													<c:when test="${reply.extra.actorCanDislike}">
-														<a onclick="history.go(0)" href="../like/doDislike?relTypeCode=reply&relId=${reply.id}&redirectUrl=${encodedCurrentUrl}"><i class="far fa-thumbs-down"></i>[${reply.extra__dislikeOnlyPoint}] </a>
-													</c:when>
-													<c:when test="${replyLike.extra.actorCanCancelDislike}">
-														<a onclick="history.go(0)" href="../like/doCancelDislike?relTypeCode=reply&relId=${reply.id}&redirectUrl=${encodedCurrentUrl}"><i class="fas fa-thumbs-down"></i>[${reply.extra__dislikeOnlyPoint}] </a>
-													</c:when>
-													<c:otherwise>
-														<a onclick="history.go(0)" href="../like/doDislike?relTypeCode=reply&relId=${reply.id}&redirectUrl=${encodedCurrentUrl}"><i class="far fa-thumbs-down"></i>[${reply.extra__dislikeOnlyPoint}] </a>
-													</c:otherwise>
-												</c:choose>
-											</div>
+												<c:set var="likePointed" value="false" />
+												<a href="#none" onclick="callDoReplyDislike('reply', ${reply.id});">
+												<c:forEach items="${likes}" var="like" varStatus="status">											
+													<c:if test="${like.relId == reply.id && like.memberId == loginedMemberId}">	
+														<c:if test="${like.point == -1}">
+															<i id="replyDislike${reply.id}" class="fas fa-thumbs-down"></i>
+															<c:set var="likePointed" value="true" />
+														</c:if>
+													</c:if>	
+												</c:forEach>
+												<c:if test="${likePointed == false}">
+													<i id="replyDislike${reply.id}" class="far fa-thumbs-down"></i>
+													<c:set var="likePointed" value="false" />
+												</c:if>												
+												<span class="reply-dislike-point${reply.id}">[${reply.extra__dislikeOnlyPoint}]</span>
+												</a>
+											</div>	
 										</div>
 									</div>
 									<div class="reply-box__body__body">${reply.body}</div>
 									<div class="reply-box__function">
 										<form action="../reply/doReplyWrite" method="POST" onsubmit="DoReReplyWriteForm__submit(this); return false;">
-											<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${reply.articleId}" /> <input type="hidden" name="parentReplyId" value="${reply.id}" />
+											<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> 
+											<input type="hidden" name="articleId" value="${reply.articleId}" /> 
+											<input type="hidden" name="parentReplyId" value="${reply.id}" />
 											<div class="flex flex-jc-end">
 												<c:if test="${loginedMemberId == reply.memberId}">
 													<a class="modify input" href="javascript:toggleLayer('${reply.id}modify');">수정</a>
@@ -328,60 +393,47 @@
 									<div class="reReply-box" data-id="${reReply.id}">
 										<div class="reply-box__body">
 											<div class="reply-box__body__info flex flex-ai-end">
-												<div>
-													&#11177; ${reReply.extra__writer}<br> <br>
+												<div>${reReply.extra__writer}</div>
+												<div class="reply-box__body__date">${reReply.regDate}</div>
+												<div class="reply-box__body__rcm${reReply.id} flex flex-jc-end flex-g-1">
+													<div>
+														<c:set var="likePointed" value="false" />
+														<a href="#none" onclick="callDoReplyLike('reply', ${reReply.id});">
+														<c:forEach items="${likes}" var="like">										
+															<c:if test="${like.relId == reReply.id && like.memberId == loginedMemberId}">	
+																<c:if test="${like.point == 1}">
+																	<i id="replyLike${reReply.id}" class="fas fa-thumbs-up"></i>
+																	<c:set var="likePointed" value="true" />
+																</c:if>
+															</c:if>	
+														</c:forEach>
+														<c:if test="${likePointed == false}">
+															<i id="replyLike${reReply.id}" class="far fa-thumbs-up"></i>
+															<c:set var="likePointed" value="false" />
+														</c:if>												
+														<span class="reply-like-point${reReply.id}">[${reReply.extra__likeOnlyPoint}]</span>
+														</a>												
+													</div>
+													<div>
+														<c:set var="likePointed" value="false" />
+														<a href="#none" onclick="callDoReplyDislike('reply', ${reReply.id});">
+														<c:forEach items="${likes}" var="like" varStatus="status">											
+															<c:if test="${like.relId == reReply.id && like.memberId == loginedMemberId}">	
+																<c:if test="${like.point == -1}">
+																	<i id="replyDislike${reReply.id}" class="fas fa-thumbs-down"></i>
+																	<c:set var="likePointed" value="true" />
+																</c:if>
+															</c:if>	
+														</c:forEach>
+														<c:if test="${likePointed == false}">
+															<i id="replyDislike${reReply.id}" class="far fa-thumbs-down"></i>
+															<c:set var="likePointed" value="false" />
+														</c:if>												
+														<span class="reply-dislike-point${reReply.id}">[${reReply.extra__dislikeOnlyPoint}]</span>
+														</a>
+													</div>	
 												</div>
-												<div class="reply-box__body__rcm flex flex-jc-end flex-g-1">
-													<div>
-														<c:if test="${reReply.extra.actorCanLike}">
-															<a href="doLike?memberId=${loginedMemberId}&id=${reReply.id}&relTypeCode=reply"><i class="far fa-thumbs-up"></i>[${reReply.extra_likeCount}] </a>
-														</c:if>
-														<c:if test="${reReply.extra.actorCanCancelLike}">
-															<a href="doLikeCancel?memberId=${loginedMemberId}&id=${reReply.id}&relTypeCode=reply"><i class="fas fa-thumbs-up"></i>[${reReply.extra_unlikeCount}] </a>
-														</c:if>
-													</div>
-													<div>
-														<c:if test="${reReply.extra.actorCanDislike}">
-															<a href="doHate?memberId=${loginedMemberId}&id=${reReply.id}&relTypeCode=reply"><i class="far fa-thumbs-down"></i>[${reReply.extra_unlikeCount}] </a>
-														</c:if>
-														<c:if test="${reReply.extra.actorCanCancelDislike}">
-															<a href="doLikeCancel?memberId=${loginedMemberId}&id=${reReply.id}&relTypeCode=reply"><i class="fas fa-thumbs-down"></i>[${reReply.extra_likeCount}] </a>
-														</c:if>
-													</div>
-												</div>
-											</div>
-											<div class="reply-box__body__info flex flex-ai-end">
-												<div>${reply.extra__writer}</div>
-												<div class="reply-box__body__date">${reply.regDate}</div>
-												<div class="reply-box__body__rcm flex flex-jc-end flex-g-1">
-													<div>
-														<c:choose>
-															<c:when test="${reply.extra.actorCanLike}">
-																<a onclick="history.go(0)" href="../like/doLike?relTypeCode=reply&relId=${reReply.id}&redirectUrl=${encodedCurrentUrl}"><i class="far fa-thumbs-up"></i>[${reReply.extra__likeOnlyPoint}] </a>
-															</c:when>
-															<c:when test="${reply.extra.actorCanCancelLike}">
-																<a onclick="history.go(0)" href="../like/doCancelLike?relTypeCode=replye&relId=${reReply.id}&redirectUrl=${encodedCurrentUrl}"><i class="fas fa-thumbs-up"></i>[${reReply.extra__likeOnlyPoint}] </a>
-															</c:when>
-															<c:otherwise>
-																<a onclick="history.go(0)" href="../like/doLike?relTypeCode=reply&relId=${reReply.id}&redirectUrl=${encodedCurrentUrl}"><i class="far fa-thumbs-up"></i>[${reReply.extra__likeOnlyPoint}] </a>
-															</c:otherwise>
-														</c:choose>
-													</div>
-													<div>
-														<c:choose>
-															<c:when test="${reply.extra.actorCanDislike}">
-																<a onclick="history.go(0)" href="../like/doDislike?relTypeCode=reply&relId=${reReply.id}&redirectUrl=${encodedCurrentUrl}"><i class="far fa-thumbs-down"></i>[${reReply.extra__dislikeOnlyPoint}] </a>
-															</c:when>
-															<c:when test="${replyLike.extra.actorCanCancelDislike}">
-																<a onclick="history.go(0)" href="../like/doCancelDislike?relTypeCode=reply&relId=${reReply.id}&redirectUrl=${encodedCurrentUrl}"><i class="fas fa-thumbs-down"></i>[${reReply.extra__dislikeOnlyPoint}] </a>
-															</c:when>
-															<c:otherwise>
-																<a onclick="history.go(0)" href="../like/doDislike?relTypeCode=reply&relId=${reReply.id}&redirectUrl=${encodedCurrentUrl}"><i class="far fa-thumbs-down"></i>[${reReply.extra__dislikeOnlyPoint}] </a>
-															</c:otherwise>
-														</c:choose>
-													</div>
-												</div>
-											</div>
+											</div>									
 											<div class="reply-box__body__body">${reReply.body}</div>
 											<div class="reply-box__function">
 												<div class="flex flex-jc-end">

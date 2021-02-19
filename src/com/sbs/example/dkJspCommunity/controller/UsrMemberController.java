@@ -188,9 +188,12 @@ public class UsrMemberController extends Controller{
     public String doFindLoginPw(HttpServletRequest req, HttpServletResponse resp) {
 	String loginId = req.getParameter("loginId");
 	String email = req.getParameter("email");
+	
+	System.out.println(loginId);
+	System.out.println(email);
 
 	Member member = memberService.getMemberByLoginIdAndEmail(loginId);
-
+	System.out.println(member);
 	if (member == null) {
 	    return msgAndBack(req, "일치하는 회원이 존재하지 않습니다.");
 	}
