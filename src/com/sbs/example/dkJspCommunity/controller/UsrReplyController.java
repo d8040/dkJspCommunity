@@ -28,11 +28,19 @@ public class UsrReplyController extends Controller {
 	String reReplyBody = req.getParameter("reReplyBody");
 	String parentReplyId = req.getParameter("parentReplyId");
 	String redirectUrl = req.getParameter("redirectUrl");
+	String parentReplyMmeber = req.getParameter("parentReplyMmeber");
+	
+	
 		
 	System.out.println("replyBody::"+replyBody);
 	System.out.println("reReplyBody::"+reReplyBody);	
 	System.out.println("parentReplyId::"+parentReplyId);
-			
+	System.out.println("parentReplyId::"+parentReplyMmeber);
+
+//	if (Util.isEmpty(replyBody) && Util.isEmpty(reReplyBody)) {
+//	    return msgAndBack(req, "내용을 입력해 주세요");
+//	}
+	
 	Map<String, Object> writeArgs = new HashMap<>();
 	writeArgs.put("articleId", articleId);
 	writeArgs.put("memberId", memberId);
@@ -40,7 +48,7 @@ public class UsrReplyController extends Controller {
 	writeArgs.put("replyBody", replyBody);	
 	}
 	else {
-	    writeArgs.put("replyBody", reReplyBody);	
+	    writeArgs.put("replyBody", parentReplyMmeber+reReplyBody);	
 	}
 	if (parentReplyId != null) {
 	    writeArgs.put("parentReplyId", parentReplyId);

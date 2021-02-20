@@ -12,79 +12,47 @@
 
           function DoReplyModifyForm__submit(form) {
             if (DoReplyModifyForm__submited) {
-              alert('처리중입니다.');
-              return;
+              alert('처리중입니다.')
+              return
             }
             
             if ( ${loginedMemberId} == 0 ){
-              alert('로그인 후 이용해 주세요.');
-              return;
+              alert('로그인 후 이용해 주세요.')
+              return
             }
             
             if ( form.replyBody.value.length == 0 ) {
-              alert('내용을 입력해주세요.');
-              form.replyBody.value.focus();
-
-              return;
+              alert('내용을 입력해주세요.'),
+              form.replyBody.focus()
+              return
             }
-            
 
-            form.submit();
-            DoReplyModifyForm__submited = true;
+            if (DoReplyWriteForm__submited == false){
+                form.submit()
+            }
+            DoReplyModifyForm__submited = true
           }         
-        </script>
-		<script>
-          let DoReplyWriteForm__submited = false;
-          let DoReplyWriteForm__checkedLoginId = "";
-
-          // 폼 발송전 체크
-          function DoReplyWriteForm__submit(form) {
-            if ( DoReplyWriteForm__submited ) {
-              alert('처리중입니다.');
-              return;
-            }
-            if ( ${loginedMemberId} == 0 ){
-              alert('로그인 후 이용해 주세요.');
-              return;
-            }
-            if ( form.replyBody.value.length == 0 ) {
-              alert('내용을 입력해주세요.');
-              form.replyBody.value.focus();
-
-              return;
-            }
-            form.submit();
-            DoReplyWriteForm__submited = true;
-          }
-
-          function toggleLayer(layer){
-            var l = document.getElementById(layer);
-            if(l.style.display == "")
-              l.style.display = "none";
-            else if(l.style.display == "none")
-              l.style.display = "";
-          }     
         </script>
 		<script>
           let DoReReplyWriteForm__submited = false;
           let DoReReplyWriteForm__checkedLoginId = "";
 
           function DoReReplyWriteForm__submit(form) {
-            if ( DoReReplyWriteForm__submited ) {
-              alert('처리중입니다.');
-              return;
-            }
-
-            if ( ${loginedMemberId} == 0 ){
-              alert('로그인 후 이용해 주세요.');
-              return;
-            }
-            if ( form.replyBody.value.length == 0 ) {
-              alert('내용을 입력해주세요.');
-              form.replyBody.value.focus();
-
-              return;
-            }
+        	  if (DoReplyModifyForm__submited) {
+                  alert('처리중입니다.')
+                  return
+                }
+                
+                if ( ${loginedMemberId} == 0 ){
+                  alert('로그인 후 이용해 주세요.')
+                  return
+                }
+                
+                if ( form.reReplyBody.value.length == 0 ) {
+                  alert('내용을 입력해주세요.'),
+                  form.reReplyBody.focus()
+                  return
+                }
             form.submit();
             DoReReplyWriteForm__submited = true;
           }         
@@ -94,22 +62,21 @@
           let DoReReReplyWriteForm__checkedLoginId = "";
 
           function DoReReReplyWriteForm__submit(form) {
-            if ( DoReReReplyWriteForm__submited ) {
-              alert('처리중입니다.');
-              return;
-            }
-            
-            if ( ${loginedMemberId} == 0 ){
-              alert('로그인 후 이용해 주세요.');
-              return;
-            }
-            
-            if ( form.replyBody.value.length == 0 ) {
-              alert('내용을 입력해주세요.');
-              form.replyBody.value.focus();
-
-              return;
-            }
+        	  if (DoReplyModifyForm__submited) {
+                  alert('처리중입니다.')
+                  return
+                }
+                
+                if ( ${loginedMemberId} == 0 ){
+                  alert('로그인 후 이용해 주세요.')
+                  return
+                }
+                
+                if ( form.reReplyBody.value.length == 0 ) {
+                  alert('내용을 입력해주세요.'),
+                  form.reReplyBody.focus()
+                  return
+                }
 
             form.submit();
             DoReReReplyWriteForm__submited = true;
@@ -257,21 +224,21 @@
 			</script>
 			<div class="article-detail__articleRcm flex">
 				<div>
-					<a href="#none" onclick="callDoLike('article', ${article.id});">
-					<span>좋아요</span>
-					<c:if test="${isLikedArticle == false}"><i id="like" class="far fa-thumbs-up"></i></c:if>
-					<c:if test="${isLikedArticle == true}"><i id="like" class="fas fa-thumbs-up"></i></c:if>
-					<span class="article-like-point">[${article.extra__likeOnlyPoint}]</span>
+					<a href="#none" onclick="callDoLike('article', ${article.id});"> <span>좋아요</span> <c:if test="${isLikedArticle == false}">
+							<i id="like" class="far fa-thumbs-up"></i>
+						</c:if> <c:if test="${isLikedArticle == true}">
+							<i id="like" class="fas fa-thumbs-up"></i>
+						</c:if> <span class="article-like-point">[${article.extra__likeOnlyPoint}]</span>
 					</a>
 				</div>
 				<div>
-					<a href="#none" onclick="callDoDislike('article', ${article.id});">
-					<span>싫어요</span>
-					<c:if test="${isDislikedArticle == false}"><i id="dislike" class="far fa-thumbs-down"></i></c:if>
-					<c:if test="${isDislikedArticle == true}"><i id="dislike" class="fas fa-thumbs-down"></i></c:if>
-					<span class="article-dislike-point">[${article.extra__dislikeOnlyPoint}]</span>
+					<a href="#none" onclick="callDoDislike('article', ${article.id});"> <span>싫어요</span> <c:if test="${isDislikedArticle == false}">
+							<i id="dislike" class="far fa-thumbs-down"></i>
+						</c:if> <c:if test="${isDislikedArticle == true}">
+							<i id="dislike" class="fas fa-thumbs-down"></i>
+						</c:if> <span class="article-dislike-point">[${article.extra__dislikeOnlyPoint}]</span>
 					</a>
-				</div>				
+				</div>
 			</div>
 			<hr>
 			<div class="article-detail__bottom flex jc-space-between flex-ai-c">
@@ -308,40 +275,34 @@
 										<div class="reply-box__body__rcm${reply.id} flex flex-jc-end flex-g-1">
 											<div>
 												<c:set var="likePointed" value="false" />
-												<a href="#none" onclick="callDoReplyLike('reply', ${reply.id});">
-												<c:forEach items="${likes}" var="like">										
-													<c:if test="${like.relId == reply.id && like.memberId == loginedMemberId}">	
-														<c:if test="${like.point == 1}">
-															<i id="replyLike${reply.id}" class="fas fa-thumbs-up"></i>
-															<c:set var="likePointed" value="true" />
+												<a href="#none" onclick="callDoReplyLike('reply', ${reply.id});"> <c:forEach items="${likes}" var="like">
+														<c:if test="${like.relId == reply.id && like.memberId == loginedMemberId}">
+															<c:if test="${like.point == 1}">
+																<i id="replyLike${reply.id}" class="fas fa-thumbs-up"></i>
+																<c:set var="likePointed" value="true" />
+															</c:if>
 														</c:if>
-													</c:if>	
-												</c:forEach>
-												<c:if test="${likePointed == false}">
-													<i id="replyLike${reply.id}" class="far fa-thumbs-up"></i>
-													<c:set var="likePointed" value="false" />
-												</c:if>												
-												<span class="reply-like-point${reply.id}">[${reply.extra__likeOnlyPoint}]</span>
-												</a>												
+													</c:forEach> <c:if test="${likePointed == false}">
+														<i id="replyLike${reply.id}" class="far fa-thumbs-up"></i>
+														<c:set var="likePointed" value="false" />
+													</c:if> <span class="reply-like-point${reply.id}">[${reply.extra__likeOnlyPoint}]</span>
+												</a>
 											</div>
 											<div>
 												<c:set var="likePointed" value="false" />
-												<a href="#none" onclick="callDoReplyDislike('reply', ${reply.id});">
-												<c:forEach items="${likes}" var="like" varStatus="status">											
-													<c:if test="${like.relId == reply.id && like.memberId == loginedMemberId}">	
-														<c:if test="${like.point == -1}">
-															<i id="replyDislike${reply.id}" class="fas fa-thumbs-down"></i>
-															<c:set var="likePointed" value="true" />
+												<a href="#none" onclick="callDoReplyDislike('reply', ${reply.id});"> <c:forEach items="${likes}" var="like" varStatus="status">
+														<c:if test="${like.relId == reply.id && like.memberId == loginedMemberId}">
+															<c:if test="${like.point == -1}">
+																<i id="replyDislike${reply.id}" class="fas fa-thumbs-down"></i>
+																<c:set var="likePointed" value="true" />
+															</c:if>
 														</c:if>
-													</c:if>	
-												</c:forEach>
-												<c:if test="${likePointed == false}">
-													<i id="replyDislike${reply.id}" class="far fa-thumbs-down"></i>
-													<c:set var="likePointed" value="false" />
-												</c:if>												
-												<span class="reply-dislike-point${reply.id}">[${reply.extra__dislikeOnlyPoint}]</span>
+													</c:forEach> <c:if test="${likePointed == false}">
+														<i id="replyDislike${reply.id}" class="far fa-thumbs-down"></i>
+														<c:set var="likePointed" value="false" />
+													</c:if> <span class="reply-dislike-point${reply.id}">[${reply.extra__dislikeOnlyPoint}]</span>
 												</a>
-											</div>	
+											</div>
 										</div>
 									</div>
 									<div class="reply-box__body__body">${reply.body}</div>
@@ -350,6 +311,7 @@
 											<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> 
 											<input type="hidden" name="articleId" value="${reply.articleId}" /> 
 											<input type="hidden" name="parentReplyId" value="${reply.id}" />
+											<input type="hidden" name="parentReplyMmeber" value="@${reply.extra__writer}::  " />
 											<div class="flex flex-jc-end">
 												<c:if test="${loginedMemberId == reply.memberId}">
 													<a class="modify input" href="javascript:toggleLayer('${reply.id}modify');">수정</a>
@@ -361,7 +323,7 @@
 												<div>&#11177;${reply.extra__writer}:: ${reply.extra__writer}님께 댓글쓰기</div>
 												<div class="reply-box flex flex-ai-c">
 													<div class="reply-box__textarea flex-g-1">
-														<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reply.extra__writer}::</textarea>
+														<textarea name="reReplyBody" placeholder="내용을 입력해 주세요."></textarea>
 													</div>
 													<div class="reply-box__btn">
 														<input class="input" type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
@@ -370,7 +332,9 @@
 											</div>
 										</form>
 										<form action="../reply/doReplyModify" method="POST" onsubmit="DoReplyModifyForm__submit(this); return false;">
-											<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${reply.articleId}" /> <input type="hidden" name="replyId" value="${reply.id}" />
+											<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> 
+											<input type="hidden" name="articleId" value="${reply.articleId}" /> 
+											<input type="hidden" name="replyId" value="${reply.id}" />
 											<div class="re-reply-box" id="${reply.id}modify" style="display: none;">
 												<div>댓글 수정</div>
 												<div class="reply-box flex">
@@ -398,42 +362,36 @@
 												<div class="reply-box__body__rcm${reReply.id} flex flex-jc-end flex-g-1">
 													<div>
 														<c:set var="likePointed" value="false" />
-														<a href="#none" onclick="callDoReplyLike('reply', ${reReply.id});">
-														<c:forEach items="${likes}" var="like">										
-															<c:if test="${like.relId == reReply.id && like.memberId == loginedMemberId}">	
-																<c:if test="${like.point == 1}">
-																	<i id="replyLike${reReply.id}" class="fas fa-thumbs-up"></i>
-																	<c:set var="likePointed" value="true" />
+														<a href="#none" onclick="callDoReplyLike('reply', ${reReply.id});"> <c:forEach items="${likes}" var="like">
+																<c:if test="${like.relId == reReply.id && like.memberId == loginedMemberId}">
+																	<c:if test="${like.point == 1}">
+																		<i id="replyLike${reReply.id}" class="fas fa-thumbs-up"></i>
+																		<c:set var="likePointed" value="true" />
+																	</c:if>
 																</c:if>
-															</c:if>	
-														</c:forEach>
-														<c:if test="${likePointed == false}">
-															<i id="replyLike${reReply.id}" class="far fa-thumbs-up"></i>
-															<c:set var="likePointed" value="false" />
-														</c:if>												
-														<span class="reply-like-point${reReply.id}">[${reReply.extra__likeOnlyPoint}]</span>
-														</a>												
+															</c:forEach> <c:if test="${likePointed == false}">
+																<i id="replyLike${reReply.id}" class="far fa-thumbs-up"></i>
+																<c:set var="likePointed" value="false" />
+															</c:if> <span class="reply-like-point${reReply.id}">[${reReply.extra__likeOnlyPoint}]</span>
+														</a>
 													</div>
 													<div>
 														<c:set var="likePointed" value="false" />
-														<a href="#none" onclick="callDoReplyDislike('reply', ${reReply.id});">
-														<c:forEach items="${likes}" var="like" varStatus="status">											
-															<c:if test="${like.relId == reReply.id && like.memberId == loginedMemberId}">	
-																<c:if test="${like.point == -1}">
-																	<i id="replyDislike${reReply.id}" class="fas fa-thumbs-down"></i>
-																	<c:set var="likePointed" value="true" />
+														<a href="#none" onclick="callDoReplyDislike('reply', ${reReply.id});"> <c:forEach items="${likes}" var="like" varStatus="status">
+																<c:if test="${like.relId == reReply.id && like.memberId == loginedMemberId}">
+																	<c:if test="${like.point == -1}">
+																		<i id="replyDislike${reReply.id}" class="fas fa-thumbs-down"></i>
+																		<c:set var="likePointed" value="true" />
+																	</c:if>
 																</c:if>
-															</c:if>	
-														</c:forEach>
-														<c:if test="${likePointed == false}">
-															<i id="replyDislike${reReply.id}" class="far fa-thumbs-down"></i>
-															<c:set var="likePointed" value="false" />
-														</c:if>												
-														<span class="reply-dislike-point${reReply.id}">[${reReply.extra__dislikeOnlyPoint}]</span>
+															</c:forEach> <c:if test="${likePointed == false}">
+																<i id="replyDislike${reReply.id}" class="far fa-thumbs-down"></i>
+																<c:set var="likePointed" value="false" />
+															</c:if> <span class="reply-dislike-point${reReply.id}">[${reReply.extra__dislikeOnlyPoint}]</span>
 														</a>
-													</div>	
+													</div>
 												</div>
-											</div>									
+											</div>
 											<div class="reply-box__body__body">${reReply.body}</div>
 											<div class="reply-box__function">
 												<div class="flex flex-jc-end">
@@ -445,12 +403,15 @@
 												</div>
 
 												<form action="../reply/doReplyWrite" method="POST" onsubmit="DoReReReplyWriteForm__submit(this); return false;">
-													<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${reReply.articleId}" /> <input type="hidden" name="parentReplyId" value="${reply.id}" />
+													<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> 
+													<input type="hidden" name="articleId" value="${reReply.articleId}" /> 
+													<input type="hidden" name="parentReplyId" value="${reply.id}" />
+													<input type="hidden" name="parentReplyMmeber" value="@${reply.extra__writer}::  " />
 													<div class="re-reply-box" id="${reReply.id}reply" style="display: none;">
 														<div>&#11177; ${reply.extra__writer}:: ${reReply.extra__writer}님께 댓글쓰기</div>
 														<div class="reply-box flex flex-ai-c">
 															<div class="reply-box__textarea flex-g-1">
-																<textarea name="reReplyBody" placeholder="내용을 입력해 주세요.">@${reReply.extra__writer}::</textarea>
+																<textarea name="reReplyBody" placeholder="내용을 입력해 주세요."></textarea>
 															</div>
 															<div class="reply-box__btn">
 																<input type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />
@@ -481,8 +442,44 @@
 					</c:if>
 				</c:forEach>
 			</div>
+			<script>
+          let DoReplyWriteForm__submited = false;
+          let DoReplyWriteForm__checkedLoginId = "";
+
+          // 폼 발송전 체크
+          function DoReplyWriteForm__submit(form) {
+              if (DoReplyModifyForm__submited) {
+                  alert('처리중입니다.')
+                  return false;
+                }
+                
+                if ( ${loginedMemberId} == 0 ){
+                  alert('로그인 후 이용해 주세요.')
+                  return false;
+                }
+                
+                if ( form.replyBody.value.length == 0 ) {
+                  alert('내용을 입력해주세요.'),
+                  form.replyBody.focus()
+                  return false;
+                }
+            
+            form.submit();	
+            
+            DoReplyWriteForm__submited = true;
+          }
+
+          function toggleLayer(layer){
+            var l = document.getElementById(layer);
+            if(l.style.display == "")
+              l.style.display = "none";
+            else if(l.style.display == "none")
+              l.style.display = "";
+          }     
+        </script>
 			<form action="../reply/doReplyWrite" method="POST" onsubmit="DoReplyWriteForm__submit(this); return false;">
-				<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> <input type="hidden" name="articleId" value="${article.id}" />
+				<input type="hidden" name="redirectUrl" value="${Util.getNewUrl(currentUrl, 'focusReplyId', '[NEW_REPLY_ID]')}" /> 
+				<input type="hidden" name="articleId" value="${article.id}" />
 				<div class="reply-box con-max-width">
 					<div class="con flex-ai-c flex">
 						<div class="reply-box__textarea flex-g-1">
