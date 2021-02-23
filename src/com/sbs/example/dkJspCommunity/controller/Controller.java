@@ -21,4 +21,10 @@ public class Controller {
 	req.setAttribute("data", resultData);
 	return "common/json";
     }
+    
+    protected String json(HttpServletRequest req, ResultData resultData, ResultData resultData2) {
+	req.setAttribute("data", resultData);
+	req.setAttribute("data2", resultData2);
+	return "common/json";
+    }
 }

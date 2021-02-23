@@ -1,6 +1,7 @@
 package com.sbs.example.dkJspCommunity.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import com.sbs.example.dkJspCommunity.container.Container;
 import com.sbs.example.dkJspCommunity.dto.Article;
 import com.sbs.example.dkJspCommunity.dto.Member;
 import com.sbs.example.dkJspCommunity.dto.Reply;
+import com.sbs.example.dkJspCommunity.dto.ResultData;
 import com.sbs.example.dkJspCommunity.service.ReplyService;
 import com.sbs.example.util.Util;
 
@@ -104,5 +106,66 @@ public class UsrReplyController extends Controller {
 	redirectUrl = redirectUrl.replace("[NEW_REPLY_ID]", replyId + "");
 	
 	return msgAndReplace(req, "댓글이 수정되었습니다.", redirectUrl);
+    }
+
+    public String doReplyWriteAjax(HttpServletRequest req, HttpServletResponse resp) {
+	int articleId = Util.getAsInt(req.getParameter("articleId"), 0);
+//	String articleId = req.getParameter("articleId");
+	int memberId = (int) req.getAttribute("loginedMemberId");
+	String replyBody = req.getParameter("replyBody");
+	String reReplyBody = req.getParameter("reReplyBody");
+	String parentReplyId = req.getParameter("parentReplyId");
+	String redirectUrl = req.getParameter("redirectUrl");
+	String parentReplyMmeber = req.getParameter("parentReplyMmeber");
+	
+	
+	System.out.println("articleId::"+articleId);
+	System.out.println("replyBody::"+replyBody);
+	System.out.println("reReplyBody::"+reReplyBody);	
+	System.out.println("parentReplyId::"+parentReplyId);
+	System.out.println("parentReplyId::"+parentReplyMmeber);
+
+//	if (Util.isEmpty(replyBody) && Util.isEmpty(reReplyBody)) {
+//	    return msgAndBack(req, "내용을 입력해 주세요");
+//	}
+
+	List<Reply> replies = replyService.getForPrintRepliesByArticleId(articleId);
+	
+	System.out.println(replies);
+	
+	Map<String, Object> writeArgs = new HashMap<>();
+	writeArgs.put("articleId", articleId);
+	writeArgs.put("memberId", memberId);
+	if (replyBody != null) {
+	writeArgs.put("replyBody", replyBody);	
+	}
+	else {
+	    writeArgs.put("replyBody", parentReplyMmeber+reReplyBody);	
+	}
+	if (parentReplyId != null) {
+	    writeArgs.put("parentReplyId", parentReplyId);
+	}
+	
+	int newReplyId = replyService.write(writeArgs);
+	
+	redirectUrl = redirectUrl.replace("[NEW_REPLY_ID]", newReplyId + "");
+
+	if (Util.isEmpty(req.getParameter("redirectUrl")) == false) {
+	    req.setAttribute("redirectUrl", redirectUrl);
+	}
+	
+	ResultData rs = new ResultData("", "");
+	
+	return json(req, rs);
+    }
+
+    public String getReplies(HttpServletRequest req, HttpServletResponse resp) {
+	int articleId = Util.getAsInt(req.getParameter("articleId"), 0);
+	System.out.println("getreplyId"+articleId);
+	List<Reply> replies = replyService.getForPrintRepliesByArticleId(articleId);
+	
+//	Reply reply = replyService.getForPrintReplyById(articleId);
+	
+	return json(req, new ResultData("S-1", "", replies));
     }
 }
