@@ -42,6 +42,7 @@
 	<form action="doLogin" method="POST" onsubmit="DoLoginForm__submit(this); return false;">
 		<input type="hidden" name="loginPwReal" />
 		<input type="hidden" name="afterLoginUrl" value="${param.afterLoginUrl}" />
+		<input type="hidden" name="replaceUri" value="${replaceUri}"/>
 
 		<section class="login-box">
 			<div class="login-box__title">로그인 화면</div>

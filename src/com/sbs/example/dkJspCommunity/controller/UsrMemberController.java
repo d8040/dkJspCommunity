@@ -16,7 +16,7 @@ import com.sbs.example.dkJspCommunity.dto.ResultData;
 import com.sbs.example.dkJspCommunity.service.MemberService;
 import com.sbs.example.util.Util;
 
-public class UsrMemberController extends Controller{
+public class UsrMemberController extends Controller {
 
     private MemberService memberService;
 
@@ -33,39 +33,38 @@ public class UsrMemberController extends Controller{
 	String loginId = req.getParameter("loginId");
 
 	if (Util.isEmpty(loginId)) {
-		return msgAndBack(req, "아이디을 입력해주세요.");
+	    return msgAndBack(req, "아이디을 입력해주세요.");
 	}
 
 	String loginPw = req.getParameter("loginPwReal");
-	
+
 	if (Util.isEmpty(loginId)) {
-		return msgAndBack(req, "비밀번호를 입력해주세요.");
+	    return msgAndBack(req, "비밀번호를 입력해주세요.");
 	}
-	
+
 	String name = req.getParameter("name");
 
 	if (Util.isEmpty(loginId)) {
-		return msgAndBack(req, "사용자이름을 입력해주세요.");
+	    return msgAndBack(req, "사용자이름을 입력해주세요.");
 	}
-	
+
 	String nickname = req.getParameter("nickname");
 
 	if (Util.isEmpty(loginId)) {
-		return msgAndBack(req, "닉네임을 입력해주세요.");
+	    return msgAndBack(req, "닉네임을 입력해주세요.");
 	}
-	
+
 	String email = req.getParameter("email");
 
 	if (Util.isEmpty(loginId)) {
-		return msgAndBack(req, "이메일을 입력해주세요.");
+	    return msgAndBack(req, "이메일을 입력해주세요.");
 	}
-	
+
 	String cellphoneNo = req.getParameter("cellphoneNo");
 
 	if (Util.isEmpty(loginId)) {
-		return msgAndBack(req, "휴대전화 번호를 입력해주세요.");
+	    return msgAndBack(req, "휴대전화 번호를 입력해주세요.");
 	}
-	
 
 	Member oldMember = memberService.getMemberByLoginId(loginId);
 
@@ -107,7 +106,9 @@ public class UsrMemberController extends Controller{
     }
 
     public String showLogin(HttpServletRequest req, HttpServletResponse resp) {
-
+	String replaceUri = req.getHeader("referer");
+	
+	req.setAttribute("replaceUri", replaceUri);
 	return "usr/member/login";
     }
 
@@ -127,14 +128,14 @@ public class UsrMemberController extends Controller{
 
 	HttpSession session = req.getSession();
 	session.setAttribute("loginedMemberId", member.getId());
-	
-	String replaceUrl = "../home/main";
-	
-	if ( Util.isEmpty(req.getParameter("afterLoginUrl")) == false ) {
-		replaceUrl = req.getParameter("afterLoginUrl");
+
+	String replaceUrl = req.getParameter("replaceUri");
+
+	if (Util.isEmpty(req.getParameter("afterLoginUrl")) == false) {
+	    replaceUrl = req.getParameter("afterLoginUrl");
 	}
 	
-	return msgAndReplace(req,  member.getNickname() + "님 로그인을 환영합니다.", replaceUrl);
+	return msgAndReplace(req, member.getNickname() + "님 로그인을 환영합니다.", replaceUrl);
     }
 
     public String doLogout(HttpServletRequest req, HttpServletResponse resp) {
@@ -142,7 +143,7 @@ public class UsrMemberController extends Controller{
 	HttpSession session = req.getSession();
 	session.removeAttribute("loginedMemberId");
 
-	return msgAndReplace(req, "로그아웃 되었습니다.",  "../home/main");
+	return msgAndBack(req, "로그아웃 되었습니다.");
     }
 
     public String getLoginIdDup(HttpServletRequest req, HttpServletResponse resp) {
@@ -160,7 +161,7 @@ public class UsrMemberController extends Controller{
 	    resultCode = "S-1";
 	    msg = String.format("사용 가능한 아이디 입니다.");
 	}
-	
+
 	return json(req, new ResultData(resultCode, msg, "loginId", loginId));
     }
 
@@ -188,7 +189,7 @@ public class UsrMemberController extends Controller{
     public String doFindLoginPw(HttpServletRequest req, HttpServletResponse resp) {
 	String loginId = req.getParameter("loginId");
 	String email = req.getParameter("email");
-	
+
 	System.out.println(loginId);
 	System.out.println(email);
 
@@ -241,7 +242,7 @@ public class UsrMemberController extends Controller{
 	memberService.modify(modifyArgs);
 
 	if (loginPw != null) {
-	    Container.attrService.setValue("member__" + loginedMemberId + "__extra__isUsingTempPassword", "0", null);	    
+	    Container.attrService.setValue("member__" + loginedMemberId + "__extra__isUsingTempPassword", "0", null);
 	}
 
 	//6개월 뒤 날짜 계산
@@ -253,11 +254,11 @@ public class UsrMemberController extends Controller{
 	String date = simpleDate.format(cal.getTime());
 	System.out.println(date);
 	//6개월 뒤 날짜 계산 끝 
-	
+
 	if (loginPw != null) {
 	    Container.attrService.setValue("member__" + loginedMemberId + "__extra__expireDateOfPw", "1", date);
 	}
-	
+
 	return msgAndReplace(req, nickname + "님 회원정보가 수정되었습니다.", String.format("memberModify"));
     }
 }
