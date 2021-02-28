@@ -106,8 +106,7 @@ public class UsrMemberController extends Controller {
     }
 
     public String showLogin(HttpServletRequest req, HttpServletResponse resp) {
-	String replaceUri = req.getHeader("referer");
-	
+	String replaceUri = req.getHeader("referer");	
 	req.setAttribute("replaceUri", replaceUri);
 	return "usr/member/login";
     }

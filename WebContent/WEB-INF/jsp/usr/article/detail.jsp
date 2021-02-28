@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.sbs.example.util.Util"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="pageTitle" value="게시물 상세페이지" />
+<c:set var="pageTitle" value="${article.extra__boardName}" />
 <%@ include file="../../part/head.jspf"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <main class="flex-g-1 con">
@@ -52,7 +52,7 @@
               </script>
 		<section class="article-detail con-min-width">
 			<div class="article_detail__board-onclick">
-				<a href="#" onclick="goBack()">게시판 > ${pageTitle} > </a>
+				<a href="${replaceUri}">게시판 > ${pageTitle} > </a>
 			</div>
 			<div class="article-detail__title">${article.title}</div>
 			<div class="article-detail__info">
@@ -654,7 +654,7 @@
                            		 			el += '<textarea name="replyBody" placeholder="내용을 입력해 주세요.">'+reply.body+'</textarea></div>';
                            		 			el += '<div class="reply-box__btn">';
                            		 			el += '<input class="input" type="image" alt="댓글입력" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FqAMVb%2FbtqVvO5fSVW%2F06ehRWdnfhWfs06Z4rkbsk%2Fimg.gif" />';
-                           		 			el += '</div></div></div></form></div></div></div></div>리플라이아이디'+reply.id+reply.parentReplyId+'';
+                           		 			el += '</div></div></div></form></div></div></div></div>';
                    		 				}
                            		 			for( var k = 0; k < data.body.length; k++){
                            		 				var el1 = '';

@@ -117,7 +117,9 @@ public class UsrArticleController extends Controller {
 	
 	List<Reply> replies = replyService.getForPrintRepliesByArticleId(article.id);
 	List<Like> likes = likeService.getForPintLikesByArticleId(article.id, memberId);
+	String replaceUri = req.getHeader("referer");	
 	
+	req.setAttribute("replaceUri", replaceUri);
 	req.setAttribute("isLikedArticle", isLikedArticle);
 	req.setAttribute("isDislikedArticle", isDislikedArticle);
 	req.setAttribute("article", article);
