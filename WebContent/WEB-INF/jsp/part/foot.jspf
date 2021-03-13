@@ -1,56 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 </main>
-<footer class="footer web flex flex-jc-c flex-dr-c">
+<footer class="footer">
 	<div class="footer__contents con">
-		<div class="footer__top flex jc-space-between flex-ai-c">
-			<ul class="info flex">
-				<li><a href="https://www.phoneus.net" target="_blank">PHONEUS포너스</a></li>
-				<li><a href="#" target="_blank">이용약관</a></li>
-				<li class="prv"><a href="#" target="_blank">개인정보처리방침</a></li>
-				<li><a href="#" target="_blank">제휴문의</a></li>
-			</ul>
-			<div class="help flex flex-ai-c">
-				<span>도움이 필요하신가요?</span>
-				<ul class="btn-box flex">
-					<a href="#" class="btn-type03 btn-member-inquiry">1:1문의</a>
-					<a href="#" target="_blank" class="btn-type03">강사 수수료-<strong>PhoneUs</strong></a>
-					<a href="#" target="_blank" class="btn-type03">강사등록-<strong> by</strong></a>
-				</ul>
-			</div>
-		</div>
-		<br>
-		<div class="footer__info flex">
-			<div class="flex flex-jc-c jc-space-between">
+		<div class="footer__info">
+			<div class="flex flex-dr-r flex-ai-c flex-jc-c jc-space-between">
 				<div>
-					<div>(주) 포너스</div>
-					<div class="flex">
-						<dt>운영등록번호 : 123-456467-213&nbsp;|&nbsp;</dt>
-						<dt>사업자등록번호 : 113-85-39415&nbsp;|&nbsp;</dt>
-						<dt>대표 : 김득수&nbsp;|&nbsp;</dt>
-						<dt>주소 : 대전광역시 서구 도안북로88(도안동) 청년창업지원센터 204호</dt>
-					</div>
-					<div class="flex">
-						<dt>전화 : 070-123-1234 ~ 2&nbsp;|&nbsp;</dt>
-						<dt>팩스 : 070-123-1234&nbsp;|&nbsp;</dt>
-						<dt>개인정보보호책임자 : 김득수(phoneus.adm1@gmail.com)&nbsp;|&nbsp;</dt>
-						<dt>호스팅 제공 : (주)포너스</dt>
-					</div>
-				</div>
-				<div class="flex flex-dr-c flex-ai-c">
-					<span>포너스 공식SNS</span>
-					<div>
-						<a href="#" target="_blank"><img src="https://edu.godo.co.kr/_static/img/v2/common/2005/icon_sns03.png" alt="PhoneUs 유튜브"></a> 
-						<a href="#" target="_blank"><img src="https://edu.godo.co.kr/_static/img/v2/common/2005/icon_sns04.png" alt="PhoneUs 네이버TV"></a> 
-						<a href="#" target="_blank"><img src="https://edu.godo.co.kr/_static/img/v2/common/2005/icon_sns05.png" alt="PhoneUs 네이버 포스트"></a> 
-						<a href="#" target="_blank"><img src="https://edu.godo.co.kr/_static/img/v2/common/2005/icon_sns06.png" alt="PhoneUs 인스타그램"></a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div>
-			<strong>PhoneUs</strong> <span class="corp">ⓒ PhoneUs. All Rights Reserved.</span>
-		</div>
-	</div>
+                <span class="corp">© Copyright 2018. All rights reserved.</span>
+              </div>
+              <div class="footer__info__links">
+                <a href="https://www.facebook.com/dk.kim.31/" target="_blank"><i class="fab fa-facebook-square"></i></a> 
+                <a href="http://www.github.com/d8040" target="_blank"><i class="fab fa-github-square"></i></a> 
+                <a href="http://www.instagram.com/dkey/" target="_blank"><i class="fab fa-instagram-square"></i></a>
+                <a href="mailto:dkey8666@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
 </footer>
 </body>
 </html>
